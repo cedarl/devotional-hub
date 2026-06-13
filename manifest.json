@@ -1,0 +1,41 @@
+{
+  "name": "Devotional Hub",
+  "short_name": "DevotionalHub",
+  "description": "Your personal morning & evening devotional companion",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a2215",
+  "theme_color": "#0a2215",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "education"],
+  "shortcuts": [
+    {
+      "name": "Morning Watch",
+      "short_name": "Morning",
+      "description": "Open Morning Watch",
+      "url": "./index.html?session=morning",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Evening Watch",
+      "short_name": "Evening",
+      "description": "Open Evening Watch",
+      "url": "./index.html?session=evening",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
