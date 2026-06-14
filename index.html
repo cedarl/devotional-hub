@@ -737,12 +737,12 @@ function beginStudy(){
 }
 
 // ── Verses screen ─────────────────────────────────────────────
+
 function showVerses(){
   ['homeScreen','studyScreen','completeScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
   document.getElementById('versesScreen').classList.add('active');
   document.getElementById('onboarding').style.display='none';
 
-  // Apply blue tint for verses screen
   document.body.style.background='linear-gradient(160deg,#0a1a2e 0%,#1a3a6e 40%,#2d5a9e 70%,#3a7abf 100%)';
 
   const bk=BOOKS_META.find(b=>b.id===activeBookId)||BOOKS_META[0];
@@ -755,34 +755,52 @@ function showVerses(){
   document.getElementById('versesSubtitle').textContent=bk.title+' · Chapter '+(chIdx+1)+' of '+bk.chapters;
   document.getElementById('sessionBadge').textContent='📖 Verses';
 
-  // Extract Bible references from chapter text
   const versesList=document.getElementById('versesList');
-  versesList.innerHTML='';
+  versesList.innerHTML='<p style="font-size:13px;color:rgba(255,255,255,0.5);text-align:center;padding:20px;">Loading verses...</p>';
 
   const text=chData?chData.text:'';
   const refs=extractBibleRefs(text);
 
   if(refs.length>0){
-    refs.slice(0,8).forEach(ref=>{
-      const card=document.createElement('div');
-      card.className='verse-card-item';
-      card.innerHTML=`<div class="verse-ref-lbl">${ref}</div>
-        <div class="verse-text-body">Open your Bible to read this verse.</div>`;
-      versesList.appendChild(card);
-    });
+    fetchKJVVerses(refs.slice(0,8), versesList);
   } else {
-    // Show pool verses if no refs found
-    const picks=VERSES_POOL.sort(()=>Math.random()-0.5).slice(0,3);
-    picks.forEach(v=>{
-      const card=document.createElement('div');
-      card.className='verse-card-item';
-      card.innerHTML=`<div class="verse-ref-lbl">${v.ref}</div>
-        <div class="verse-text-body">${v.text}</div>`;
-      versesList.appendChild(card);
-    });
+    fetchKJVVerses(VERSES_POOL.slice(0,3).map(v=>v.ref), versesList);
   }
 }
 
+async function fetchKJVVerses(refs, container){
+  container.innerHTML='';
+  for(const ref of refs){
+    const card=document.createElement('div');
+    card.className='verse-card-item';
+    card.innerHTML=`<div class="verse-ref-lbl">${ref}</div>
+      <div class="verse-text-body" id="vt_${ref.replace(/[^a-z0-9]/gi,'_')}">
+        <span style="color:rgba(255,255,255,0.4);font-style:italic;">Loading...</span>
+      </div>`;
+    container.appendChild(card);
+
+    try{
+      const encoded=encodeURIComponent(ref);
+      const res=await fetch(`https://bible-api.com/${encoded}?translation=kjv`);
+      const data=await res.json();
+      const el=document.getElementById('vt_'+ref.replace(/[^a-z0-9]/gi,'_'));
+      if(el){
+        if(data.verses&&data.verses.length>0){
+          el.innerHTML=data.verses.map(v=>
+            `<span style="font-size:10px;color:rgba(255,255,255,0.4);vertical-align:super;margin-right:2px;">${v.verse}</span>${v.text.trim()}`
+          ).join(' ');
+        } else if(data.text){
+          el.textContent=data.text.trim();
+        } else {
+          el.innerHTML='<span style="color:rgba(255,255,255,0.3);font-style:italic;">Verse not found</span>';
+        }
+      }
+    }catch(e){
+      const el=document.getElementById('vt_'+ref.replace(/[^a-z0-9]/gi,'_'));
+      if(el) el.innerHTML='<span style="color:rgba(255,255,255,0.3);font-style:italic;">Could not load — check connection</span>';
+    }
+  }
+}
 function extractBibleRefs(text){
   if(!text) return [];
   const pattern=/\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|Samuel|Kings|Chronicles|Ezra|Nehemiah|Esther|Job|Psalm|Psalms|Proverbs|Ecclesiastes|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|Corinthians|Galatians|Ephesians|Philippians|Colossians|Thessalonians|Timothy|Titus|Philemon|Hebrews|James|Peter|Jude|Revelation|Gen|Ex|Lev|Num|Deut|Josh|Judg|Ps|Prov|Isa|Jer|Ezek|Dan|Matt|Rom|Cor|Gal|Eph|Phil|Col|Thess|Tim|Heb|Rev)\.?\s*\d+:\d+/g;
