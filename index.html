@@ -13,126 +13,238 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'Lora',serif;min-height:100vh;display:flex;flex-direction:column;color:#fff;
-      background:linear-gradient(160deg,#0a2215 0%,#1a4a2e 40%,#2d6e4a 70%,#3a8a5c 100%);}
+      background:linear-gradient(160deg,#0a2215 0%,#1a4a2e 40%,#2d6e4a 70%,#3a8a5c 100%);
+      transition:background 1s;}
     .bible-bg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
       font-size:260px;opacity:0.06;z-index:0;pointer-events:none;user-select:none;}
     .music-note{position:fixed;z-index:1;pointer-events:none;color:#fff;opacity:0.1;
       animation:floatnote 8s ease-in-out infinite alternate;}
     @keyframes floatnote{from{transform:translateY(0) rotate(-5deg);}to{transform:translateY(-18px) rotate(5deg);}}
     .titlebar{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;
-      padding:14px 20px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.1);}
-    .logo{font-family:'Playfair Display',serif;font-size:17px;color:#fff;}
-    .session-badge{font-size:11px;letter-spacing:2px;text-transform:uppercase;
+      padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.1);}
+    .logo{font-family:'Playfair Display',serif;font-size:16px;color:#fff;}
+    .session-badge{font-size:10px;letter-spacing:2px;text-transform:uppercase;
       background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);
-      border-radius:20px;padding:4px 14px;color:#fff;}
+      border-radius:20px;padding:4px 12px;color:#fff;}
+    .tb-btn{background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;font-size:18px;padding:4px;}
     .main{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;
-      align-items:center;padding:24px 16px 100px;overflow-y:auto;}
-    .greeting{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:8px;}
-    .hero-title{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,34px);color:#fff;margin-bottom:6px;text-align:center;}
-    .hero-sub{font-size:13px;color:rgba(255,255,255,0.6);font-style:italic;margin-bottom:28px;text-align:center;}
-    .book-card{width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);
-      border-radius:14px;padding:14px 18px;margin-bottom:10px;cursor:pointer;transition:all 0.3s;
-      display:flex;align-items:center;gap:14px;}
-    .book-card.active{border-color:#6ee89a;background:rgba(110,232,154,0.15);}
-    .book-card:active{transform:scale(0.98);}
-    .book-icon{font-size:26px;}
-    .book-name{font-family:'Playfair Display',serif;font-size:15px;color:#fff;margin-bottom:3px;}
-    .book-meta{font-size:12px;color:rgba(255,255,255,0.55);}
-    .btn-primary{width:100%;padding:15px;border-radius:30px;border:none;cursor:pointer;
-      font-family:'Playfair Display',serif;font-size:16px;
-      background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;font-weight:bold;
-      transition:all 0.3s;margin-top:8px;}
-    .btn-primary:active{transform:scale(0.97);}
-    .btn-secondary{width:100%;padding:12px;border-radius:30px;margin-top:10px;
-      border:1px solid rgba(255,255,255,0.25);background:transparent;
-      color:rgba(255,255,255,0.7);font-size:14px;cursor:pointer;}
-    .step{display:none;flex-direction:column;align-items:center;width:100%;max-width:500px;}
+      align-items:center;padding:20px 14px 90px;overflow-y:auto;}
+    .screen{display:none;flex-direction:column;align-items:center;width:100%;max-width:520px;}
+    .screen.active{display:flex;}
+
+    /* Onboarding */
+    .step{display:none;flex-direction:column;align-items:center;width:100%;max-width:520px;}
     .step.active{display:flex;}
-    .step-icon{font-size:52px;margin-bottom:14px;}
-    .step-title{font-family:'Playfair Display',serif;font-size:26px;color:#fff;margin-bottom:8px;text-align:center;}
-    .step-sub{font-size:13px;color:rgba(255,255,255,0.6);font-style:italic;margin-bottom:24px;text-align:center;}
-    .dots{display:flex;gap:8px;margin-bottom:28px;}
+    .step-icon{font-size:48px;margin-bottom:12px;}
+    .step-title{font-family:'Playfair Display',serif;font-size:24px;color:#fff;margin-bottom:6px;text-align:center;}
+    .step-sub{font-size:13px;color:rgba(255,255,255,0.6);font-style:italic;margin-bottom:20px;text-align:center;}
+    .dots{display:flex;gap:8px;margin-bottom:24px;}
     .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);transition:all 0.3s;}
     .dot.active{background:#6ee89a;transform:scale(1.3);}
     .dot.done{background:rgba(110,232,154,0.5);}
-    .field{width:100%;margin-bottom:14px;}
+    .field{width:100%;margin-bottom:12px;}
     .field label{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
-      color:rgba(255,255,255,0.5);margin-bottom:6px;}
+      color:rgba(255,255,255,0.5);margin-bottom:5px;}
     .field input[type=text],.field input[type=time],.field select{
       width:100%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
-      border-radius:10px;padding:11px 14px;color:#fff;font-size:15px;font-family:'Lora',serif;}
+      border-radius:10px;padding:10px 13px;color:#fff;font-size:15px;font-family:'Lora',serif;}
     .field input:focus,.field select:focus{outline:none;border-color:#6ee89a;}
+    .field select option{background:#1a4a2e;color:#fff;}
     .watch-block{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
-      border-radius:14px;padding:16px;margin-bottom:14px;}
-    .watch-block-title{font-size:13px;color:#6ee89a;font-weight:bold;margin-bottom:12px;}
-    .time-row{display:flex;gap:10px;align-items:center;margin-bottom:10px;}
+      border-radius:14px;padding:14px;margin-bottom:12px;}
+    .watch-block-title{font-size:13px;color:#6ee89a;font-weight:bold;margin-bottom:10px;}
+    .time-row{display:flex;gap:10px;align-items:center;margin-bottom:8px;}
     .time-row input{flex:1;}
     .time-row span{color:rgba(255,255,255,0.5);font-size:13px;}
     .book-opt{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);
-      border-radius:12px;padding:13px 16px;cursor:pointer;transition:all 0.2s;
-      display:flex;align-items:center;gap:12px;margin-bottom:10px;width:100%;}
+      border-radius:12px;padding:12px 14px;cursor:pointer;transition:all 0.2s;
+      display:flex;align-items:center;gap:12px;margin-bottom:8px;width:100%;}
     .book-opt.selected{background:rgba(110,232,154,0.15);border-color:#6ee89a;}
-    .book-opt:active{transform:scale(0.98);}
     .summary-box{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);
-      border-radius:14px;padding:18px;margin-bottom:16px;}
-    .summary-row{display:flex;justify-content:space-between;padding:8px 0;
+      border-radius:14px;padding:16px;margin-bottom:14px;}
+    .summary-row{display:flex;justify-content:space-between;padding:7px 0;
       border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px;}
     .summary-row:last-child{border-bottom:none;}
     .s-label{color:rgba(255,255,255,0.5);}
     .s-val{color:#6ee89a;font-weight:bold;}
-    .btn-back-link{margin-top:10px;font-size:13px;color:rgba(255,255,255,0.4);cursor:pointer;text-align:center;}
-    .chapter-card{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
-      border-radius:14px;padding:20px;margin-bottom:14px;}
-    .chapter-title{font-family:'Playfair Display',serif;font-size:19px;color:#fff;margin-bottom:14px;line-height:1.4;}
-    .chapter-text{font-size:15px;color:rgba(255,255,255,0.88);line-height:1.9;}
+    .btn-back-link{margin-top:8px;font-size:13px;color:rgba(255,255,255,0.4);cursor:pointer;text-align:center;}
+    .notif-card{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);
+      border-radius:14px;padding:16px;margin-bottom:14px;text-align:center;}
+    .notify-btn{padding:9px 20px;border-radius:20px;border:none;cursor:pointer;
+      background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;font-size:13px;font-weight:bold;}
+
+    /* Buttons */
+    .btn-primary{width:100%;padding:14px;border-radius:30px;border:none;cursor:pointer;
+      font-family:'Playfair Display',serif;font-size:15px;
+      background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;font-weight:bold;
+      transition:all 0.2s;margin-top:8px;}
+    .btn-primary:active{transform:scale(0.97);}
+    .btn-secondary{width:100%;padding:11px;border-radius:30px;margin-top:10px;
+      border:1px solid rgba(255,255,255,0.25);background:transparent;
+      color:rgba(255,255,255,0.7);font-size:14px;cursor:pointer;}
+
+    /* Home */
+    .greeting{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px;}
+    .hero-title{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,32px);color:#fff;margin-bottom:4px;text-align:center;}
+    .hero-sub{font-size:13px;color:rgba(255,255,255,0.6);font-style:italic;margin-bottom:24px;text-align:center;}
+    .book-card{width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);
+      border-radius:14px;padding:13px 16px;margin-bottom:9px;cursor:pointer;transition:all 0.2s;
+      display:flex;align-items:center;gap:13px;}
+    .book-card.active{border-color:#6ee89a;background:rgba(110,232,154,0.12);}
+    .book-card:active{transform:scale(0.98);}
+    .book-name{font-family:'Playfair Display',serif;font-size:15px;color:#fff;margin-bottom:2px;}
+    .book-meta{font-size:11px;color:rgba(255,255,255,0.5);}
+    .prog-mini{height:3px;background:rgba(255,255,255,0.1);border-radius:3px;margin-top:5px;}
+    .prog-mini-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#3ab56e,#6ee89a);}
+
+    /* Study screen */
+    .study-header{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+    .study-book-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;}
+    .study-meta{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;}
+    .progress-bar-wrap{width:100%;background:rgba(255,255,255,0.1);border-radius:6px;height:4px;margin-bottom:16px;}
+    .progress-bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#3ab56e,#6ee89a);transition:width 0.4s;}
+
+    /* Pinned chapters tabs */
+    .pinned-tabs{display:flex;gap:8px;width:100%;margin-bottom:12px;}
+    .pinned-tab{flex:1;padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.6);font-size:13px;
+      cursor:pointer;text-align:center;transition:all 0.2s;}
+    .pinned-tab.active{background:rgba(110,232,154,0.15);border-color:#6ee89a;color:#6ee89a;}
+
+    /* Toolbar */
+    .study-toolbar{display:flex;gap:6px;width:100%;margin-bottom:12px;flex-wrap:wrap;}
+    .tool-btn{padding:6px 12px;border-radius:18px;border:1px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.8);font-size:12px;cursor:pointer;transition:all 0.2s;}
+    .tool-btn.active{background:rgba(110,232,154,0.2);border-color:#6ee89a;color:#6ee89a;}
+    .tool-btn:active{transform:scale(0.95);}
+
+    /* Chapter content */
+    .chapter-card{width:100%;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);
+      border-radius:14px;padding:18px;margin-bottom:12px;}
+    .chapter-title{font-family:'Playfair Display',serif;font-size:17px;color:#fff;margin-bottom:12px;line-height:1.4;}
+    .chapter-text{color:rgba(255,255,255,0.88);line-height:1.9;font-size:15px;}
     .chapter-text p{margin-bottom:14px;}
-    .chapter-nav{display:flex;gap:10px;width:100%;margin-top:4px;}
+    .highlight-yellow{background:rgba(255,220,50,0.3);border-radius:3px;padding:0 2px;}
+    .highlight-green{background:rgba(110,232,154,0.3);border-radius:3px;padding:0 2px;}
+    .highlight-pink{background:rgba(255,120,180,0.3);border-radius:3px;padding:0 2px;}
+
+    /* Highlight toolbar */
+    .sel-toolbar{position:fixed;background:rgba(20,40,30,0.97);border:1px solid rgba(255,255,255,0.2);
+      border-radius:10px;padding:7px 10px;display:none;gap:8px;z-index:500;
+      box-shadow:0 4px 20px rgba(0,0,0,0.5);}
+    .sel-toolbar.show{display:flex;align-items:center;}
+    .hl-btn{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);cursor:pointer;}
+    .hl-btn.yellow{background:#ffd832;}
+    .hl-btn.green{background:#6ee89a;}
+    .hl-btn.pink{background:#ff78b4;}
+    .hl-note-btn{padding:3px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.3);
+      background:transparent;color:#fff;cursor:pointer;font-size:12px;}
+
+    /* Notes panel */
+    .notes-panel{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
+      border-radius:14px;padding:16px;margin-bottom:12px;display:none;}
+    .notes-panel.open{display:block;}
+    .notes-panel h4{font-family:'Playfair Display',serif;font-size:15px;color:#fff;margin-bottom:10px;}
+    .note-textarea{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);
+      border-radius:10px;padding:10px;color:#fff;font-family:'Lora',serif;font-size:13px;
+      resize:none;line-height:1.7;min-height:100px;}
+    .note-save{margin-top:8px;padding:8px 20px;border-radius:20px;border:none;cursor:pointer;
+      background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;font-weight:bold;font-size:13px;}
+
+    /* Saved notes list */
+    .note-item{padding:10px 12px;border-radius:10px;margin-bottom:6px;
+      background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+      font-size:12px;color:rgba(255,255,255,0.7);cursor:pointer;}
+    .note-item:active{background:rgba(255,255,255,0.1);}
+
+    /* Nav */
+    .chapter-nav{display:flex;gap:8px;width:100%;margin-top:4px;}
     .chapter-nav button{flex:1;padding:12px;border-radius:24px;border:1px solid rgba(255,255,255,0.2);
       background:rgba(255,255,255,0.07);color:#fff;font-size:14px;cursor:pointer;}
     .chapter-nav button.primary{background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;
       font-weight:bold;border:none;}
-    .progress-bar-wrap{width:100%;background:rgba(255,255,255,0.1);border-radius:6px;height:5px;margin-bottom:20px;}
-    .progress-bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#3ab56e,#6ee89a);transition:width 0.4s;}
-    .notif-card{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);
-      border-radius:14px;padding:18px;margin-bottom:16px;text-align:center;}
-    .notify-btn{padding:10px 20px;border-radius:20px;border:none;cursor:pointer;
-      background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;font-size:13px;font-weight:bold;}
+
+    /* Complete screen */
+    .sparkle{position:fixed;z-index:2;pointer-events:none;font-size:20px;opacity:0;
+      animation:sparkle 3s ease-in-out infinite;}
+    @keyframes sparkle{0%,100%{opacity:0;transform:scale(0.5);}50%{opacity:0.6;transform:scale(1.2);}}
+    .trophy{font-size:60px;margin-bottom:10px;animation:bounce 1s ease infinite alternate;display:block;text-align:center;}
+    @keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+    .congrats-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;text-align:center;}
+    .big-title{font-family:'Playfair Display',serif;font-size:28px;color:#fff;margin-bottom:6px;text-align:center;}
+    .verse-card{width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);
+      border-radius:16px;padding:18px 20px;margin-bottom:16px;}
+    .verse-text{font-size:14px;line-height:1.8;color:#fff;font-style:italic;margin-bottom:6px;}
+    .verse-ref{font-size:12px;color:#6ee89a;letter-spacing:1px;}
+    .stats-row{display:flex;gap:8px;margin-bottom:16px;width:100%;}
+    .stat-card{flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);
+      border-radius:12px;padding:12px 8px;text-align:center;}
+    .stat-num{font-family:'Playfair Display',serif;font-size:22px;color:#6ee89a;}
+    .stat-label{font-size:9px;color:rgba(255,255,255,0.5);margin-top:3px;text-transform:uppercase;letter-spacing:1px;}
+
+    /* Next book modal */
+    .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);
+      z-index:300;display:none;align-items:flex-end;justify-content:center;}
+    .overlay.open{display:flex;}
+    .overlay-box{background:#0f1e14;border:1px solid rgba(110,232,154,0.3);border-radius:20px 20px 0 0;
+      padding:24px 18px 40px;width:100%;max-width:520px;max-height:85vh;overflow-y:auto;}
+    .overlay-box h3{font-family:'Playfair Display',serif;font-size:20px;color:#6ee89a;margin-bottom:8px;}
+    .next-book-opt{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);
+      border-radius:10px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;
+      gap:12px;margin-bottom:8px;transition:all 0.2s;}
+    .next-book-opt.selected{background:rgba(110,232,154,0.15);border-color:#6ee89a;}
+
+    /* Settings overlay */
     .settings-overlay{position:fixed;top:0;left:0;width:100%;height:100%;
-      background:rgba(0,0,0,0.7);z-index:100;display:none;align-items:flex-end;justify-content:center;}
+      background:rgba(0,0,0,0.75);z-index:200;display:none;align-items:flex-end;justify-content:center;}
     .settings-overlay.open{display:flex;}
-    .settings-box{background:#0f1e14;border:1px solid rgba(255,255,255,0.15);border-radius:20px 20px 0 0;
-      padding:24px 20px 40px;width:100%;max-width:500px;max-height:85vh;overflow-y:auto;}
-    .settings-box h2{font-family:'Playfair Display',serif;font-size:20px;color:#fff;margin-bottom:18px;}
-    .setting-group{margin-bottom:16px;}
-    .setting-group label{display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;
-      color:rgba(255,255,255,0.5);margin-bottom:6px;}
-    .setting-group input[type=time],.setting-group select,.setting-group input[type=text]{
-      width:100%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
-      border-radius:8px;padding:9px 12px;color:#fff;font-size:14px;}
-    .theme-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
-    .theme-swatch{width:40px;height:40px;border-radius:8px;cursor:pointer;border:2px solid transparent;}
-    .theme-swatch.active{border-color:#fff;}
-    @media(max-width:400px){.hero-title{font-size:22px;}.main{padding:16px 12px 100px;}}
+    .settings-box{background:#0a1a0f;border:1px solid rgba(255,255,255,0.15);border-radius:20px 20px 0 0;
+      padding:22px 16px 40px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;}
+    .settings-box h2{font-family:'Playfair Display',serif;font-size:19px;color:#fff;margin-bottom:16px;}
+    .setting-section{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.08);}
+    .setting-section:last-child{border-bottom:none;}
+    .setting-section-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;
+      color:#6ee89a;margin-bottom:10px;}
+    .setting-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+    .setting-row label{font-size:13px;color:rgba(255,255,255,0.7);}
+    .setting-row input[type=time],.setting-row select{
+      background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+      border-radius:8px;padding:7px 10px;color:#fff;font-size:13px;}
+    .theme-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+    .theme-swatch{width:36px;height:36px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;}
+    .theme-swatch.active{border-color:#fff;transform:scale(1.1);}
+    .ringtone-row{display:flex;align-items:center;gap:8px;margin-top:6px;}
+    .ringtone-name{font-size:12px;color:#6ee89a;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .ringtone-btn{padding:6px 14px;border-radius:16px;border:1px solid rgba(255,255,255,0.3);
+      background:transparent;color:#fff;font-size:12px;cursor:pointer;white-space:nowrap;}
+
+    @media(max-width:400px){.main{padding:14px 10px 90px;}.hero-title{font-size:20px;}}
   </style>
 </head>
 <body>
 
 <div class="bible-bg">📖</div>
-<span class="music-note" style="font-size:40px;top:12%;left:6%;animation-delay:0s;">♩</span>
-<span class="music-note" style="font-size:30px;top:22%;right:8%;animation-delay:1s;">♫</span>
-<span class="music-note" style="font-size:24px;bottom:30%;left:10%;animation-delay:2s;">♪</span>
-<span class="music-note" style="font-size:36px;bottom:20%;right:12%;animation-delay:0.5s;">♬</span>
+<span class="music-note" style="font-size:38px;top:12%;left:6%;animation-delay:0s;">♩</span>
+<span class="music-note" style="font-size:28px;top:22%;right:8%;animation-delay:1s;">♫</span>
+<span class="music-note" style="font-size:22px;bottom:30%;left:10%;animation-delay:2s;">♪</span>
+<span class="music-note" style="font-size:34px;bottom:20%;right:12%;animation-delay:0.5s;">♬</span>
+
+<!-- Sparkles for complete screen -->
+<span class="sparkle" style="top:15%;left:10%;animation-delay:0s;">✦</span>
+<span class="sparkle" style="top:25%;right:12%;animation-delay:0.5s;">✧</span>
+<span class="sparkle" style="bottom:30%;left:8%;animation-delay:1s;">★</span>
+<span class="sparkle" style="bottom:20%;right:10%;animation-delay:1.5s;">✦</span>
 
 <div class="titlebar">
   <span class="logo">Devotional Hub</span>
   <span class="session-badge" id="sessionBadge">Loading...</span>
-  <button onclick="openSettings()" style="background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;font-size:20px;">⚙</button>
+  <button class="tb-btn" onclick="openSettings()" title="Settings">⚙</button>
 </div>
 
 <div class="main" id="mainArea">
 
-  <!-- ONBOARDING -->
-  <div id="onboarding" style="display:none;flex-direction:column;align-items:center;width:100%;max-width:500px;">
+  <!-- ═══ ONBOARDING ═══ -->
+  <div id="onboarding" style="display:none;flex-direction:column;align-items:center;width:100%;max-width:520px;">
     <div class="dots">
       <div class="dot active" id="dot0"></div>
       <div class="dot" id="dot1"></div>
@@ -150,20 +262,18 @@
     <div class="step" id="obStep1">
       <div class="step-icon">⏰</div>
       <div class="step-title">Set Your Watch Times</div>
-      <div class="step-sub">When should the app remind you each day?</div>
+      <div class="step-sub">When should the app open each day?</div>
       <div class="watch-block">
         <div class="watch-block-title">🌅 Morning Watch</div>
         <div class="time-row">
-          <input type="time" id="obMStart" value="03:00">
-          <span>to</span>
+          <input type="time" id="obMStart" value="03:00"><span>to</span>
           <input type="time" id="obMEnd" value="09:00">
         </div>
       </div>
       <div class="watch-block">
         <div class="watch-block-title">🌙 Evening Watch</div>
         <div class="time-row">
-          <input type="time" id="obEStart" value="18:00">
-          <span>to</span>
+          <input type="time" id="obEStart" value="18:00"><span>to</span>
           <input type="time" id="obEEnd" value="22:29">
         </div>
       </div>
@@ -175,7 +285,7 @@
       <div class="step-title">Choose Your Books</div>
       <div class="step-sub">Pick what to read during each watch.</div>
       <div class="field"><label>Morning Watch Book</label><div id="obMorningBooks"></div></div>
-      <div class="field"><label>Evening Watch Book</label><div id="obEveningBooks"></div></div>
+      <div class="field" style="margin-top:4px;"><label>Evening Watch Book</label><div id="obEveningBooks"></div></div>
       <button class="btn-primary" id="obBtnNext2" onclick="obGo(3)" disabled>Next →</button>
       <div class="btn-back-link" onclick="obGo(1)">← Back</div>
     </div>
@@ -185,77 +295,172 @@
       <div class="step-sub">Review your setup below.</div>
       <div class="summary-box" id="obSummary"></div>
       <div class="notif-card">
-        <div style="font-size:28px;margin-bottom:8px;">🔔</div>
-        <div style="font-size:14px;color:#fff;margin-bottom:6px;">Enable Watch Reminders</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:14px;">Get notified when your watch window starts</div>
+        <div style="font-size:26px;margin-bottom:6px;">🔔</div>
+        <div style="font-size:14px;color:#fff;margin-bottom:4px;">Enable Watch Reminders</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:12px;">Get notified when your watch window starts</div>
         <button class="notify-btn" onclick="requestNotifPermission()">Enable Notifications</button>
-        <div id="notifStatus" style="font-size:12px;color:#6ee89a;margin-top:8px;"></div>
+        <div id="notifStatus" style="font-size:12px;color:#6ee89a;margin-top:6px;"></div>
       </div>
       <button class="btn-primary" onclick="finishOnboarding()">Begin My First Watch →</button>
       <div class="btn-back-link" onclick="obGo(2)">← Back</div>
     </div>
   </div>
 
-  <!-- HOME SCREEN -->
-  <div id="homeScreen" style="display:none;flex-direction:column;align-items:center;width:100%;max-width:500px;">
+  <!-- ═══ HOME ═══ -->
+  <div id="homeScreen" class="screen">
     <div class="greeting" id="greetingEl">Good Morning</div>
     <div class="hero-title" id="heroTitle">Morning Watch</div>
     <div class="hero-sub" id="heroSub">03:00 – 09:00 · Today's reading</div>
-    <div id="bookCards"></div>
-    <button class="btn-primary" id="startBtn" onclick="beginStudy()">Begin Study →</button>
+    <div id="bookCards" style="width:100%;max-width:520px;"></div>
+    <button class="btn-primary" onclick="beginStudy()">Begin Study →</button>
   </div>
 
-  <!-- STUDY SCREEN -->
-  <div id="studyScreen" style="display:none;flex-direction:column;align-items:center;width:100%;max-width:500px;">
-    <div class="greeting" id="studyGreeting">Today's Reading</div>
-    <div class="hero-title" id="studyBookTitle" style="margin-bottom:4px;"></div>
-    <div class="hero-sub" id="studyMeta"></div>
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="studyProgress" style="width:0%"></div></div>
+  <!-- ═══ STUDY ═══ -->
+  <div id="studyScreen" class="screen">
+    <div class="study-header">
+      <div>
+        <div class="study-book-title" id="studyBookTitle"></div>
+        <div class="study-meta" id="studyMeta"></div>
+      </div>
+      <button class="tb-btn" onclick="showHome()" style="font-size:13px;">← Home</button>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="studyProgress" style="width:0%"></div>
+    </div>
+
+    <!-- Pinned chapter tabs -->
+    <div class="pinned-tabs" id="pinnedTabs"></div>
+
+    <!-- Toolbar -->
+    <div class="study-toolbar">
+      <button class="tool-btn" id="btnNote" onclick="toggleNotes()">📝 Notes</button>
+      <button class="tool-btn" id="btnHL" onclick="toggleHL()">🖊 Highlight</button>
+      <button class="tool-btn" id="fzS" onclick="setFontSize('small')">A</button>
+      <button class="tool-btn" id="fzM" onclick="setFontSize('medium')" style="font-size:14px;">A</button>
+      <button class="tool-btn" id="fzL" onclick="setFontSize('large')" style="font-size:18px;">A</button>
+    </div>
+
+    <!-- Notes panel -->
+    <div class="notes-panel" id="notesPanel">
+      <h4>📝 My Notes</h4>
+      <textarea class="note-textarea" id="noteText" placeholder="Write your reflections or prayers here..."></textarea>
+      <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
+        <button class="note-save" onclick="saveNote()">Save Note</button>
+        <span id="noteSaved" style="font-size:12px;color:#6ee89a;display:none;">✓ Saved</span>
+      </div>
+      <div id="notesList" style="margin-top:12px;"></div>
+    </div>
+
+    <!-- Chapter content -->
     <div class="chapter-card">
       <div class="chapter-title" id="chapterTitle"></div>
       <div class="chapter-text" id="chapterText">Loading...</div>
     </div>
+
     <div class="chapter-nav">
-      <button onclick="prevChapter()">← Prev</button>
-      <button class="primary" onclick="markReadAndNext()">✓ Done → Next</button>
+      <button id="prevBtn" onclick="prevChapter()">← Prev</button>
+      <button class="primary" id="nextBtn" onclick="nextChapter()">Next →</button>
     </div>
-    <button class="btn-secondary" style="margin-top:12px;" onclick="showHome()">← Back to Books</button>
+    <button class="btn-secondary" style="margin-top:10px;" onclick="showHome()">← Back to Books</button>
+  </div>
+
+  <!-- ═══ COMPLETE ═══ -->
+  <div id="completeScreen" class="screen">
+    <div class="trophy" id="trophyEl">🏆</div>
+    <div class="congrats-label">Well Done, Faithful One</div>
+    <div class="big-title" id="completeTitle">Watch Complete!</div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.6);font-style:italic;text-align:center;margin-bottom:18px;" id="completeSub"></p>
+    <div class="verse-card">
+      <div class="verse-text" id="verseText"></div>
+      <div class="verse-ref" id="verseRef"></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="statChapters">0</div><div class="stat-label">Chapters</div></div>
+      <div class="stat-card"><div class="stat-num" id="statStreak">0</div><div class="stat-label">Day Streak</div></div>
+      <div class="stat-card"><div class="stat-num" id="statNotes">0</div><div class="stat-label">Notes</div></div>
+      <div class="stat-card"><div class="stat-num" id="statProgress">—</div><div class="stat-label">Progress</div></div>
+    </div>
+    <button class="btn-primary" onclick="showHome()">← Return to Home</button>
   </div>
 
 </div>
 
-<!-- Settings -->
+<!-- Highlight toolbar -->
+<div class="sel-toolbar" id="selToolbar">
+  <button class="hl-btn yellow" onclick="applyHL('yellow')"></button>
+  <button class="hl-btn green"  onclick="applyHL('green')"></button>
+  <button class="hl-btn pink"   onclick="applyHL('pink')"></button>
+  <button class="hl-note-btn"   onclick="noteFromSel()">+ Note</button>
+</div>
+
+<!-- Next book overlay -->
+<div class="overlay" id="nextBookOverlay">
+  <div class="overlay-box">
+    <div style="font-size:40px;text-align:center;margin-bottom:8px;">🎉</div>
+    <h3 style="text-align:center;">Book Completed!</h3>
+    <p id="nextBookMsg" style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px;text-align:center;"></p>
+    <div id="nextBookGrid"></div>
+    <button class="btn-primary" id="btnConfirmNext" onclick="confirmNextBook()" disabled>Set as Next Book →</button>
+    <button class="btn-secondary" onclick="document.getElementById('nextBookOverlay').classList.remove('open');showHome();">Skip for now</button>
+  </div>
+</div>
+
+<!-- Settings overlay -->
 <div class="settings-overlay" id="settingsOverlay">
   <div class="settings-box">
     <h2>⚙ Settings</h2>
-    <div class="setting-group">
-      <label>Your Name</label>
-      <input type="text" id="setName">
+
+    <div class="setting-section">
+      <div class="setting-section-title">Profile</div>
+      <div class="field"><label>Your Name</label>
+        <input type="text" id="setName" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;padding:9px 12px;color:#fff;font-size:14px;width:100%;"></div>
     </div>
-    <div class="setting-group">
-      <label>Morning Watch</label>
-      <div class="time-row" style="margin-bottom:8px;">
-        <input type="time" id="setMStart"> <span style="color:#fff;">to</span> <input type="time" id="setMEnd">
+
+    <div class="setting-section">
+      <div class="setting-section-title">🌅 Morning Watch</div>
+      <div class="setting-row"><label>Start</label><input type="time" id="setMStart"></div>
+      <div class="setting-row"><label>End</label><input type="time" id="setMEnd"></div>
+      <div class="field" style="margin-top:6px;"><label>Book</label>
+        <select id="setMBook" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:8px 10px;color:#fff;font-size:13px;width:100%;"></select></div>
+      <div style="margin-top:6px;">
+        <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">Ringtone</div>
+        <div class="ringtone-row">
+          <span class="ringtone-name" id="mRingName">None</span>
+          <button class="ringtone-btn" onclick="pickRingtone('morning')">Choose</button>
+          <button class="ringtone-btn" onclick="playRingtone('morning')" style="padding:6px 10px;">▶</button>
+          <button class="ringtone-btn" onclick="stopRingtone()" style="padding:6px 10px;">■</button>
+        </div>
       </div>
-      <label>Morning Book</label>
-      <select id="setMBook"></select>
     </div>
-    <div class="setting-group">
-      <label>Evening Watch</label>
-      <div class="time-row" style="margin-bottom:8px;">
-        <input type="time" id="setEStart"> <span style="color:#fff;">to</span> <input type="time" id="setEEnd">
+
+    <div class="setting-section">
+      <div class="setting-section-title">🌙 Evening Watch</div>
+      <div class="setting-row"><label>Start</label><input type="time" id="setEStart"></div>
+      <div class="setting-row"><label>End</label><input type="time" id="setEEnd"></div>
+      <div class="field" style="margin-top:6px;"><label>Book</label>
+        <select id="setEBook" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:8px 10px;color:#fff;font-size:13px;width:100%;"></select></div>
+      <div style="margin-top:6px;">
+        <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">Ringtone</div>
+        <div class="ringtone-row">
+          <span class="ringtone-name" id="eRingName">None</span>
+          <button class="ringtone-btn" onclick="pickRingtone('evening')">Choose</button>
+          <button class="ringtone-btn" onclick="playRingtone('evening')" style="padding:6px 10px;">▶</button>
+          <button class="ringtone-btn" onclick="stopRingtone()" style="padding:6px 10px;">■</button>
+        </div>
       </div>
-      <label>Evening Book</label>
-      <select id="setEBook"></select>
     </div>
-    <div class="setting-group">
-      <label>Theme</label>
+
+    <div class="setting-section">
+      <div class="setting-section-title">Theme</div>
       <div class="theme-grid" id="themeGrid"></div>
     </div>
-    <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+
+    <button class="btn-primary" onclick="doSaveSettings()">Save Settings</button>
     <button class="btn-secondary" onclick="closeSettings()">Cancel</button>
   </div>
 </div>
+
+<audio id="ringAudio" loop></audio>
 
 <script>
 const BOOKS_META = [
@@ -265,7 +470,7 @@ const BOOKS_META = [
   {id:'DA',  title:'The Desire of Ages',      author:'E.G. White', chapters:87},
   {id:'GC',  title:'The Great Controversy',   author:'E.G. White', chapters:42},
   {id:'PK',  title:'Prophets and Kings',      author:'E.G. White', chapters:57},
-  {id:'PDF_EN_CHS', title:'en_ChS',           author:'Custom',     chapters:13},
+  {id:'PDF_EN_CHS', title:'en_ChS', author:'Custom', chapters:13},
 ];
 
 const THEMES = [
@@ -277,23 +482,50 @@ const THEMES = [
   {id:'autumn', grad:'linear-gradient(160deg,#1a0800 0%,#6a2000 35%,#c05000 60%,#e09020 85%,#f0c060 100%)'},
 ];
 
-let settings = {};
-let booksData = {};
-let obMorningBook = null, obEveningBook = null;
-let currentStep = 0;
-let activeBookId = null;
-let activeChapter = 0;
+const VERSES = [
+  {text:'"Your word is a lamp to my feet and a light to my path."', ref:'Psalm 119:105'},
+  {text:'"Be still, and know that I am God."', ref:'Psalm 46:10'},
+  {text:'"I can do all things through Christ who strengthens me."', ref:'Philippians 4:13'},
+  {text:'"The LORD is my shepherd; I shall not want."', ref:'Psalm 23:1'},
+  {text:'"Trust in the LORD with all your heart."', ref:'Proverbs 3:5'},
+  {text:'"Come to me, all who labor and are heavy laden, and I will give you rest."', ref:'Matthew 11:28'},
+  {text:'"For I know the plans I have for you, declares the LORD."', ref:'Jeremiah 29:11'},
+  {text:'"The steadfast love of the LORD never ceases."', ref:'Lamentations 3:22'},
+];
 
-// Storage
-function saveSettings(s){
-  if(s === undefined){ doSaveSettings(); return; }
-  localStorage.setItem('dh_settings', JSON.stringify(s));
+let settings = {}, booksData = {};
+let obMorningBook = null, obEveningBook = null, obStep = 0;
+let activeBookId = null, pinnedChapters = [], activePinnedIdx = 0;
+let hlMode = false, notes = {}, fontSize = 'medium';
+let ringFiles = {morning:'', evening:''};
+let selectedNextBook = null;
+
+// ── Storage ──────────────────────────────────────────────────
+const S = {
+  get: k => { try{return JSON.parse(localStorage.getItem(k));}catch{return null;} },
+  set: (k,v) => localStorage.setItem(k, JSON.stringify(v)),
+};
+function loadSettings(){ return S.get('dh_settings') || {}; }
+function saveSettingsObj(s){ S.set('dh_settings', s); }
+function getProgress(bid){ return S.get('dh_prog_'+bid) || {chapter:0, read:[]}; }
+function saveProgress(bid, ch, readArr){
+  const p = getProgress(bid);
+  if(ch !== undefined) p.chapter = ch;
+  if(readArr !== undefined) p.read = readArr;
+  S.set('dh_prog_'+bid, p);
 }
-function loadSettings(){ try{return JSON.parse(localStorage.getItem('dh_settings'))||{};}catch{return{};} }
-function getProgress(bookId){ try{return JSON.parse(localStorage.getItem('dh_prog_'+bookId))||{chapter:0};}catch{return{chapter:0};} }
-function saveProgress(bookId,chapter){ localStorage.setItem('dh_prog_'+bookId, JSON.stringify({chapter})); }
+function getNotes(bid){ return S.get('dh_notes_'+bid) || {}; }
+function saveNoteStore(bid, n){ S.set('dh_notes_'+bid, n); }
+function getHighlights(bid){ return S.get('dh_hl_'+bid) || {}; }
+function saveHighlights(bid, h){ S.set('dh_hl_'+bid, h); }
 
-// Session
+// ── Themes ───────────────────────────────────────────────────
+function applyTheme(id){
+  const t = THEMES.find(x=>x.id===id)||THEMES[0];
+  document.body.style.background = t.grad;
+}
+
+// ── Session ──────────────────────────────────────────────────
 function getSession(watches){
   const now=new Date(), cur=now.getHours()*60+now.getMinutes();
   const toMin=t=>{const[h,m]=t.split(':').map(Number);return h*60+m;};
@@ -301,39 +533,43 @@ function getSession(watches){
   return watches[0];
 }
 
-// Theme
-function applyTheme(id){
-  const t=THEMES.find(x=>x.id===id)||THEMES[0];
-  document.body.style.background=t.grad;
+// ── Pinned chapters (2 per session, rotating daily) ──────────
+function getPinnedChapters(bookId, totalChapters){
+  const key = 'dh_pinned_'+bookId;
+  const today = new Date().toDateString();
+  let stored = S.get(key);
+  if(stored && stored.date === today) return stored.pins;
+  // Advance from last pins
+  const last = (stored && stored.pins) ? stored.pins : [totalChapters-2, totalChapters-1];
+  const next0 = (last[last.length-1] + 1) % totalChapters;
+  const next1 = (next0 + 1) % totalChapters;
+  const pins = [next0, next1];
+  S.set(key, {date: today, pins});
+  return pins;
 }
 
-// Init
+// ── Init ─────────────────────────────────────────────────────
 async function init(){
-  settings=loadSettings();
+  settings = loadSettings();
   applyTheme(settings.theme||'forest');
-  // Load books data
-  try{
-    const r=await fetch('./books.json');
-    booksData=await r.json();
-  }catch(e){ booksData={}; }
+  ringFiles = settings.ringtones || {morning:'', evening:''};
+  try{ const r=await fetch('./books.json'); booksData=await r.json(); }catch{ booksData={}; }
   if(!settings.setupComplete) showOnboarding();
-  else{ showHome(); scheduleNotifications(); }
+  else { showHome(); scheduleNotifications(); }
 }
 
-// Onboarding
+// ── Onboarding ───────────────────────────────────────────────
 function showOnboarding(){
-  document.getElementById('sessionBadge').textContent='First-time Setup';
-  document.getElementById('onboarding').style.display='flex';
-  document.getElementById('homeScreen').style.display='none';
-  document.getElementById('studyScreen').style.display='none';
+  document.getElementById('sessionBadge').textContent = 'First-time Setup';
+  document.getElementById('onboarding').style.display = 'flex';
+  ['homeScreen','studyScreen','completeScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
   buildObBooks();
 }
-
 function obGo(n){
-  document.getElementById('obStep'+currentStep).classList.remove('active');
-  document.getElementById('dot'+currentStep).classList.remove('active');
-  document.getElementById('dot'+currentStep).classList.add('done');
-  currentStep=n;
+  document.getElementById('obStep'+obStep).classList.remove('active');
+  document.getElementById('dot'+obStep).classList.remove('active');
+  document.getElementById('dot'+obStep).classList.add('done');
+  obStep=n;
   document.getElementById('obStep'+n).classList.add('active');
   for(let i=0;i<4;i++){
     document.getElementById('dot'+i).classList.toggle('active',i===n);
@@ -341,15 +577,14 @@ function obGo(n){
   }
   if(n===3) buildObSummary();
 }
-
 function buildObBooks(){
   ['obMorningBooks','obEveningBooks'].forEach((gId,idx)=>{
     const g=document.getElementById(gId); g.innerHTML='';
     BOOKS_META.forEach(bk=>{
       const d=document.createElement('div'); d.className='book-opt';
-      d.innerHTML=`<span style="font-size:22px;">📖</span>
+      d.innerHTML=`<span style="font-size:20px;">📖</span>
         <div><div style="font-size:14px;color:#fff;">${bk.title}</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);">${bk.author} · ${bk.chapters} chapters</div></div>`;
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);">${bk.author} · ${bk.chapters} ch</div></div>`;
       d.onclick=()=>{
         g.querySelectorAll('.book-opt').forEach(o=>o.classList.remove('selected'));
         d.classList.add('selected');
@@ -360,45 +595,47 @@ function buildObBooks(){
     });
   });
 }
-
 function buildObSummary(){
-  const name=document.getElementById('obName').value||'Friend';
+  const n=document.getElementById('obName').value||'Friend';
   const mS=document.getElementById('obMStart').value, mE=document.getElementById('obMEnd').value;
   const eS=document.getElementById('obEStart').value, eE=document.getElementById('obEEnd').value;
   const mB=BOOKS_META.find(b=>b.id===obMorningBook), eB=BOOKS_META.find(b=>b.id===obEveningBook);
   document.getElementById('obSummary').innerHTML=`
-    <div class="summary-row"><span class="s-label">Name</span><span class="s-val">${name}</span></div>
-    <div class="summary-row"><span class="s-label">Morning Watch</span><span class="s-val">${mS} – ${mE}</span></div>
+    <div class="summary-row"><span class="s-label">Name</span><span class="s-val">${n}</span></div>
+    <div class="summary-row"><span class="s-label">Morning</span><span class="s-val">${mS} – ${mE}</span></div>
     <div class="summary-row"><span class="s-label">Morning Book</span><span class="s-val">${mB?mB.title:'—'}</span></div>
-    <div class="summary-row"><span class="s-label">Evening Watch</span><span class="s-val">${eS} – ${eE}</span></div>
+    <div class="summary-row"><span class="s-label">Evening</span><span class="s-val">${eS} – ${eE}</span></div>
     <div class="summary-row"><span class="s-label">Evening Book</span><span class="s-val">${eB?eB.title:'—'}</span></div>`;
 }
-
 async function requestNotifPermission(){
   if(!('Notification' in window)){document.getElementById('notifStatus').textContent='Not supported';return;}
   const p=await Notification.requestPermission();
   document.getElementById('notifStatus').textContent=p==='granted'?'✅ Enabled!':'⚠️ Denied';
 }
-
 function finishOnboarding(){
   settings={
     userName:document.getElementById('obName').value||'Friend',
     theme:'forest', setupComplete:true,
+    ringtones:{morning:'',evening:''},
     watches:[
       {id:'morning',label:'Morning Watch',start:document.getElementById('obMStart').value,end:document.getElementById('obMEnd').value,book:obMorningBook||'PP'},
       {id:'evening',label:'Evening Watch',start:document.getElementById('obEStart').value,end:document.getElementById('obEEnd').value,book:obEveningBook||'STC'},
     ]
   };
-  localStorage.setItem('dh_settings',JSON.stringify(settings));
+  saveSettingsObj(settings);
   scheduleNotifications(); showHome();
 }
 
-// Home
-let selectedBook=null;
+// ── Home ─────────────────────────────────────────────────────
+let selectedBook = null;
 function showHome(){
   document.getElementById('onboarding').style.display='none';
-  document.getElementById('studyScreen').style.display='none';
-  document.getElementById('homeScreen').style.display='flex';
+  document.getElementById('studyScreen').classList.remove('active');
+  document.getElementById('completeScreen').classList.remove('active');
+  document.getElementById('homeScreen').classList.add('active');
+  stopRingtone();
+  settings=loadSettings();
+  applyTheme(settings.theme||'forest');
   const watches=settings.watches||[{id:'morning',label:'Morning Watch',start:'03:00',end:'09:00',book:'PP'}];
   const cur=getSession(watches);
   const isEv=cur.id==='evening';
@@ -407,8 +644,11 @@ function showHome(){
   document.getElementById('heroSub').textContent=(cur.start||'')+' – '+(cur.end||'')+' · Today\'s reading';
   document.getElementById('sessionBadge').textContent=isEv?'🌙 Evening Watch':'🌅 Morning Watch';
   buildBookCards(cur);
+  if(cur.ringtone || (settings.ringtones&&settings.ringtones[cur.id])){
+    const rf=settings.ringtones&&settings.ringtones[cur.id]?settings.ringtones[cur.id]:cur.ringtone;
+    if(rf) playRingtoneURL(rf);
+  }
 }
-
 function buildBookCards(curWatch){
   const container=document.getElementById('bookCards'); container.innerHTML='';
   const current=curWatch.book||'PP';
@@ -417,10 +657,11 @@ function buildBookCards(curWatch){
     const pct=Math.round((prog.chapter/bk.chapters)*100);
     const div=document.createElement('div');
     div.className='book-card'+(bk.id===current?' active':'');
-    div.innerHTML=`<div class="book-icon">${i===0?'📖':'📘'}</div>
+    div.innerHTML=`<div style="font-size:24px;">${i===0?'📖':'📘'}</div>
       <div style="flex:1;">
         <div class="book-name">${bk.title}</div>
         <div class="book-meta">${bk.author} · Ch ${prog.chapter+1}/${bk.chapters} · ${pct}% read</div>
+        <div class="prog-mini"><div class="prog-mini-fill" style="width:${pct}%"></div></div>
       </div>`;
     div.onclick=()=>{
       document.querySelectorAll('.book-card').forEach(c=>c.classList.remove('active'));
@@ -430,87 +671,314 @@ function buildBookCards(curWatch){
     if(bk.id===current) selectedBook=bk.id;
   });
 }
-
 function beginStudy(){
   const bookId=selectedBook||'PP';
-  const prog=getProgress(bookId);
-  showStudy(bookId, prog.chapter||0);
+  activeBookId=bookId;
+  const bk=BOOKS_META.find(b=>b.id===bookId)||BOOKS_META[0];
+  pinnedChapters=getPinnedChapters(bookId, bk.chapters);
+  activePinnedIdx=0;
+  notes=getNotes(bookId);
+  showStudy();
 }
 
-// Study
-function showStudy(bookId, chapterIdx){
-  activeBookId=bookId; activeChapter=chapterIdx;
-  document.getElementById('homeScreen').style.display='none';
-  document.getElementById('studyScreen').style.display='flex';
-  const bk=BOOKS_META.find(b=>b.id===bookId)||BOOKS_META[0];
-  const pct=Math.round((chapterIdx/bk.chapters)*100);
-  document.getElementById('studyBookTitle').textContent=bk.title;
-  document.getElementById('studyMeta').textContent='Chapter '+(chapterIdx+1)+' of '+bk.chapters;
-  document.getElementById('studyProgress').style.width=pct+'%';
+// ── Study ─────────────────────────────────────────────────────
+function showStudy(){
+  document.getElementById('homeScreen').classList.remove('active');
+  document.getElementById('completeScreen').classList.remove('active');
+  document.getElementById('studyScreen').classList.add('active');
+  document.getElementById('onboarding').style.display='none';
+  renderStudy();
+}
 
-  // Get chapter data from books.json
-  const bookData=booksData[bookId];
-  let title='Chapter '+(chapterIdx+1);
+function renderStudy(){
+  const bk=BOOKS_META.find(b=>b.id===activeBookId)||BOOKS_META[0];
+  const chIdx=pinnedChapters[activePinnedIdx];
+  const pct=Math.round(((chIdx+1)/bk.chapters)*100);
+
+  document.getElementById('studyBookTitle').textContent=bk.title;
+  document.getElementById('studyMeta').textContent='Chapter '+(chIdx+1)+' of '+bk.chapters;
+  document.getElementById('studyProgress').style.width=pct+'%';
+  document.getElementById('sessionBadge').textContent='📖 Study';
+
+  // Build pinned tabs
+  const tabsEl=document.getElementById('pinnedTabs'); tabsEl.innerHTML='';
+  pinnedChapters.forEach((ci,ti)=>{
+    const btn=document.createElement('button');
+    btn.className='pinned-tab'+(ti===activePinnedIdx?' active':'');
+    const chData=booksData[activeBookId]&&booksData[activeBookId].chapters&&booksData[activeBookId].chapters[ci];
+    btn.textContent='Ch '+(ci+1)+(chData&&chData.title?' – '+chData.title.substring(0,20):'');
+    btn.style.fontSize='11px';
+    btn.onclick=()=>{ activePinnedIdx=ti; renderStudy(); };
+    tabsEl.appendChild(btn);
+  });
+
+  // Load chapter text
+  const bookData=booksData[activeBookId];
+  let title='Chapter '+(chIdx+1);
   let text='';
-  if(bookData && bookData.chapters && bookData.chapters[chapterIdx]){
-    const ch=bookData.chapters[chapterIdx];
+  if(bookData&&bookData.chapters&&bookData.chapters[chIdx]){
+    const ch=bookData.chapters[chIdx];
     title=ch.title||title;
     text=ch.text||'';
   }
-
   document.getElementById('chapterTitle').textContent=title;
 
-  // Format text into paragraphs
+  const fzMap={small:'13px',medium:'15px',large:'19px'};
+  const lhMap={small:'1.8',medium:'1.9',large:'2.0'};
+  const fz=fzMap[fontSize]||'15px', lh=lhMap[fontSize]||'1.9';
+
   if(text){
     const paras=text.split(/\n\n+/).filter(p=>p.trim());
     document.getElementById('chapterText').innerHTML=
-      paras.map(p=>`<p>${p.trim().replace(/\n/g,' ')}</p>`).join('');
+      paras.map(p=>`<p style="font-size:${fz};line-height:${lh};">${p.trim().replace(/\n/g,' ')}</p>`).join('');
   } else {
     document.getElementById('chapterText').innerHTML=
-      '<p style="color:rgba(255,255,255,0.5);font-style:italic;">Chapter text not available for this book.</p>';
+      `<p style="color:rgba(255,255,255,0.5);font-style:italic;">Chapter text not available.</p>`;
   }
 
-  // Scroll to top
+  // Restore highlights
+  const hls=getHighlights(activeBookId);
+  // (Highlights are stored per chapter index; visual restore would require re-applying spans)
+
+  // Load note for this chapter
+  document.getElementById('noteText').value=notes[chIdx]||'';
+  renderNotesList();
+
+  // Update nav buttons
+  document.getElementById('prevBtn').disabled=activePinnedIdx===0;
+  const isLast=activePinnedIdx>=pinnedChapters.length-1;
+  const nb=document.getElementById('nextBtn');
+  nb.textContent=isLast?'Complete ✓':'Next →';
+  nb.className=isLast?'primary':'';
+
+  // Font size active state
+  ['S','M','L'].forEach(k=>document.getElementById('fz'+k).classList.remove('active'));
+  const fzMap2={small:'S',medium:'M',large:'L'};
+  const fb=document.getElementById('fz'+(fzMap2[fontSize]||'M'));
+  if(fb) fb.classList.add('active');
+
   document.querySelector('.main').scrollTop=0;
-  saveProgress(bookId, chapterIdx);
 }
 
 function prevChapter(){
-  if(activeChapter>0) showStudy(activeBookId, activeChapter-1);
+  if(activePinnedIdx>0){ activePinnedIdx--; renderStudy(); }
 }
 
-function markReadAndNext(){
-  const bk=BOOKS_META.find(b=>b.id===activeBookId);
-  const total=bk?bk.chapters:13;
-  const next=(activeChapter+1)%total;
-  saveProgress(activeBookId, next);
-  if(activeChapter+1 >= total){
-    document.getElementById('chapterText').innerHTML=
-      '<p style="text-align:center;padding:20px;">🎉 You\'ve completed this book!<br><span style="color:rgba(255,255,255,0.5);font-size:13px;">Starting from Chapter 1 again</span></p>';
-    setTimeout(()=>showHome(),2000);
+function nextChapter(){
+  saveNote();
+  if(activePinnedIdx<pinnedChapters.length-1){
+    activePinnedIdx++; renderStudy();
   } else {
-    showStudy(activeBookId, next);
+    // Mark both pinned chapters as read
+    const prog=getProgress(activeBookId);
+    const readArr=prog.read||[];
+    pinnedChapters.forEach(ci=>{ if(!readArr.includes(ci)) readArr.push(ci); });
+    const bk=BOOKS_META.find(b=>b.id===activeBookId)||BOOKS_META[0];
+    const nextCh=(pinnedChapters[pinnedChapters.length-1]+1)%bk.chapters;
+    saveProgress(activeBookId, nextCh, readArr);
+    showComplete();
   }
 }
 
-// Settings
+// ── Notes ─────────────────────────────────────────────────────
+function toggleNotes(){
+  const p=document.getElementById('notesPanel');
+  p.classList.toggle('open');
+  document.getElementById('btnNote').classList.toggle('active',p.classList.contains('open'));
+}
+function saveNote(){
+  const txt=document.getElementById('noteText').value.trim();
+  const chIdx=pinnedChapters[activePinnedIdx];
+  if(txt){ notes[chIdx]=txt; saveNoteStore(activeBookId,notes); }
+  const s=document.getElementById('noteSaved');
+  s.style.display='inline'; setTimeout(()=>s.style.display='none',1500);
+  renderNotesList();
+}
+function renderNotesList(){
+  const el=document.getElementById('notesList'); el.innerHTML='';
+  const keys=Object.keys(notes);
+  if(!keys.length){ el.innerHTML='<p style="font-size:12px;color:rgba(255,255,255,0.4);">No notes yet.</p>'; return; }
+  keys.forEach(k=>{
+    const d=document.createElement('div'); d.className='note-item';
+    d.innerHTML=`<b style="font-size:11px;color:#6ee89a;">Chapter ${parseInt(k)+1}</b><br>${notes[k].substring(0,80)}${notes[k].length>80?'...':''}`;
+    d.onclick=()=>{
+      const ti=pinnedChapters.indexOf(parseInt(k));
+      if(ti>=0){ activePinnedIdx=ti; renderStudy(); }
+      document.getElementById('noteText').value=notes[k];
+    };
+    el.appendChild(d);
+  });
+}
+
+// ── Highlights ────────────────────────────────────────────────
+function toggleHL(){
+  hlMode=!hlMode;
+  document.getElementById('btnHL').classList.toggle('active',hlMode);
+}
+document.addEventListener('mouseup', e=>{
+  const sel=window.getSelection();
+  if(!sel||sel.isCollapsed){ document.getElementById('selToolbar').classList.remove('show'); return; }
+  if(!document.getElementById('chapterText').contains(sel.anchorNode)) return;
+  const tb=document.getElementById('selToolbar');
+  tb.style.top=(e.clientY-50)+'px';
+  tb.style.left=Math.min(e.clientX, window.innerWidth-160)+'px';
+  tb.classList.add('show');
+});
+document.addEventListener('touchend', e=>{
+  const sel=window.getSelection();
+  if(!sel||sel.isCollapsed){ document.getElementById('selToolbar').classList.remove('show'); return; }
+  if(!document.getElementById('chapterText').contains(sel.anchorNode)) return;
+  const t=e.changedTouches[0];
+  const tb=document.getElementById('selToolbar');
+  tb.style.top=Math.max(50,(t.clientY-60))+'px';
+  tb.style.left=Math.min(t.clientX, window.innerWidth-160)+'px';
+  tb.classList.add('show');
+});
+function applyHL(color){
+  const sel=window.getSelection();
+  if(!sel||sel.isCollapsed) return;
+  try{
+    const range=sel.getRangeAt(0);
+    const span=document.createElement('span');
+    span.className='highlight-'+color;
+    range.surroundContents(span);
+    sel.removeAllRanges();
+  }catch(e){}
+  document.getElementById('selToolbar').classList.remove('show');
+}
+function noteFromSel(){
+  const sel=window.getSelection();
+  if(!sel) return;
+  const txt=sel.toString().trim();
+  if(txt){
+    const cur=document.getElementById('noteText').value;
+    document.getElementById('noteText').value=cur+(cur?'\n\n':'')+'"'+txt+'"\n';
+    if(!document.getElementById('notesPanel').classList.contains('open')) toggleNotes();
+  }
+  document.getElementById('selToolbar').classList.remove('show');
+}
+
+// ── Font size ─────────────────────────────────────────────────
+function setFontSize(size){
+  fontSize=size;
+  const fzMap={small:'13px',medium:'15px',large:'19px'};
+  const lhMap={small:'1.8',medium:'1.9',large:'2.0'};
+  document.querySelectorAll('#chapterText p').forEach(p=>{
+    p.style.fontSize=fzMap[size]; p.style.lineHeight=lhMap[size];
+  });
+  ['S','M','L'].forEach(k=>document.getElementById('fz'+k).classList.remove('active'));
+  const map={small:'S',medium:'M',large:'L'};
+  document.getElementById('fz'+map[size]).classList.add('active');
+  localStorage.setItem('dh_fontsize',size);
+}
+
+// ── Complete ──────────────────────────────────────────────────
+function showComplete(){
+  document.getElementById('studyScreen').classList.remove('active');
+  document.getElementById('homeScreen').classList.remove('active');
+  document.getElementById('completeScreen').classList.add('active');
+
+  const watches=settings.watches||[];
+  const cur=getSession(watches);
+  const isEv=cur.id==='evening';
+  document.getElementById('sessionBadge').textContent=isEv?'🌙 Evening Watch':'🌅 Morning Watch';
+  document.getElementById('completeTitle').textContent=isEv?'Evening Watch Complete!':'Morning Watch Complete!';
+  document.getElementById('completeSub').textContent=isEv
+    ?'You have completed your evening devotional. Rest in God\'s peace tonight.'
+    :'You have completed your morning devotional. May God\'s Word guide your steps today.';
+
+  // Verse
+  const v=VERSES[Math.floor(Math.random()*VERSES.length)];
+  document.getElementById('verseText').textContent=v.text;
+  document.getElementById('verseRef').textContent=v.ref;
+
+  // Streak
+  const today=new Date().toDateString();
+  let streak=parseInt(localStorage.getItem('dh_streak')||'0');
+  const last=localStorage.getItem('dh_last_watch');
+  if(last!==today){
+    const yesterday=new Date(); yesterday.setDate(yesterday.getDate()-1);
+    streak=(last===yesterday.toDateString())?streak+1:1;
+    localStorage.setItem('dh_streak',streak);
+    localStorage.setItem('dh_last_watch',today);
+  }
+  document.getElementById('statStreak').textContent=streak;
+
+  // Notes count
+  const n=Object.keys(getNotes(activeBookId)).length;
+  document.getElementById('statNotes').textContent=n;
+
+  // Chapters today
+  const chKey='dh_ch_'+today;
+  const chCount=(S.get(chKey)||0)+pinnedChapters.length;
+  S.set(chKey,chCount);
+  document.getElementById('statChapters').textContent=chCount;
+
+  // Book progress
+  const bk=BOOKS_META.find(b=>b.id===activeBookId)||BOOKS_META[0];
+  const prog=getProgress(activeBookId);
+  const readCount=(prog.read||[]).length;
+  const pct=Math.round((readCount/bk.chapters)*100);
+  document.getElementById('statProgress').textContent=pct+'%';
+
+  // Book done?
+  if(pct>=100) showNextBookModal();
+}
+
+function showNextBookModal(){
+  document.getElementById('trophyEl').textContent='🎉';
+  const bk=BOOKS_META.find(b=>b.id===activeBookId);
+  document.getElementById('nextBookMsg').textContent=(bk?'"'+bk.title+'"':'')+' is complete! Choose your next book:';
+  const grid=document.getElementById('nextBookGrid'); grid.innerHTML='';
+  BOOKS_META.filter(b=>b.id!==activeBookId).forEach(bk2=>{
+    const d=document.createElement('div'); d.className='next-book-opt';
+    d.innerHTML=`<span style="font-size:20px;">📘</span>
+      <div><div style="font-size:14px;color:#fff;">${bk2.title}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);">${bk2.author} · ${bk2.chapters} ch</div></div>`;
+    d.onclick=()=>{
+      grid.querySelectorAll('.next-book-opt').forEach(o=>o.classList.remove('selected'));
+      d.classList.add('selected'); selectedNextBook=bk2.id;
+      document.getElementById('btnConfirmNext').disabled=false;
+    };
+    grid.appendChild(d);
+  });
+  document.getElementById('nextBookOverlay').classList.add('open');
+}
+
+function confirmNextBook(){
+  if(!selectedNextBook) return;
+  const watches=settings.watches||[];
+  const cur=getSession(watches);
+  const w=watches.find(x=>x.id===cur.id);
+  if(w) w.book=selectedNextBook;
+  saveSettingsObj(settings);
+  document.getElementById('nextBookOverlay').classList.remove('open');
+  document.getElementById('completeSub').textContent='Next book set! See you at your next watch.';
+}
+
+// ── Settings ──────────────────────────────────────────────────
 function openSettings(){
   settings=loadSettings();
   document.getElementById('setName').value=settings.userName||'';
-  const w=settings.watches||[];
-  const m=w.find(x=>x.id==='morning')||{};
-  const e=w.find(x=>x.id==='evening')||{};
+  const watches=settings.watches||[];
+  const m=watches.find(x=>x.id==='morning')||{};
+  const e=watches.find(x=>x.id==='evening')||{};
   document.getElementById('setMStart').value=m.start||'03:00';
   document.getElementById('setMEnd').value=m.end||'09:00';
   document.getElementById('setEStart').value=e.start||'18:00';
   document.getElementById('setEEnd').value=e.end||'22:29';
+  // Ringtone names
+  const rings=settings.ringtones||{morning:'',evening:''};
+  document.getElementById('mRingName').textContent=rings.morning?rings.morning.split('/').pop().split('\\').pop():'None';
+  document.getElementById('eRingName').textContent=rings.evening?rings.evening.split('/').pop().split('\\').pop():'None';
   // Book selects
   ['setMBook','setEBook'].forEach((id,idx)=>{
     const sel=document.getElementById(id); sel.innerHTML='';
+    const curBook=idx===0?m.book:e.book;
     BOOKS_META.forEach(bk=>{
       const opt=document.createElement('option');
       opt.value=bk.id; opt.textContent=bk.title;
-      if((idx===0&&bk.id===m.book)||(idx===1&&bk.id===e.book)) opt.selected=true;
+      if(bk.id===curBook) opt.selected=true;
       sel.appendChild(opt);
     });
   });
@@ -528,26 +996,54 @@ function openSettings(){
   });
   document.getElementById('settingsOverlay').classList.add('open');
 }
-
 function closeSettings(){ document.getElementById('settingsOverlay').classList.remove('open'); }
 
+async function pickRingtone(session){
+  // On mobile use file input
+  const input=document.createElement('input');
+  input.type='file'; input.accept='audio/*';
+  input.onchange=e=>{
+    const file=e.target.files[0]; if(!file) return;
+    const url=URL.createObjectURL(file);
+    if(!settings.ringtones) settings.ringtones={morning:'',evening:''};
+    settings.ringtones[session]=url;
+    const nameEl=document.getElementById(session==='morning'?'mRingName':'eRingName');
+    nameEl.textContent=file.name;
+  };
+  input.click();
+}
+function playRingtone(session){
+  const url=(settings.ringtones&&settings.ringtones[session])||'';
+  if(url) playRingtoneURL(url);
+}
+function playRingtoneURL(url){
+  const a=document.getElementById('ringAudio');
+  a.src=url; a.play().catch(()=>{});
+}
+function stopRingtone(){
+  const a=document.getElementById('ringAudio');
+  a.pause(); a.currentTime=0;
+}
 function doSaveSettings(){
+  if(!settings.ringtones) settings.ringtones={morning:'',evening:''};
   settings.userName=document.getElementById('setName').value||settings.userName;
   const watches=settings.watches||[];
-  const m=watches.find(x=>x.id==='morning')||{id:'morning',label:'Morning Watch'};
-  const e=watches.find(x=>x.id==='evening')||{id:'evening',label:'Evening Watch'};
+  let m=watches.find(x=>x.id==='morning');
+  let e=watches.find(x=>x.id==='evening');
+  if(!m){ m={id:'morning',label:'Morning Watch'}; watches.push(m); }
+  if(!e){ e={id:'evening',label:'Evening Watch'}; watches.push(e); }
   m.start=document.getElementById('setMStart').value;
   m.end=document.getElementById('setMEnd').value;
   m.book=document.getElementById('setMBook').value;
   e.start=document.getElementById('setEStart').value;
   e.end=document.getElementById('setEEnd').value;
   e.book=document.getElementById('setEBook').value;
-  settings.watches=[m,e];
-  localStorage.setItem('dh_settings',JSON.stringify(settings));
+  settings.watches=watches;
+  saveSettingsObj(settings);
   closeSettings(); showHome();
 }
 
-// Notifications
+// ── Notifications ─────────────────────────────────────────────
 function scheduleNotifications(){
   if(!('Notification' in window)||Notification.permission!=='granted') return;
   const watches=settings.watches||[];
@@ -563,8 +1059,30 @@ function scheduleNotifications(){
   });
 }
 
+// Load saved font size
+fontSize=localStorage.getItem('dh_fontsize')||'medium';
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js').then(reg=>{
+    // Check for updates every 60 minutes
+    setInterval(()=>reg.update(), 60*60*1000);
+    // Listen for update message from service worker
+    navigator.serviceWorker.addEventListener('message', e=>{
+      if(e.data&&e.data.type==='SW_UPDATED'){
+        // Show a subtle update banner
+        const banner=document.createElement('div');
+        banner.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);'+
+          'background:rgba(110,232,154,0.95);color:#0a2215;padding:10px 20px;border-radius:20px;'+
+          'font-size:13px;font-weight:bold;z-index:999;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.3);';
+        banner.textContent='✨ Update available — tap to refresh';
+        banner.onclick=()=>window.location.reload();
+        document.body.appendChild(banner);
+        setTimeout(()=>banner.remove(), 8000);
+      }
+    });
+  }).catch(()=>{});
+}
 init();
-if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+
 </script>
 </body>
 </html>

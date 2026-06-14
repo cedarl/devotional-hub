@@ -1,36 +1,56 @@
-const CACHE = 'dh-v1';
+const VERSION = 'dh-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './books.json',
   './icon-192.png',
   './icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap'
 ];
 
+// Install — cache all assets
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS.filter(a => !a.startsWith('https://fonts'))))
+    caches.open(VERSION).then(c => c.addAll(ASSETS))
   );
-  self.skipWaiting();
+  self.skipWaiting(); // activate immediately
 });
 
+// Activate — delete old caches
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      Promise.all(keys.filter(k => k !== VERSION).map(k => caches.delete(k)))
     )
   );
-  self.clients.claim();
+  self.clients.claim(); // take control of all open tabs immediately
 });
 
+// Fetch — network first, fall back to cache
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => caches.match('./index.html')))
+    fetch(e.request)
+      .then(res => {
+        // Cache successful responses
+        if(res && res.status === 200) {
+          const clone = res.clone();
+          caches.open(VERSION).then(c => c.put(e.request, clone));
+        }
+        return res;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
 
-// Daily notification scheduling
+// Tell all open tabs to reload when a new version activates
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    self.clients.matchAll({type:'window'}).then(clients => {
+      clients.forEach(client => client.postMessage({type:'SW_UPDATED', version: VERSION}));
+    })
+  );
+});
+
 self.addEventListener('notificationclick', e => {
   e.notification.close();
   e.waitUntil(clients.openWindow('./index.html'));
