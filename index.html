@@ -27,8 +27,6 @@
       border-radius:20px;padding:4px 14px;color:#fff;}
     .main{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;
       align-items:center;padding:24px 16px 100px;overflow-y:auto;}
-    .screen{display:none;flex-direction:column;align-items:center;width:100%;max-width:500px;}
-    .screen.active{display:flex;}
     .greeting{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:8px;}
     .hero-title{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,34px);color:#fff;margin-bottom:6px;text-align:center;}
     .hero-sub{font-size:13px;color:rgba(255,255,255,0.6);font-style:italic;margin-bottom:28px;text-align:center;}
@@ -48,8 +46,6 @@
     .btn-secondary{width:100%;padding:12px;border-radius:30px;margin-top:10px;
       border:1px solid rgba(255,255,255,0.25);background:transparent;
       color:rgba(255,255,255,0.7);font-size:14px;cursor:pointer;}
-
-    /* Onboarding */
     .step{display:none;flex-direction:column;align-items:center;width:100%;max-width:500px;}
     .step.active{display:flex;}
     .step-icon{font-size:52px;margin-bottom:14px;}
@@ -85,26 +81,38 @@
     .s-label{color:rgba(255,255,255,0.5);}
     .s-val{color:#6ee89a;font-weight:bold;}
     .btn-back-link{margin-top:10px;font-size:13px;color:rgba(255,255,255,0.4);cursor:pointer;text-align:center;}
-
-    /* Study screen */
     .chapter-card{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
-      border-radius:14px;padding:18px;margin-bottom:14px;}
-    .chapter-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:10px;}
-    .chapter-text{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.8;max-height:320px;overflow-y:auto;}
-    .notify-banner{width:100%;background:rgba(110,232,154,0.1);border:1px solid rgba(110,232,154,0.3);
-      border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
-    .notify-banner .nb-text{font-size:13px;color:rgba(255,255,255,0.8);}
-    .notify-btn{padding:8px 16px;border-radius:20px;border:none;cursor:pointer;
-      background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;font-size:12px;font-weight:bold;white-space:nowrap;}
-
-    /* Notification permission */
+      border-radius:14px;padding:20px;margin-bottom:14px;}
+    .chapter-title{font-family:'Playfair Display',serif;font-size:19px;color:#fff;margin-bottom:14px;line-height:1.4;}
+    .chapter-text{font-size:15px;color:rgba(255,255,255,0.88);line-height:1.9;}
+    .chapter-text p{margin-bottom:14px;}
+    .chapter-nav{display:flex;gap:10px;width:100%;margin-top:4px;}
+    .chapter-nav button{flex:1;padding:12px;border-radius:24px;border:1px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.07);color:#fff;font-size:14px;cursor:pointer;}
+    .chapter-nav button.primary{background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;
+      font-weight:bold;border:none;}
+    .progress-bar-wrap{width:100%;background:rgba(255,255,255,0.1);border-radius:6px;height:5px;margin-bottom:20px;}
+    .progress-bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#3ab56e,#6ee89a);transition:width 0.4s;}
     .notif-card{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);
       border-radius:14px;padding:18px;margin-bottom:16px;text-align:center;}
-
-    @media(max-width:400px){
-      .hero-title{font-size:22px;}
-      .main{padding:16px 12px 100px;}
-    }
+    .notify-btn{padding:10px 20px;border-radius:20px;border:none;cursor:pointer;
+      background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;font-size:13px;font-weight:bold;}
+    .settings-overlay{position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.7);z-index:100;display:none;align-items:flex-end;justify-content:center;}
+    .settings-overlay.open{display:flex;}
+    .settings-box{background:#0f1e14;border:1px solid rgba(255,255,255,0.15);border-radius:20px 20px 0 0;
+      padding:24px 20px 40px;width:100%;max-width:500px;max-height:85vh;overflow-y:auto;}
+    .settings-box h2{font-family:'Playfair Display',serif;font-size:20px;color:#fff;margin-bottom:18px;}
+    .setting-group{margin-bottom:16px;}
+    .setting-group label{display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;
+      color:rgba(255,255,255,0.5);margin-bottom:6px;}
+    .setting-group input[type=time],.setting-group select,.setting-group input[type=text]{
+      width:100%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+      border-radius:8px;padding:9px 12px;color:#fff;font-size:14px;}
+    .theme-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+    .theme-swatch{width:40px;height:40px;border-radius:8px;cursor:pointer;border:2px solid transparent;}
+    .theme-swatch.active{border-color:#fff;}
+    @media(max-width:400px){.hero-title{font-size:22px;}.main{padding:16px 12px 100px;}}
   </style>
 </head>
 <body>
@@ -118,20 +126,19 @@
 <div class="titlebar">
   <span class="logo">Devotional Hub</span>
   <span class="session-badge" id="sessionBadge">Loading...</span>
+  <button onclick="openSettings()" style="background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;font-size:20px;">⚙</button>
 </div>
 
 <div class="main" id="mainArea">
 
   <!-- ONBOARDING -->
   <div id="onboarding" style="display:none;flex-direction:column;align-items:center;width:100%;max-width:500px;">
-    <div class="dots" id="obDots">
+    <div class="dots">
       <div class="dot active" id="dot0"></div>
       <div class="dot" id="dot1"></div>
       <div class="dot" id="dot2"></div>
       <div class="dot" id="dot3"></div>
     </div>
-
-    <!-- Step 0: Welcome -->
     <div class="step active" id="obStep0">
       <div class="step-icon">🕊️</div>
       <div class="step-title">Welcome to Devotional Hub</div>
@@ -140,8 +147,6 @@
         <input type="text" id="obName" placeholder="e.g. John" maxlength="40"></div>
       <button class="btn-primary" onclick="obGo(1)">Get Started →</button>
     </div>
-
-    <!-- Step 1: Watch Times -->
     <div class="step" id="obStep1">
       <div class="step-icon">⏰</div>
       <div class="step-title">Set Your Watch Times</div>
@@ -165,8 +170,6 @@
       <button class="btn-primary" onclick="obGo(2)">Next →</button>
       <div class="btn-back-link" onclick="obGo(0)">← Back</div>
     </div>
-
-    <!-- Step 2: Books -->
     <div class="step" id="obStep2">
       <div class="step-icon">📚</div>
       <div class="step-title">Choose Your Books</div>
@@ -176,8 +179,6 @@
       <button class="btn-primary" id="obBtnNext2" onclick="obGo(3)" disabled>Next →</button>
       <div class="btn-back-link" onclick="obGo(1)">← Back</div>
     </div>
-
-    <!-- Step 3: Notifications + Finish -->
     <div class="step" id="obStep3">
       <div class="step-icon">✅</div>
       <div class="step-title">You're All Set!</div>
@@ -207,71 +208,124 @@
   <!-- STUDY SCREEN -->
   <div id="studyScreen" style="display:none;flex-direction:column;align-items:center;width:100%;max-width:500px;">
     <div class="greeting" id="studyGreeting">Today's Reading</div>
-    <div class="hero-title" id="studyTitle">Chapter</div>
+    <div class="hero-title" id="studyBookTitle" style="margin-bottom:4px;"></div>
     <div class="hero-sub" id="studyMeta"></div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="studyProgress" style="width:0%"></div></div>
     <div class="chapter-card">
       <div class="chapter-title" id="chapterTitle"></div>
       <div class="chapter-text" id="chapterText">Loading...</div>
     </div>
-    <button class="btn-primary" onclick="showHome()">← Back to Books</button>
+    <div class="chapter-nav">
+      <button onclick="prevChapter()">← Prev</button>
+      <button class="primary" onclick="markReadAndNext()">✓ Done → Next</button>
+    </div>
+    <button class="btn-secondary" style="margin-top:12px;" onclick="showHome()">← Back to Books</button>
   </div>
 
 </div>
 
+<!-- Settings -->
+<div class="settings-overlay" id="settingsOverlay">
+  <div class="settings-box">
+    <h2>⚙ Settings</h2>
+    <div class="setting-group">
+      <label>Your Name</label>
+      <input type="text" id="setName">
+    </div>
+    <div class="setting-group">
+      <label>Morning Watch</label>
+      <div class="time-row" style="margin-bottom:8px;">
+        <input type="time" id="setMStart"> <span style="color:#fff;">to</span> <input type="time" id="setMEnd">
+      </div>
+      <label>Morning Book</label>
+      <select id="setMBook"></select>
+    </div>
+    <div class="setting-group">
+      <label>Evening Watch</label>
+      <div class="time-row" style="margin-bottom:8px;">
+        <input type="time" id="setEStart"> <span style="color:#fff;">to</span> <input type="time" id="setEEnd">
+      </div>
+      <label>Evening Book</label>
+      <select id="setEBook"></select>
+    </div>
+    <div class="setting-group">
+      <label>Theme</label>
+      <div class="theme-grid" id="themeGrid"></div>
+    </div>
+    <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+    <button class="btn-secondary" onclick="closeSettings()">Cancel</button>
+  </div>
+</div>
+
 <script>
-const BOOKS = [
+const BOOKS_META = [
   {id:'PP',  title:'Patriarchs & Prophets',  author:'E.G. White', chapters:80},
   {id:'STC', title:'Steps to Christ',         author:'E.G. White', chapters:13},
   {id:'COL', title:"Christ's Object Lessons", author:'E.G. White', chapters:31},
   {id:'DA',  title:'The Desire of Ages',      author:'E.G. White', chapters:87},
   {id:'GC',  title:'The Great Controversy',   author:'E.G. White', chapters:42},
   {id:'PK',  title:'Prophets and Kings',      author:'E.G. White', chapters:57},
+  {id:'PDF_EN_CHS', title:'en_ChS',           author:'Custom',     chapters:13},
+];
+
+const THEMES = [
+  {id:'forest', grad:'linear-gradient(160deg,#0a2215 0%,#1a4a2e 40%,#2d6e4a 70%,#3a8a5c 100%)'},
+  {id:'mountain',grad:'linear-gradient(180deg,#0d1d3a 0%,#1e3a6e 35%,#3d6090 60%,#7a9cc0 85%,#b8ccd8 100%)'},
+  {id:'ocean',  grad:'linear-gradient(180deg,#020d1a 0%,#0a3060 40%,#1a6090 65%,#2a90b0 100%)'},
+  {id:'sunset', grad:'linear-gradient(160deg,#1a0505 0%,#6a1010 30%,#c04020 55%,#e08010 80%,#f0c040 100%)'},
+  {id:'starry', grad:'linear-gradient(180deg,#020208 0%,#0a0a20 40%,#101040 70%,#1a1a60 100%)'},
+  {id:'autumn', grad:'linear-gradient(160deg,#1a0800 0%,#6a2000 35%,#c05000 60%,#e09020 85%,#f0c060 100%)'},
 ];
 
 let settings = {};
+let booksData = {};
 let obMorningBook = null, obEveningBook = null;
 let currentStep = 0;
+let activeBookId = null;
+let activeChapter = 0;
 
-// ── Storage helpers ──────────────────────────────────────────
-function saveSettings(s){ localStorage.setItem('dh_settings', JSON.stringify(s)); }
-function loadSettings(){
-  try { return JSON.parse(localStorage.getItem('dh_settings')) || {}; } catch{ return {}; }
+// Storage
+function saveSettings(s){
+  if(s === undefined){ doSaveSettings(); return; }
+  localStorage.setItem('dh_settings', JSON.stringify(s));
 }
-function getProgress(bookId){
-  try { return JSON.parse(localStorage.getItem('dh_prog_'+bookId)) || {chapter:0}; } catch{ return {chapter:0}; }
-}
-function saveProgress(bookId, chapter){
-  localStorage.setItem('dh_prog_'+bookId, JSON.stringify({chapter}));
-}
+function loadSettings(){ try{return JSON.parse(localStorage.getItem('dh_settings'))||{};}catch{return{};} }
+function getProgress(bookId){ try{return JSON.parse(localStorage.getItem('dh_prog_'+bookId))||{chapter:0};}catch{return{chapter:0};} }
+function saveProgress(bookId,chapter){ localStorage.setItem('dh_prog_'+bookId, JSON.stringify({chapter})); }
 
-// ── Session detection ────────────────────────────────────────
+// Session
 function getSession(watches){
-  const now = new Date();
-  const cur = now.getHours()*60 + now.getMinutes();
-  const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60+m; };
-  for(const w of watches){
-    if(cur >= toMin(w.start) && cur < toMin(w.end)) return w;
-  }
+  const now=new Date(), cur=now.getHours()*60+now.getMinutes();
+  const toMin=t=>{const[h,m]=t.split(':').map(Number);return h*60+m;};
+  for(const w of watches) if(cur>=toMin(w.start)&&cur<toMin(w.end)) return w;
   return watches[0];
 }
 
-// ── Init ─────────────────────────────────────────────────────
-function init(){
-  settings = loadSettings();
-  if(!settings.setupComplete){
-    showOnboarding();
-  } else {
-    showHome();
-    scheduleNotifications();
-  }
+// Theme
+function applyTheme(id){
+  const t=THEMES.find(x=>x.id===id)||THEMES[0];
+  document.body.style.background=t.grad;
 }
 
-// ── Onboarding ───────────────────────────────────────────────
+// Init
+async function init(){
+  settings=loadSettings();
+  applyTheme(settings.theme||'forest');
+  // Load books data
+  try{
+    const r=await fetch('./books.json');
+    booksData=await r.json();
+  }catch(e){ booksData={}; }
+  if(!settings.setupComplete) showOnboarding();
+  else{ showHome(); scheduleNotifications(); }
+}
+
+// Onboarding
 function showOnboarding(){
-  document.getElementById('sessionBadge').textContent = 'First-time Setup';
-  document.getElementById('onboarding').style.display = 'flex';
-  document.getElementById('homeScreen').style.display = 'none';
-  document.getElementById('studyScreen').style.display = 'none';
+  document.getElementById('sessionBadge').textContent='First-time Setup';
+  document.getElementById('onboarding').style.display='flex';
+  document.getElementById('homeScreen').style.display='none';
+  document.getElementById('studyScreen').style.display='none';
   buildObBooks();
 }
 
@@ -279,10 +333,10 @@ function obGo(n){
   document.getElementById('obStep'+currentStep).classList.remove('active');
   document.getElementById('dot'+currentStep).classList.remove('active');
   document.getElementById('dot'+currentStep).classList.add('done');
-  currentStep = n;
+  currentStep=n;
   document.getElementById('obStep'+n).classList.add('active');
   for(let i=0;i<4;i++){
-    document.getElementById('dot'+i).classList.toggle('active', i===n);
+    document.getElementById('dot'+i).classList.toggle('active',i===n);
     if(i<n) document.getElementById('dot'+i).classList.add('done');
   }
   if(n===3) buildObSummary();
@@ -290,19 +344,17 @@ function obGo(n){
 
 function buildObBooks(){
   ['obMorningBooks','obEveningBooks'].forEach((gId,idx)=>{
-    const g = document.getElementById(gId);
-    g.innerHTML = '';
-    BOOKS.forEach(bk=>{
-      const d = document.createElement('div');
-      d.className = 'book-opt';
-      d.innerHTML = `<span style="font-size:22px;">📖</span>
+    const g=document.getElementById(gId); g.innerHTML='';
+    BOOKS_META.forEach(bk=>{
+      const d=document.createElement('div'); d.className='book-opt';
+      d.innerHTML=`<span style="font-size:22px;">📖</span>
         <div><div style="font-size:14px;color:#fff;">${bk.title}</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);">${bk.author} · ${bk.chapters} chapters</div></div>`;
-      d.onclick = ()=>{
+      d.onclick=()=>{
         g.querySelectorAll('.book-opt').forEach(o=>o.classList.remove('selected'));
         d.classList.add('selected');
         if(idx===0) obMorningBook=bk.id; else obEveningBook=bk.id;
-        document.getElementById('obBtnNext2').disabled = !(obMorningBook && obEveningBook);
+        document.getElementById('obBtnNext2').disabled=!(obMorningBook&&obEveningBook);
       };
       g.appendChild(d);
     });
@@ -310,70 +362,66 @@ function buildObBooks(){
 }
 
 function buildObSummary(){
-  const name   = document.getElementById('obName').value || 'Friend';
-  const mStart = document.getElementById('obMStart').value;
-  const mEnd   = document.getElementById('obMEnd').value;
-  const eStart = document.getElementById('obEStart').value;
-  const eEnd   = document.getElementById('obEEnd').value;
-  const mBook  = BOOKS.find(b=>b.id===obMorningBook);
-  const eBook  = BOOKS.find(b=>b.id===obEveningBook);
-  document.getElementById('obSummary').innerHTML = `
+  const name=document.getElementById('obName').value||'Friend';
+  const mS=document.getElementById('obMStart').value, mE=document.getElementById('obMEnd').value;
+  const eS=document.getElementById('obEStart').value, eE=document.getElementById('obEEnd').value;
+  const mB=BOOKS_META.find(b=>b.id===obMorningBook), eB=BOOKS_META.find(b=>b.id===obEveningBook);
+  document.getElementById('obSummary').innerHTML=`
     <div class="summary-row"><span class="s-label">Name</span><span class="s-val">${name}</span></div>
-    <div class="summary-row"><span class="s-label">Morning Watch</span><span class="s-val">${mStart} – ${mEnd}</span></div>
-    <div class="summary-row"><span class="s-label">Morning Book</span><span class="s-val">${mBook?mBook.title:'—'}</span></div>
-    <div class="summary-row"><span class="s-label">Evening Watch</span><span class="s-val">${eStart} – ${eEnd}</span></div>
-    <div class="summary-row"><span class="s-label">Evening Book</span><span class="s-val">${eBook?eBook.title:'—'}</span></div>`;
+    <div class="summary-row"><span class="s-label">Morning Watch</span><span class="s-val">${mS} – ${mE}</span></div>
+    <div class="summary-row"><span class="s-label">Morning Book</span><span class="s-val">${mB?mB.title:'—'}</span></div>
+    <div class="summary-row"><span class="s-label">Evening Watch</span><span class="s-val">${eS} – ${eE}</span></div>
+    <div class="summary-row"><span class="s-label">Evening Book</span><span class="s-val">${eB?eB.title:'—'}</span></div>`;
 }
 
 async function requestNotifPermission(){
-  if(!('Notification' in window)){ document.getElementById('notifStatus').textContent='Not supported on this browser'; return; }
-  const perm = await Notification.requestPermission();
-  document.getElementById('notifStatus').textContent = perm==='granted' ? '✅ Notifications enabled!' : '⚠️ Permission denied';
+  if(!('Notification' in window)){document.getElementById('notifStatus').textContent='Not supported';return;}
+  const p=await Notification.requestPermission();
+  document.getElementById('notifStatus').textContent=p==='granted'?'✅ Enabled!':'⚠️ Denied';
 }
 
 function finishOnboarding(){
-  settings = {
-    userName: document.getElementById('obName').value || 'Friend',
-    setupComplete: true,
+  settings={
+    userName:document.getElementById('obName').value||'Friend',
+    theme:'forest', setupComplete:true,
     watches:[
       {id:'morning',label:'Morning Watch',start:document.getElementById('obMStart').value,end:document.getElementById('obMEnd').value,book:obMorningBook||'PP'},
       {id:'evening',label:'Evening Watch',start:document.getElementById('obEStart').value,end:document.getElementById('obEEnd').value,book:obEveningBook||'STC'},
     ]
   };
-  saveSettings(settings);
-  scheduleNotifications();
-  showHome();
+  localStorage.setItem('dh_settings',JSON.stringify(settings));
+  scheduleNotifications(); showHome();
 }
 
-// ── Home screen ──────────────────────────────────────────────
+// Home
+let selectedBook=null;
 function showHome(){
-  document.getElementById('onboarding').style.display   = 'none';
-  document.getElementById('studyScreen').style.display  = 'none';
-  document.getElementById('homeScreen').style.display   = 'flex';
-
-  const watches = settings.watches || [{id:'morning',label:'Morning Watch',start:'03:00',end:'09:00',book:'PP'}];
-  const cur = getSession(watches);
-  const isEvening = cur.id === 'evening';
-
-  document.getElementById('greetingEl').textContent  = isEvening ? 'Good Evening' : 'Good Morning';
-  document.getElementById('heroTitle').textContent   = cur.label || (isEvening?'Evening Watch':'Morning Watch');
-  document.getElementById('heroSub').textContent     = (cur.start||'') + ' – ' + (cur.end||'') + ' · Today\'s reading';
-  document.getElementById('sessionBadge').textContent = isEvening ? '🌙 Evening Watch' : '🌅 Morning Watch';
-
+  document.getElementById('onboarding').style.display='none';
+  document.getElementById('studyScreen').style.display='none';
+  document.getElementById('homeScreen').style.display='flex';
+  const watches=settings.watches||[{id:'morning',label:'Morning Watch',start:'03:00',end:'09:00',book:'PP'}];
+  const cur=getSession(watches);
+  const isEv=cur.id==='evening';
+  document.getElementById('greetingEl').textContent=isEv?'Good Evening':'Good Morning';
+  document.getElementById('heroTitle').textContent=cur.label||(isEv?'Evening Watch':'Morning Watch');
+  document.getElementById('heroSub').textContent=(cur.start||'')+' – '+(cur.end||'')+' · Today\'s reading';
+  document.getElementById('sessionBadge').textContent=isEv?'🌙 Evening Watch':'🌅 Morning Watch';
   buildBookCards(cur);
 }
 
-let selectedBook = null;
 function buildBookCards(curWatch){
-  const container = document.getElementById('bookCards');
-  container.innerHTML = '';
-  const current = curWatch.book || 'PP';
-  BOOKS.forEach((bk,i)=>{
-    const div = document.createElement('div');
-    div.className = 'book-card'+(bk.id===current?' active':'');
-    div.innerHTML = `<div class="book-icon">${i===0?'📖':'📘'}</div>
-      <div><div class="book-name">${bk.title}</div>
-      <div class="book-meta">${bk.author} · ${bk.chapters} chapters</div></div>`;
+  const container=document.getElementById('bookCards'); container.innerHTML='';
+  const current=curWatch.book||'PP';
+  BOOKS_META.forEach((bk,i)=>{
+    const prog=getProgress(bk.id);
+    const pct=Math.round((prog.chapter/bk.chapters)*100);
+    const div=document.createElement('div');
+    div.className='book-card'+(bk.id===current?' active':'');
+    div.innerHTML=`<div class="book-icon">${i===0?'📖':'📘'}</div>
+      <div style="flex:1;">
+        <div class="book-name">${bk.title}</div>
+        <div class="book-meta">${bk.author} · Ch ${prog.chapter+1}/${bk.chapters} · ${pct}% read</div>
+      </div>`;
     div.onclick=()=>{
       document.querySelectorAll('.book-card').forEach(c=>c.classList.remove('active'));
       div.classList.add('active'); selectedBook=bk.id;
@@ -384,79 +432,139 @@ function buildBookCards(curWatch){
 }
 
 function beginStudy(){
-  const bookId = selectedBook || 'PP';
-  const prog = getProgress(bookId);
-  const chapter = prog.chapter || 0;
-  showStudy(bookId, chapter);
+  const bookId=selectedBook||'PP';
+  const prog=getProgress(bookId);
+  showStudy(bookId, prog.chapter||0);
 }
 
-// ── Study screen ─────────────────────────────────────────────
+// Study
 function showStudy(bookId, chapterIdx){
-  document.getElementById('homeScreen').style.display  = 'none';
-  document.getElementById('studyScreen').style.display = 'flex';
-  const bk = BOOKS.find(b=>b.id===bookId) || BOOKS[0];
-  document.getElementById('studyTitle').textContent   = bk.title;
-  document.getElementById('studyMeta').textContent    = 'Chapter ' + (chapterIdx+1) + ' of ' + bk.chapters;
-  document.getElementById('chapterTitle').textContent = bk.title + ' — Chapter ' + (chapterIdx+1);
-  document.getElementById('chapterText').innerHTML    =
-    `<p style="margin-bottom:12px;">📖 <em>Chapter ${chapterIdx+1}</em></p>
-     <p style="color:rgba(255,255,255,0.6);font-style:italic;">
-       The full text of this chapter is available in the desktop app where your PDF books are cached.<br><br>
-       On mobile, use this screen to track your reading progress and receive daily reminders.
-     </p>
-     <div style="margin-top:20px;text-align:center;">
-       <button onclick="markRead('${bookId}',${chapterIdx})"
-         style="padding:12px 28px;border-radius:24px;border:none;cursor:pointer;
-         background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;font-weight:bold;font-size:14px;">
-         ✓ Mark as Read
-       </button>
-     </div>`;
+  activeBookId=bookId; activeChapter=chapterIdx;
+  document.getElementById('homeScreen').style.display='none';
+  document.getElementById('studyScreen').style.display='flex';
+  const bk=BOOKS_META.find(b=>b.id===bookId)||BOOKS_META[0];
+  const pct=Math.round((chapterIdx/bk.chapters)*100);
+  document.getElementById('studyBookTitle').textContent=bk.title;
+  document.getElementById('studyMeta').textContent='Chapter '+(chapterIdx+1)+' of '+bk.chapters;
+  document.getElementById('studyProgress').style.width=pct+'%';
+
+  // Get chapter data from books.json
+  const bookData=booksData[bookId];
+  let title='Chapter '+(chapterIdx+1);
+  let text='';
+  if(bookData && bookData.chapters && bookData.chapters[chapterIdx]){
+    const ch=bookData.chapters[chapterIdx];
+    title=ch.title||title;
+    text=ch.text||'';
+  }
+
+  document.getElementById('chapterTitle').textContent=title;
+
+  // Format text into paragraphs
+  if(text){
+    const paras=text.split(/\n\n+/).filter(p=>p.trim());
+    document.getElementById('chapterText').innerHTML=
+      paras.map(p=>`<p>${p.trim().replace(/\n/g,' ')}</p>`).join('');
+  } else {
+    document.getElementById('chapterText').innerHTML=
+      '<p style="color:rgba(255,255,255,0.5);font-style:italic;">Chapter text not available for this book.</p>';
+  }
+
+  // Scroll to top
+  document.querySelector('.main').scrollTop=0;
   saveProgress(bookId, chapterIdx);
 }
 
-function markRead(bookId, chapter){
-  const bk = BOOKS.find(b=>b.id===bookId);
-  const next = (chapter+1) % (bk?bk.chapters:13);
-  saveProgress(bookId, next);
-  document.getElementById('chapterText').innerHTML =
-    `<p style="text-align:center;padding:20px;">✅ Chapter ${chapter+1} marked complete!<br>
-    <span style="color:rgba(255,255,255,0.5);font-size:13px;">Next: Chapter ${next+1}</span></p>`;
-  setTimeout(()=>showHome(), 1500);
+function prevChapter(){
+  if(activeChapter>0) showStudy(activeBookId, activeChapter-1);
 }
 
-// ── Notifications ─────────────────────────────────────────────
+function markReadAndNext(){
+  const bk=BOOKS_META.find(b=>b.id===activeBookId);
+  const total=bk?bk.chapters:13;
+  const next=(activeChapter+1)%total;
+  saveProgress(activeBookId, next);
+  if(activeChapter+1 >= total){
+    document.getElementById('chapterText').innerHTML=
+      '<p style="text-align:center;padding:20px;">🎉 You\'ve completed this book!<br><span style="color:rgba(255,255,255,0.5);font-size:13px;">Starting from Chapter 1 again</span></p>';
+    setTimeout(()=>showHome(),2000);
+  } else {
+    showStudy(activeBookId, next);
+  }
+}
+
+// Settings
+function openSettings(){
+  settings=loadSettings();
+  document.getElementById('setName').value=settings.userName||'';
+  const w=settings.watches||[];
+  const m=w.find(x=>x.id==='morning')||{};
+  const e=w.find(x=>x.id==='evening')||{};
+  document.getElementById('setMStart').value=m.start||'03:00';
+  document.getElementById('setMEnd').value=m.end||'09:00';
+  document.getElementById('setEStart').value=e.start||'18:00';
+  document.getElementById('setEEnd').value=e.end||'22:29';
+  // Book selects
+  ['setMBook','setEBook'].forEach((id,idx)=>{
+    const sel=document.getElementById(id); sel.innerHTML='';
+    BOOKS_META.forEach(bk=>{
+      const opt=document.createElement('option');
+      opt.value=bk.id; opt.textContent=bk.title;
+      if((idx===0&&bk.id===m.book)||(idx===1&&bk.id===e.book)) opt.selected=true;
+      sel.appendChild(opt);
+    });
+  });
+  // Theme grid
+  const grid=document.getElementById('themeGrid'); grid.innerHTML='';
+  THEMES.forEach(t=>{
+    const d=document.createElement('div');
+    d.className='theme-swatch'+(settings.theme===t.id?' active':'');
+    d.style.background=t.grad; d.title=t.id;
+    d.onclick=()=>{
+      grid.querySelectorAll('.theme-swatch').forEach(s=>s.classList.remove('active'));
+      d.classList.add('active'); applyTheme(t.id); settings.theme=t.id;
+    };
+    grid.appendChild(d);
+  });
+  document.getElementById('settingsOverlay').classList.add('open');
+}
+
+function closeSettings(){ document.getElementById('settingsOverlay').classList.remove('open'); }
+
+function doSaveSettings(){
+  settings.userName=document.getElementById('setName').value||settings.userName;
+  const watches=settings.watches||[];
+  const m=watches.find(x=>x.id==='morning')||{id:'morning',label:'Morning Watch'};
+  const e=watches.find(x=>x.id==='evening')||{id:'evening',label:'Evening Watch'};
+  m.start=document.getElementById('setMStart').value;
+  m.end=document.getElementById('setMEnd').value;
+  m.book=document.getElementById('setMBook').value;
+  e.start=document.getElementById('setEStart').value;
+  e.end=document.getElementById('setEEnd').value;
+  e.book=document.getElementById('setEBook').value;
+  settings.watches=[m,e];
+  localStorage.setItem('dh_settings',JSON.stringify(settings));
+  closeSettings(); showHome();
+}
+
+// Notifications
 function scheduleNotifications(){
-  if(!('Notification' in window) || Notification.permission !== 'granted') return;
-  if(!('serviceWorker' in navigator)) return;
-  const watches = settings.watches || [];
+  if(!('Notification' in window)||Notification.permission!=='granted') return;
+  const watches=settings.watches||[];
   watches.forEach(w=>{
-    const [h,m] = w.start.split(':').map(Number);
-    const now = new Date();
-    let fire = new Date();
+    const[h,m]=w.start.split(':').map(Number);
+    const now=new Date(), fire=new Date();
     fire.setHours(h,m,0,0);
-    if(fire <= now) fire.setDate(fire.getDate()+1);
-    const ms = fire - now;
+    if(fire<=now) fire.setDate(fire.getDate()+1);
     setTimeout(()=>{
-      new Notification('Devotional Hub', {
-        body: w.label + ' begins now 🙏',
-        icon: 'icon-192.png'
-      });
-      setInterval(()=>{
-        new Notification('Devotional Hub', {
-          body: w.label + ' begins now 🙏',
-          icon: 'icon-192.png'
-        });
-      }, 86400000);
-    }, ms);
+      new Notification('Devotional Hub',{body:w.label+' begins now 🙏',icon:'icon-192.png'});
+      setInterval(()=>new Notification('Devotional Hub',{body:w.label+' begins now 🙏',icon:'icon-192.png'}),86400000);
+    }, fire-now);
   });
 }
 
 init();
-
-// Register service worker for offline support
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js').catch(()=>{});
-}
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
 </body>
 </html>
