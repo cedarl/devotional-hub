@@ -345,7 +345,7 @@
       <span class="app-logo-sub">Devotional Hub</span>
     </div>
   </div>
-  <span class="session-badge" id="sessionBadge">Loading...</span>
+  <span class="session-badge" id="sessionBadge"></span>
   <button class="tb-btn" onclick="openSettings()">⚙</button>
 </div>
 
@@ -708,6 +708,7 @@ function scheduleWatchShutdown(watch){
 // ── Init ──────────────────────────────────────────────────────
 async function init(){
   settings=loadSettings();
+  document.getElementById('sessionBadge').textContent='🌅 Morning';
   applyTheme(settings.theme||'forest');
   fontSize=localStorage.getItem('dh_fontsize')||'medium';
   currentFont=localStorage.getItem('dh_font')||'Lora';
