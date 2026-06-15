@@ -339,13 +339,7 @@
 
 <div class="titlebar">
   <div class="app-logo">
-    <svg class="app-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="16" cy="16" r="15" fill="#0a2215" stroke="#6ee89a" stroke-width="1.5"/>
-      <rect x="15" y="5" width="2" height="18" rx="1" fill="#6ee89a"/>
-      <rect x="9" y="11" width="14" height="2" rx="1" fill="#6ee89a"/>
-      <path d="M10 22 Q16 27 22 22" stroke="#6ee89a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <circle cx="16" cy="8" r="2" fill="#3ab56e"/>
-    </svg>
+    <div class="smt-logo"><span class="smt-s">S</span><span class="smt-m">M</span><span class="smt-t">T</span></div>
     <div class="app-logo-text">
       <span class="app-logo-name">Solemn Thought</span>
       <span class="app-logo-sub">Devotional Hub</span>
@@ -927,9 +921,11 @@ function formatChapterText(rawText,fz,font){
 
   // Strip any leaked HTML tags from books.json (e.g. bible-verse-ref">Luke 4:18)
   let clean=rawText
-    .replace(/bible-verse-ref">/g,'')
-    .replace(/<[^>]+>/g,'')
-    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+    .replace(/\w[\w\-]*">/g,'')
+    .replace(/["'][^"']*["']>/g,'')
+    .replace(/<[^>]*>/g,'')
+    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ')
+    .replace(/>\s*/g,' ').replace(/\s+/g,' ');
 
   // Split into lines
   const rawLines=clean.split('\n');
