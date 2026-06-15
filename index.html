@@ -1194,7 +1194,6 @@ function applyFmt(cmd){
   document.execCommand(cmd,false,null);
   document.getElementById('selToolbar').classList.remove('show');
 }
-}
 function setFontSize(sz){
   fontSize=sz;localStorage.setItem('dh_fontsize',sz);
   const fzMap={small:'13px',medium:'15px',large:'19px'};
