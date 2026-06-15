@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>Devotional Hub</title>
+  <title>Solemn Thought</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0a2215">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Devotional Hub">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;600&family=Georgia&display=swap" rel="stylesheet">
+  <meta name="apple-mobile-web-app-title" content="Solemn Thought">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'Lora',serif;min-height:100vh;display:flex;flex-direction:column;color:#fff;
@@ -19,13 +19,20 @@
     .music-note{position:fixed;z-index:1;pointer-events:none;color:#fff;opacity:0.1;
       animation:floatnote 8s ease-in-out infinite alternate;}
     @keyframes floatnote{from{transform:translateY(0) rotate(-5deg);}to{transform:translateY(-18px) rotate(5deg);}}
+
+    /* ── Title bar ── */
     .titlebar{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;
-      padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.1);}
-    .logo{font-family:'Playfair Display',serif;font-size:16px;color:#fff;}
+      padding:10px 16px;background:rgba(0,0,0,0.3);border-bottom:1px solid rgba(255,255,255,0.1);}
+    .app-logo{display:flex;align-items:center;gap:9px;}
+    .app-logo-icon{width:32px;height:32px;flex-shrink:0;}
+    .app-logo-text{display:flex;flex-direction:column;line-height:1.1;}
+    .app-logo-name{font-family:'Playfair Display',serif;font-size:15px;color:#fff;font-weight:700;letter-spacing:0.5px;}
+    .app-logo-sub{font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:2px;text-transform:uppercase;}
     .session-badge{font-size:10px;letter-spacing:2px;text-transform:uppercase;
       background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);
       border-radius:20px;padding:4px 12px;color:#fff;}
     .tb-btn{background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;font-size:18px;padding:4px;}
+
     .main{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;
       align-items:center;padding:20px 14px 90px;overflow-y:auto;}
     .screen{display:none;flex-direction:column;align-items:center;width:100%;max-width:520px;}
@@ -101,8 +108,10 @@
     .now-badge{display:inline-block;font-size:10px;letter-spacing:1px;text-transform:uppercase;
       background:#6ee89a;color:#0a2215;border-radius:10px;padding:2px 8px;margin-bottom:3px;font-weight:bold;}
     .book-card.selected-book{background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.4);}
+    .day-badge{display:inline-block;font-size:10px;letter-spacing:1px;padding:3px 10px;
+      border-radius:10px;background:rgba(255,255,255,0.15);color:#fff;margin-bottom:6px;}
 
-    /* Verses screen */
+    /* Verses */
     .verse-card-item{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
       border-radius:12px;padding:14px 18px;margin-bottom:10px;}
     .verse-ref-lbl{font-size:12px;color:#7ab8f5;font-weight:600;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;}
@@ -111,125 +120,139 @@
       font-family:'Playfair Display',serif;font-size:15px;
       background:linear-gradient(90deg,#3a7abf,#7ab8f5);color:#fff;font-weight:bold;margin-top:8px;}
 
-    /* ═══ STUDY LAYOUT ═══ */
+    /* ═══ STUDY — full screen ═══ */
     #studyScreen{
       display:none;flex-direction:column;width:100%;max-width:100%;padding:0;
       position:fixed;top:0;left:0;right:0;bottom:0;z-index:50;
-      background:#fff;overflow:hidden;}
+      background:#e8ece8;overflow:hidden;}
     #studyScreen.active{display:flex;}
 
-    /* Sticky study top bar */
     .study-topbar{
       position:sticky;top:0;z-index:100;
       background:#1a4a2e;
       border-bottom:2px solid #3ab56e;
-      padding:0;}
-
-    .study-topbar-row1{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:10px 14px 6px;}
-    .study-book-title{font-family:'Playfair Display',serif;font-size:15px;color:#fff;font-weight:700;}
-    .study-meta{font-size:11px;color:rgba(255,255,255,0.6);}
-
+      flex-shrink:0;}
+    .study-topbar-row1{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 5px;}
+    .study-book-title{font-family:'Playfair Display',serif;font-size:14px;color:#fff;font-weight:700;}
+    .study-meta{font-size:10px;color:rgba(255,255,255,0.55);}
     .progress-bar-wrap{height:3px;background:rgba(255,255,255,0.15);}
     .progress-bar-fill{height:100%;background:linear-gradient(90deg,#3ab56e,#6ee89a);transition:width 0.4s;}
-
-    /* Pinned tabs */
-    .pinned-tabs{display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,0.15);}
-    .pinned-tab{flex:1;padding:8px 6px;border:none;background:transparent;
-      color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;text-align:center;
+    .pinned-tabs{display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,0.12);}
+    .pinned-tab{flex:1;padding:7px 6px;border:none;background:transparent;
+      color:rgba(255,255,255,0.45);font-size:11px;cursor:pointer;text-align:center;
       border-bottom:2px solid transparent;transition:all 0.2s;font-family:'Lora',serif;}
     .pinned-tab.active{color:#6ee89a;border-bottom-color:#6ee89a;background:rgba(110,232,154,0.08);}
-
-    /* Toolbar */
-    .study-toolbar{
-      display:flex;gap:6px;padding:7px 10px;overflow-x:auto;
-      background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.1);}
+    .study-toolbar{display:flex;gap:5px;padding:6px 10px;overflow-x:auto;
+      background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.08);}
     .study-toolbar::-webkit-scrollbar{display:none;}
     .tool-btn{padding:5px 11px;border-radius:16px;border:1px solid rgba(255,255,255,0.25);
       background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-size:12px;
       cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
     .tool-btn.active{background:rgba(110,232,154,0.25);border-color:#6ee89a;color:#6ee89a;}
 
-    /* Study content area — scrollable */
-    .study-content-wrap{flex:1;overflow-y:auto;background:#fff;}
+    /* Scrollable content */
+    .study-content-wrap{flex:1;overflow-y:auto;background:#e8ece8;padding:14px 12px 20px;}
 
-    /* Notes panel — inside scroll area */
-    .notes-panel{background:#f8f9fa;border-bottom:2px solid #3ab56e;padding:14px;display:none;}
+    /* Notes panel */
+    .notes-panel{background:#fff;border:1px solid #c8d8c8;border-radius:12px;
+      padding:14px;margin-bottom:12px;display:none;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
     .notes-panel.open{display:block;}
     .notes-panel h4{font-family:'Playfair Display',serif;font-size:14px;color:#1a4a2e;margin-bottom:8px;}
-    .note-textarea{width:100%;background:#fff;border:1px solid #ccc;
+    .note-textarea{width:100%;background:#f9faf9;border:1px solid #c8d8c8;
       border-radius:8px;padding:10px;color:#222;font-family:'Lora',serif;font-size:13px;
       resize:none;line-height:1.7;min-height:90px;}
     .note-save{margin-top:6px;padding:7px 18px;border-radius:20px;border:none;cursor:pointer;
       background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;font-weight:bold;font-size:12px;}
     .note-item{padding:9px 12px;border-radius:8px;margin-bottom:6px;
-      background:#fff;border:1px solid #e0e0e0;font-size:12px;color:#444;cursor:pointer;}
+      background:#f9faf9;border:1px solid #dde8dd;font-size:12px;color:#444;cursor:pointer;}
 
-    /* Chapter content */
-    .chapter-card{padding:20px 18px 30px;background:#fff;}
+    /* ── Content card ── */
+    .chapter-card{
+      background:#fffef8;
+      border:1px solid #d4ddd4;
+      border-radius:12px;
+      padding:20px 18px 28px;
+      box-shadow:0 2px 12px rgba(0,0,0,0.08);
+      margin-bottom:12px;}
+
     .chapter-title-main{
-      font-family:'Playfair Display',serif;font-size:20px;color:#1a1a1a;
-      margin-bottom:18px;line-height:1.4;border-bottom:2px solid #3ab56e;padding-bottom:10px;}
-    .chapter-text{color:#111;line-height:2.0;}
-    .chapter-text p{margin-bottom:16px;}
+      font-family:'Playfair Display',serif;font-size:19px;color:#0a2010;
+      margin-bottom:16px;line-height:1.4;
+      border-bottom:2px solid #3ab56e;padding-bottom:10px;}
 
-    /* Subtitle formatting inside chapter */
+    /* Chapter text — compact flowing paragraphs */
+    .chapter-text{color:#1a1a1a;font-size:15px;line-height:1.85;text-align:justify;}
+    .chapter-text p{
+      margin-bottom:12px;
+      text-indent:1.4em;}
+    .chapter-text p:first-child{text-indent:0;}
+
+    /* Subtitles inside chapter */
     .ch-subtitle{
-      font-family:'Playfair Display',serif;font-size:16px;font-weight:700;
-      color:#1a4a2e;margin:22px 0 10px;padding-left:10px;
-      border-left:4px solid #3ab56e;line-height:1.4;}
+      font-family:'Playfair Display',serif;font-size:15px;font-weight:700;
+      color:#1a4a2e;margin:20px 0 8px;
+      padding:6px 10px;
+      background:#f0f7f0;
+      border-left:4px solid #3ab56e;
+      border-radius:0 6px 6px 0;
+      line-height:1.4;
+      text-indent:0 !important;}
 
-    /* Bible verse styling inside chapter */
+    /* Bible verse references */
     .bible-verse-ref{
       font-size:11px;font-weight:700;color:#1a5276;
-      text-transform:uppercase;letter-spacing:0.5px;vertical-align:super;margin-right:2px;}
-    .bible-verse-text{color:#1a5276;font-style:italic;font-weight:600;}
+      text-transform:uppercase;letter-spacing:0.3px;
+      background:#e8f4fd;padding:1px 4px;border-radius:3px;
+      vertical-align:baseline;margin:0 1px;}
+    .bible-verse-text{color:#1a5276;font-style:italic;}
 
-    /* Nav bar at bottom of content */
-    .chapter-nav-bar{
-      display:flex;gap:8px;padding:14px;background:#f4f4f4;
-      border-top:1px solid #ddd;position:sticky;bottom:0;}
-    .chapter-nav-bar button{flex:1;padding:12px;border-radius:24px;
-      border:1px solid #ccc;background:#fff;color:#333;font-size:13px;cursor:pointer;}
+    /* Nav */
+    .chapter-nav-bar{display:flex;gap:8px;padding:12px;background:#dce4dc;border-top:1px solid #c4d4c4;}
+    .chapter-nav-bar button{flex:1;padding:11px;border-radius:22px;
+      border:1px solid #b0c4b0;background:#fff;color:#333;font-size:13px;cursor:pointer;}
     .chapter-nav-bar button.primary{
-      background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;
+      background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2015;
       font-weight:bold;border:none;}
-    .back-home-btn{width:calc(100% - 28px);margin:0 14px 14px;padding:11px;border-radius:24px;
-      border:1px solid #ccc;background:#fff;color:#555;font-size:13px;cursor:pointer;}
+    .back-home-btn{width:calc(100% - 24px);margin:0 12px 16px;padding:10px;border-radius:22px;
+      border:1px solid #b0c4b0;background:#fff;color:#555;font-size:13px;cursor:pointer;}
 
-    /* Highlight colors */
-    .hl-yellow{background:#fff176;border-radius:2px;padding:0 1px;}
-    .hl-green{background:#b9f6ca;border-radius:2px;padding:0 1px;}
-    .hl-blue{background:#bbdefb;border-radius:2px;padding:0 1px;}
-    .hl-pink{background:#f8bbd0;border-radius:2px;padding:0 1px;}
-    .hl-orange{background:#ffe0b2;border-radius:2px;padding:0 1px;}
-    .hl-purple{background:#e1bee7;border-radius:2px;padding:0 1px;}
-    .hl-red{background:#ffcdd2;border-radius:2px;padding:0 1px;}
-    .hl-teal{background:#b2dfdb;border-radius:2px;padding:0 1px;}
-    .hl-lime{background:#f0f4c3;border-radius:2px;padding:0 1px;}
-    .hl-cyan{background:#b2ebf2;border-radius:2px;padding:0 1px;}
-    /* 5 shades */
-    .hl-gold{background:#ffd54f;border-radius:2px;padding:0 1px;}
-    .hl-sage{background:#a5d6a7;border-radius:2px;padding:0 1px;}
-    .hl-lavender{background:#ce93d8;border-radius:2px;padding:0 1px;}
-    .hl-peach{background:#ffab91;border-radius:2px;padding:0 1px;}
-    .hl-sky{background:#81d4fa;border-radius:2px;padding:0 1px;}
+    /* ── Highlight colors — 10 distinct + 5 rich shades ── */
+    /* 10 Base colors */
+    .hl-yellow{background:#FFE44D;border-radius:2px;padding:0 1px;}
+    .hl-green{background:#5CD65C;border-radius:2px;padding:0 1px;color:#003300;}
+    .hl-blue{background:#4DA6FF;border-radius:2px;padding:0 1px;color:#001a40;}
+    .hl-red{background:#FF4D4D;border-radius:2px;padding:0 1px;color:#1a0000;}
+    .hl-purple{background:#C44DFF;border-radius:2px;padding:0 1px;color:#1a001a;}
+    .hl-orange{background:#FF8C1A;border-radius:2px;padding:0 1px;color:#1a0500;}
+    .hl-pink{background:#FF66B3;border-radius:2px;padding:0 1px;color:#1a001a;}
+    .hl-teal{background:#1AC9B0;border-radius:2px;padding:0 1px;color:#001a16;}
+    .hl-brown{background:#C87941;border-radius:2px;padding:0 1px;color:#fff;}
+    .hl-gray{background:#A0A0A0;border-radius:2px;padding:0 1px;color:#fff;}
+    /* 5 Rich shades — deeper/richer versions */
+    .hl-deep-yellow{background:#B8860B;border-radius:2px;padding:0 1px;color:#fff;}
+    .hl-deep-green{background:#1A7A1A;border-radius:2px;padding:0 1px;color:#fff;}
+    .hl-deep-blue{background:#0047AB;border-radius:2px;padding:0 1px;color:#fff;}
+    .hl-deep-red{background:#8B0000;border-radius:2px;padding:0 1px;color:#fff;}
+    .hl-deep-purple{background:#4B0082;border-radius:2px;padding:0 1px;color:#fff;}
 
-    /* Highlight / font toolbar popup */
-    .sel-toolbar{position:fixed;background:#1a1a1a;border:1px solid #444;
-      border-radius:12px;padding:10px 12px;display:none;flex-direction:column;
-      gap:8px;z-index:9999;box-shadow:0 6px 24px rgba(0,0,0,0.5);min-width:240px;}
+    /* Highlight / font popup */
+    .sel-toolbar{position:fixed;background:#1c1c1e;border:1px solid #3a3a3c;
+      border-radius:14px;padding:12px 14px;display:none;flex-direction:column;
+      gap:9px;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,0.6);min-width:250px;max-width:290px;}
     .sel-toolbar.show{display:flex;}
-    .sel-toolbar-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
-    .sel-toolbar-label{font-size:10px;color:#aaa;letter-spacing:1px;text-transform:uppercase;width:100%;}
-    .hl-dot{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid rgba(255,255,255,0.2);flex-shrink:0;}
-    .hl-dot:hover{transform:scale(1.2);border-color:#fff;}
-    .font-style-btn{padding:4px 10px;border-radius:8px;border:1px solid #555;
-      background:transparent;color:#ddd;cursor:pointer;font-size:12px;}
+    .sel-toolbar-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
+    .sel-toolbar-label{font-size:10px;color:#888;letter-spacing:1px;text-transform:uppercase;width:100%;margin-bottom:2px;}
+    .hl-dot{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid rgba(255,255,255,0.15);flex-shrink:0;transition:transform 0.15s;}
+    .hl-dot:hover,.hl-dot:active{transform:scale(1.25);border-color:#fff;}
+    .font-style-btn{padding:5px 11px;border-radius:8px;border:1px solid #444;
+      background:rgba(255,255,255,0.07);color:#ddd;cursor:pointer;font-size:12px;transition:background 0.15s;}
     .font-style-btn:hover{background:#333;}
-    .hl-note-btn{padding:4px 12px;border-radius:8px;border:1px solid #6ee89a;
-      background:transparent;color:#6ee89a;cursor:pointer;font-size:12px;}
+    .hl-note-btn{padding:5px 13px;border-radius:8px;border:1px solid #3ab56e;
+      background:rgba(58,181,110,0.15);color:#6ee89a;cursor:pointer;font-size:12px;}
+    .hl-clear-btn{padding:5px 11px;border-radius:8px;border:1px solid #555;
+      background:transparent;color:#aaa;cursor:pointer;font-size:12px;}
+    .hl-close-btn{padding:5px 11px;border-radius:8px;border:1px solid #555;
+      background:transparent;color:#aaa;cursor:pointer;font-size:12px;}
 
     /* Complete */
     .sparkle{position:fixed;z-index:2;pointer-events:none;font-size:20px;opacity:0;animation:sparkle 3s ease-in-out infinite;}
@@ -280,19 +303,15 @@
     .ringtone-btn{padding:5px 12px;border-radius:14px;border:1px solid rgba(255,255,255,0.3);
       background:transparent;color:#fff;font-size:12px;cursor:pointer;white-space:nowrap;}
     .watch-ended-banner{position:fixed;top:0;left:0;width:100%;z-index:9999;
-      background:rgba(200,50,50,0.97);color:#fff;text-align:center;padding:13px;
+      background:rgba(180,30,30,0.97);color:#fff;text-align:center;padding:13px;
       font-size:13px;font-weight:bold;display:none;}
-
-    /* Daily scheduler badge */
-    .day-badge{display:inline-block;font-size:10px;letter-spacing:1px;padding:3px 10px;
-      border-radius:10px;background:rgba(255,255,255,0.15);color:#fff;margin-bottom:6px;}
 
     @media(max-width:400px){.main{padding:14px 10px 90px;}.hero-title{font-size:20px;}}
   </style>
 </head>
 <body>
 
-<div class="bible-bg">📖</div>
+<div class="bible-bg">✝</div>
 <span class="music-note" style="font-size:38px;top:12%;left:6%;animation-delay:0s;">♩</span>
 <span class="music-note" style="font-size:28px;top:22%;right:8%;animation-delay:1s;">♫</span>
 <span class="music-note" style="font-size:22px;bottom:30%;left:10%;animation-delay:2s;">♪</span>
@@ -305,9 +324,21 @@
 <div class="watch-ended-banner" id="watchEndedBanner">⏰ Your watch window has ended. Well done! 🙏</div>
 
 <div class="titlebar">
-  <span class="logo">Devotional Hub</span>
+  <div class="app-logo">
+    <svg class="app-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="15" fill="#0a2215" stroke="#6ee89a" stroke-width="1.5"/>
+      <rect x="15" y="5" width="2" height="18" rx="1" fill="#6ee89a"/>
+      <rect x="9" y="11" width="14" height="2" rx="1" fill="#6ee89a"/>
+      <path d="M10 22 Q16 27 22 22" stroke="#6ee89a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="16" cy="8" r="2" fill="#3ab56e"/>
+    </svg>
+    <div class="app-logo-text">
+      <span class="app-logo-name">Solemn Thought</span>
+      <span class="app-logo-sub">Devotional Hub</span>
+    </div>
+  </div>
   <span class="session-badge" id="sessionBadge">Loading...</span>
-  <button class="tb-btn" onclick="openSettings()" title="Settings">⚙</button>
+  <button class="tb-btn" onclick="openSettings()">⚙</button>
 </div>
 
 <div class="main" id="mainArea">
@@ -322,7 +353,7 @@
     </div>
     <div class="step active" id="obStep0">
       <div class="step-icon">🕊️</div>
-      <div class="step-title">Welcome to Devotional Hub</div>
+      <div class="step-title">Welcome to Solemn Thought</div>
       <div class="step-sub">Your personal morning & evening devotional companion.</div>
       <div class="field"><label>Your Name</label>
         <input type="text" id="obName" placeholder="e.g. John" maxlength="40"></div>
@@ -374,7 +405,7 @@
     <div class="greeting" id="greetingEl">Good Morning</div>
     <div class="hero-title" id="heroTitle">Morning Watch</div>
     <div class="day-badge" id="todayBadge"></div>
-    <div class="hero-sub" id="heroSub">03:00 – 09:00 · Today's reading</div>
+    <div class="hero-sub" id="heroSub"></div>
     <div id="bookCards" style="width:100%;max-width:520px;"></div>
     <button class="btn-primary" onclick="beginStudy()">Begin Study →</button>
   </div>
@@ -412,10 +443,8 @@
 
 </div>
 
-<!-- ═══ STUDY SCREEN (full screen overlay) ═══ -->
+<!-- ═══ STUDY SCREEN ═══ -->
 <div id="studyScreen">
-
-  <!-- Sticky top bar -->
   <div class="study-topbar">
     <div class="study-topbar-row1">
       <div>
@@ -424,11 +453,9 @@
       </div>
       <button onclick="showHome()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;border-radius:16px;padding:5px 12px;cursor:pointer;font-size:12px;">← Home</button>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="studyProgress" style="width:0%"></div>
-    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="studyProgress" style="width:0%"></div></div>
     <div class="pinned-tabs" id="pinnedTabs"></div>
-    <div class="study-toolbar" id="studyToolbar">
+    <div class="study-toolbar">
       <button class="tool-btn" id="btnNote" onclick="toggleNotes()">📝 Notes</button>
       <button class="tool-btn" id="btnHL" onclick="toggleHL()">🖊 Highlight</button>
       <button class="tool-btn" id="fzS" onclick="setFontSize('small')">A–</button>
@@ -437,12 +464,9 @@
     </div>
   </div>
 
-  <!-- Scrollable content -->
   <div class="study-content-wrap" id="studyContentWrap">
-
-    <!-- Notes panel -->
     <div class="notes-panel" id="notesPanel">
-      <h4>📝 My Notes — <span id="noteChapterLabel"></span></h4>
+      <h4>📝 Notes — <span id="noteChapterLabel"></span></h4>
       <textarea class="note-textarea" id="noteText" placeholder="Write your reflections or prayers here..."></textarea>
       <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
         <button class="note-save" onclick="saveNote()">Save Note</button>
@@ -451,46 +475,43 @@
       <div id="notesList" style="margin-top:10px;"></div>
     </div>
 
-    <!-- Chapter content -->
     <div class="chapter-card">
       <div class="chapter-title-main" id="chapterTitle"></div>
       <div class="chapter-text" id="chapterText">Loading...</div>
     </div>
 
-    <!-- Nav -->
     <div class="chapter-nav-bar">
       <button id="prevBtn" onclick="prevChapter()">← Prev</button>
       <button class="primary" id="nextBtn" onclick="nextChapter()">Next →</button>
     </div>
     <button class="back-home-btn" onclick="showHome()">← Back to Books</button>
-
   </div>
 </div>
 
-<!-- Highlight / font popup -->
+<!-- Highlight/font popup -->
 <div class="sel-toolbar" id="selToolbar">
-  <div class="sel-toolbar-label">Highlight color</div>
+  <div class="sel-toolbar-label">10 Highlight Colors</div>
   <div class="sel-toolbar-row">
-    <div class="hl-dot" style="background:#fff176;" title="Yellow" onclick="applyHL('hl-yellow')"></div>
-    <div class="hl-dot" style="background:#b9f6ca;" title="Green" onclick="applyHL('hl-green')"></div>
-    <div class="hl-dot" style="background:#bbdefb;" title="Blue" onclick="applyHL('hl-blue')"></div>
-    <div class="hl-dot" style="background:#f8bbd0;" title="Pink" onclick="applyHL('hl-pink')"></div>
-    <div class="hl-dot" style="background:#ffe0b2;" title="Orange" onclick="applyHL('hl-orange')"></div>
-    <div class="hl-dot" style="background:#e1bee7;" title="Purple" onclick="applyHL('hl-purple')"></div>
-    <div class="hl-dot" style="background:#ffcdd2;" title="Red" onclick="applyHL('hl-red')"></div>
-    <div class="hl-dot" style="background:#b2dfdb;" title="Teal" onclick="applyHL('hl-teal')"></div>
-    <div class="hl-dot" style="background:#f0f4c3;" title="Lime" onclick="applyHL('hl-lime')"></div>
-    <div class="hl-dot" style="background:#b2ebf2;" title="Cyan" onclick="applyHL('hl-cyan')"></div>
+    <div class="hl-dot" style="background:#FFE44D;" title="Yellow" onclick="applyHL('hl-yellow')"></div>
+    <div class="hl-dot" style="background:#5CD65C;" title="Green" onclick="applyHL('hl-green')"></div>
+    <div class="hl-dot" style="background:#4DA6FF;" title="Blue" onclick="applyHL('hl-blue')"></div>
+    <div class="hl-dot" style="background:#FF4D4D;" title="Red" onclick="applyHL('hl-red')"></div>
+    <div class="hl-dot" style="background:#C44DFF;" title="Purple" onclick="applyHL('hl-purple')"></div>
+    <div class="hl-dot" style="background:#FF8C1A;" title="Orange" onclick="applyHL('hl-orange')"></div>
+    <div class="hl-dot" style="background:#FF66B3;" title="Pink" onclick="applyHL('hl-pink')"></div>
+    <div class="hl-dot" style="background:#1AC9B0;" title="Teal" onclick="applyHL('hl-teal')"></div>
+    <div class="hl-dot" style="background:#C87941;" title="Brown" onclick="applyHL('hl-brown')"></div>
+    <div class="hl-dot" style="background:#A0A0A0;" title="Gray" onclick="applyHL('hl-gray')"></div>
   </div>
-  <div class="sel-toolbar-label" style="margin-top:4px;">Shades</div>
+  <div class="sel-toolbar-label">5 Deep Shades</div>
   <div class="sel-toolbar-row">
-    <div class="hl-dot" style="background:#ffd54f;" title="Gold" onclick="applyHL('hl-gold')"></div>
-    <div class="hl-dot" style="background:#a5d6a7;" title="Sage" onclick="applyHL('hl-sage')"></div>
-    <div class="hl-dot" style="background:#ce93d8;" title="Lavender" onclick="applyHL('hl-lavender')"></div>
-    <div class="hl-dot" style="background:#ffab91;" title="Peach" onclick="applyHL('hl-peach')"></div>
-    <div class="hl-dot" style="background:#81d4fa;" title="Sky" onclick="applyHL('hl-sky')"></div>
+    <div class="hl-dot" style="background:#B8860B;" title="Dark Gold" onclick="applyHL('hl-deep-yellow')"></div>
+    <div class="hl-dot" style="background:#1A7A1A;" title="Dark Green" onclick="applyHL('hl-deep-green')"></div>
+    <div class="hl-dot" style="background:#0047AB;" title="Dark Blue" onclick="applyHL('hl-deep-blue')"></div>
+    <div class="hl-dot" style="background:#8B0000;" title="Dark Red" onclick="applyHL('hl-deep-red')"></div>
+    <div class="hl-dot" style="background:#4B0082;" title="Indigo" onclick="applyHL('hl-deep-purple')"></div>
   </div>
-  <div class="sel-toolbar-label" style="margin-top:4px;">Font style</div>
+  <div class="sel-toolbar-label">Font Style</div>
   <div class="sel-toolbar-row">
     <button class="font-style-btn" style="font-family:'Lora',serif;" onclick="applyFontStyle('Lora')">Lora</button>
     <button class="font-style-btn" style="font-family:'Playfair Display',serif;" onclick="applyFontStyle('Playfair Display')">Playfair</button>
@@ -498,10 +519,10 @@
     <button class="font-style-btn" style="font-family:'Open Sans',sans-serif;" onclick="applyFontStyle('Open Sans')">Open Sans</button>
     <button class="font-style-btn" style="font-family:Georgia,serif;" onclick="applyFontStyle('Georgia')">Georgia</button>
   </div>
-  <div class="sel-toolbar-row" style="margin-top:4px;">
-    <button class="hl-note-btn" onclick="noteFromSel()">+ Add to Notes</button>
-    <button class="font-style-btn" onclick="clearHL()">✕ Clear</button>
-    <button class="font-style-btn" onclick="document.getElementById('selToolbar').classList.remove('show');">Close</button>
+  <div class="sel-toolbar-row">
+    <button class="hl-note-btn" onclick="noteFromSel()">+ Notes</button>
+    <button class="hl-clear-btn" onclick="clearHL()">✕ Clear</button>
+    <button class="hl-close-btn" onclick="document.getElementById('selToolbar').classList.remove('show');">Close</button>
   </div>
 </div>
 
@@ -579,7 +600,6 @@ const BOOKS_META=[
   {id:'PK',  title:'Prophets and Kings',      author:'E.G. White',chapters:57},
   {id:'PDF_EN_CHS',title:'en_ChS',author:'Custom',chapters:13},
 ];
-
 const THEMES=[
   {id:'forest',grad:'linear-gradient(160deg,#0a2215 0%,#1a4a2e 40%,#2d6e4a 70%,#3a8a5c 100%)'},
   {id:'mountain',grad:'linear-gradient(180deg,#0d1d3a 0%,#1e3a6e 35%,#3d6090 60%,#7a9cc0 85%,#b8ccd8 100%)'},
@@ -588,7 +608,6 @@ const THEMES=[
   {id:'starry',grad:'linear-gradient(180deg,#020208 0%,#0a0a20 40%,#101040 70%,#1a1a60 100%)'},
   {id:'autumn',grad:'linear-gradient(160deg,#1a0800 0%,#6a2000 35%,#c05000 60%,#e09020 85%,#f0c060 100%)'},
 ];
-
 const VERSES_POOL=[
   {text:'"Your word is a lamp to my feet and a light to my path."',ref:'Psalm 119:105'},
   {text:'"Be still, and know that I am God."',ref:'Psalm 46:10'},
@@ -599,9 +618,7 @@ const VERSES_POOL=[
   {text:'"For I know the plans I have for you, declares the LORD."',ref:'Jeremiah 29:11'},
   {text:'"The steadfast love of the LORD never ceases."',ref:'Lamentations 3:22'},
   {text:'"In the morning, LORD, you hear my voice."',ref:'Psalm 5:3'},
-  {text:'"Evening, morning and noon I cry out in distress, and he hears my voice."',ref:'Psalm 55:17'},
-  {text:'"This is the day that the LORD has made; let us rejoice and be glad in it."',ref:'Psalm 118:24'},
-  {text:'"The LORD watches over you."',ref:'Psalm 121:5'},
+  {text:'"This is the day that the LORD has made; let us rejoice."',ref:'Psalm 118:24'},
 ];
 
 let settings={},booksData={};
@@ -610,7 +627,6 @@ let activeBookId=null,pinnedChapters=[],activePinnedIdx=0;
 let hlMode=false,notes={},fontSize='medium',currentFont='Lora';
 let selectedNextBook=null,watchShutdownTimer=null,currentWatchSession=null;
 
-// ── Storage ───────────────────────────────────────────────────
 const S={
   get:k=>{try{return JSON.parse(localStorage.getItem(k));}catch{return null;}},
   set:(k,v)=>localStorage.setItem(k,JSON.stringify(v)),
@@ -627,33 +643,26 @@ function saveProgress(bid,ch,readArr){
 function getNotes(bid){return S.get('dh_notes_'+bid)||{};}
 function saveNoteStore(bid,n){S.set('dh_notes_'+bid,n);}
 
-// ── Daily chapter scheduler ───────────────────────────────────
-// Each day gets the next 2 sequential chapters, tracked from day 0 of reading
-function getDayIndex(){
-  const startKey='dh_start_'+activeBookId;
+// ── Daily scheduler ───────────────────────────────────────────
+function getDayIndex(bookId){
+  const startKey='dh_start_'+bookId;
   let start=localStorage.getItem(startKey);
-  if(!start){
-    start=new Date().toDateString();
-    localStorage.setItem(startKey,start);
-  }
-  const startDate=new Date(start);
-  const today=new Date();
-  startDate.setHours(0,0,0,0);today.setHours(0,0,0,0);
-  return Math.floor((today-startDate)/(1000*60*60*24));
+  if(!start){start=new Date().toDateString();localStorage.setItem(startKey,start);}
+  const s=new Date(start),t=new Date();
+  s.setHours(0,0,0,0);t.setHours(0,0,0,0);
+  return Math.floor((t-s)/(864e5));
 }
-
-function getDailyChapters(bookId,totalChapters){
-  const dayIdx=getDayIndex();
-  const ch0=(dayIdx*2)%totalChapters;
-  const ch1=(ch0+1)%totalChapters;
-  return [ch0,ch1];
+function getDailyChapters(bookId,total){
+  const day=getDayIndex(bookId);
+  const ch0=(day*2)%total;
+  const ch1=(ch0+1)%total;
+  return[ch0,ch1];
 }
-
 function formatDate(d){
   return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
 }
 
-// ── Themes ────────────────────────────────────────────────────
+// ── Theme ─────────────────────────────────────────────────────
 function applyTheme(id){
   const t=THEMES.find(x=>x.id===id)||THEMES[0];
   document.body.style.background=t.grad;
@@ -668,24 +677,20 @@ function getSession(watches){
 }
 function getAnySession(watches){return getSession(watches)||watches[0];}
 
-// ── Shutdown timer ────────────────────────────────────────────
 function scheduleWatchShutdown(watch){
   if(watchShutdownTimer)clearTimeout(watchShutdownTimer);
   const now=new Date();
   const[eh,em]=watch.end.split(':').map(Number);
-  const endTime=new Date();endTime.setHours(eh,em,0,0);
-  if(endTime<=now)return;
-  const ms=endTime-now;
+  const end=new Date();end.setHours(eh,em,0,0);
+  if(end<=now)return;
   watchShutdownTimer=setTimeout(()=>{
-    const banner=document.getElementById('watchEndedBanner');
-    banner.style.display='block';
+    document.getElementById('watchEndedBanner').style.display='block';
     stopRingtone();
     setTimeout(()=>{
-      banner.style.display='none';
-      if(activeBookId)showComplete();
-      else showHome();
+      document.getElementById('watchEndedBanner').style.display='none';
+      if(activeBookId)showComplete();else showHome();
     },3000);
-  },ms);
+  },end-now);
 }
 
 // ── Init ──────────────────────────────────────────────────────
@@ -697,10 +702,8 @@ async function init(){
   try{const r=await fetch('./books.json');booksData=await r.json();}catch{booksData={};}
   if(!settings.setupComplete)showOnboarding();
   else{
-    showHome();
-    scheduleNotifications();
-    const watches=settings.watches||[];
-    const cur=getSession(watches);
+    showHome();scheduleNotifications();
+    const cur=getSession(settings.watches||[]);
     if(cur)scheduleWatchShutdown(cur);
   }
 }
@@ -709,10 +712,8 @@ async function init(){
 function showOnboarding(){
   document.getElementById('sessionBadge').textContent='First-time Setup';
   document.getElementById('onboarding').style.display='flex';
-  ['homeScreen','versesScreen','studyScreen','completeScreen'].forEach(id=>{
-    const el=document.getElementById(id);
-    el.classList.remove('active');
-  });
+  ['homeScreen','versesScreen','completeScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById('studyScreen').classList.remove('active');
   buildObBooks();
 }
 function obGo(n){
@@ -765,15 +766,13 @@ async function requestNotifPermission(){
 function finishOnboarding(){
   settings={
     userName:document.getElementById('obName').value||'Friend',
-    theme:'forest',setupComplete:true,
-    ringtones:{morning:'',evening:''},
+    theme:'forest',setupComplete:true,ringtones:{morning:'',evening:''},
     watches:[
       {id:'morning',label:'Morning Watch',start:document.getElementById('obMStart').value,end:document.getElementById('obMEnd').value,book:obMorningBook||'PP'},
       {id:'evening',label:'Evening Watch',start:document.getElementById('obEStart').value,end:document.getElementById('obEEnd').value,book:obEveningBook||'STC'},
     ]
   };
-  saveSettingsObj(settings);
-  scheduleNotifications();showHome();
+  saveSettingsObj(settings);scheduleNotifications();showHome();
 }
 
 // ── Home ──────────────────────────────────────────────────────
@@ -791,20 +790,15 @@ function showHome(){
   const cur=currentWatchSession||watches[0];
   const isEv=cur&&cur.id==='evening';
   const inWindow=currentWatchSession!==null;
-  const today=new Date();
-
   document.getElementById('greetingEl').textContent=isEv?'Good Evening':'Good Morning';
-  document.getElementById('heroTitle').textContent=cur?cur.label:(isEv?'Evening Watch':'Morning Watch');
-  document.getElementById('todayBadge').textContent=formatDate(today);
+  document.getElementById('heroTitle').textContent=cur?cur.label:'Morning Watch';
+  document.getElementById('todayBadge').textContent=formatDate(new Date());
   document.getElementById('heroSub').textContent=inWindow
     ?(cur.start+' – '+cur.end+' · Watch is active now')
     :(cur?(cur.start+' – '+cur.end+' · Next watch'):'');
-  document.getElementById('sessionBadge').textContent=isEv?'🌙 Evening Watch':'🌅 Morning Watch';
-
+  document.getElementById('sessionBadge').textContent=isEv?'🌙 Evening':'🌅 Morning';
   buildBookCards(watches,cur,inWindow);
-  if(inWindow&&settings.ringtones&&settings.ringtones[cur.id]){
-    playRingtoneURL(settings.ringtones[cur.id]);
-  }
+  if(inWindow&&settings.ringtones&&settings.ringtones[cur.id])playRingtoneURL(settings.ringtones[cur.id]);
   if(inWindow)scheduleWatchShutdown(cur);
 }
 
@@ -815,12 +809,7 @@ function buildBookCards(watches,curWatch,inWindow){
     const prog=getProgress(bk.id);
     const pct=Math.round((prog.chapter/bk.chapters)*100);
     const isCurrentWatch=bk.id===currentBookId&&inWindow;
-
-    // Get today's chapters for preview
-    activeBookId=bk.id;
     const todayChaps=getDailyChapters(bk.id,bk.chapters);
-    activeBookId=currentBookId; // restore
-
     const div=document.createElement('div');
     div.className='book-card'+(isCurrentWatch?' current-watch':'');
     div.innerHTML=`<div style="font-size:24px;">${isCurrentWatch?'📖':'📘'}</div>
@@ -851,74 +840,56 @@ function beginStudy(){
 
 // ── Verses ────────────────────────────────────────────────────
 function showVerses(){
-  ['homeScreen','studyScreen','completeScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  ['homeScreen','completeScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
   document.getElementById('studyScreen').classList.remove('active');
   document.getElementById('versesScreen').classList.add('active');
   document.getElementById('onboarding').style.display='none';
   document.body.style.background='linear-gradient(160deg,#0a1a2e 0%,#1a3a6e 40%,#2d5a9e 70%,#3a7abf 100%)';
-
   const bk=BOOKS_META.find(b=>b.id===activeBookId)||BOOKS_META[0];
   const chIdx=pinnedChapters[0];
-  const bookData=booksData[activeBookId];
-  const chData=bookData&&bookData.chapters&&bookData.chapters[chIdx];
-  const chTitle=chData?chData.title:'Chapter '+(chIdx+1);
-
-  document.getElementById('versesChapterTitle').textContent=chTitle;
-  document.getElementById('versesSubtitle').textContent=bk.title+' · Chapter '+(chIdx+1)+' & '+(pinnedChapters[1]+1)+' · '+formatDate(new Date());
+  const chData=booksData[activeBookId]&&booksData[activeBookId].chapters&&booksData[activeBookId].chapters[chIdx];
+  document.getElementById('versesChapterTitle').textContent=chData?chData.title:'Chapter '+(chIdx+1);
+  document.getElementById('versesSubtitle').textContent=bk.title+' · Ch '+(chIdx+1)+' & '+(pinnedChapters[1]+1)+' · '+formatDate(new Date());
   document.getElementById('sessionBadge').textContent='📖 Verses';
-
   const versesList=document.getElementById('versesList');
   versesList.innerHTML='<p style="font-size:13px;color:rgba(255,255,255,0.5);text-align:center;padding:20px;">Loading KJV verses...</p>';
-
   const text=chData?chData.text:'';
   const refs=extractBibleRefs(text);
-  if(refs.length>0){
-    fetchKJVVerses(refs.slice(0,8),versesList);
-  } else {
-    fetchKJVVerses(VERSES_POOL.slice(0,3).map(v=>v.ref),versesList);
-  }
+  if(refs.length>0)fetchKJVVerses(refs.slice(0,8),versesList);
+  else fetchKJVVerses(VERSES_POOL.slice(0,3).map(v=>v.ref),versesList);
 }
 
 function extractBibleRefs(text){
   if(!text)return[];
-  const pattern=/\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|Samuel|Kings|Chronicles|Ezra|Nehemiah|Esther|Job|Psalm|Psalms|Proverbs|Ecclesiastes|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|Corinthians|Galatians|Ephesians|Philippians|Colossians|Thessalonians|Timothy|Titus|Philemon|Hebrews|James|Peter|Jude|Revelation|Gen|Ex|Lev|Num|Deut|Josh|Judg|Ps|Prov|Isa|Jer|Ezek|Dan|Matt|Rom|Cor|Gal|Eph|Phil|Col|Thess|Tim|Heb|Rev)\.?\s*\d+:\d+/g;
-  const matches=text.match(pattern)||[];
-  return[...new Set(matches)];
+  const pat=/\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|Samuel|Kings|Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|Corinthians|Galatians|Ephesians|Philippians|Colossians|Thessalonians|Timothy|Titus|Philemon|Hebrews|James|Peter|Jude|Revelation|Gen|Ex|Lev|Num|Deut|Josh|Judg|Ps|Prov|Isa|Jer|Ezek|Dan|Matt|Rom|Cor|Gal|Eph|Phil|Col|Thess|Tim|Heb|Rev)\.?\s*\d+:\d+/g;
+  return[...new Set(text.match(pat)||[])];
 }
 
 async function fetchKJVVerses(refs,container){
   container.innerHTML='';
   for(const ref of refs){
-    const safeId='vt_'+ref.replace(/[^a-z0-9]/gi,'_');
-    const card=document.createElement('div');
-    card.className='verse-card-item';
+    const id='vt_'+ref.replace(/[^a-z0-9]/gi,'_');
+    const card=document.createElement('div');card.className='verse-card-item';
     card.innerHTML=`<div class="verse-ref-lbl">${ref}</div>
-      <div class="verse-text-body" id="${safeId}"><span style="color:rgba(255,255,255,0.4);font-style:italic;">Loading...</span></div>`;
+      <div class="verse-text-body" id="${id}"><span style="color:rgba(255,255,255,0.3);font-style:italic;">Loading...</span></div>`;
     container.appendChild(card);
     try{
-      const res=await fetch(`https://bible-api.com/${encodeURIComponent(ref)}?translation=kjv`);
-      const data=await res.json();
-      const el=document.getElementById(safeId);
+      const r=await fetch(`https://bible-api.com/${encodeURIComponent(ref)}?translation=kjv`);
+      const d=await r.json();
+      const el=document.getElementById(id);
       if(el){
-        if(data.verses&&data.verses.length>0){
-          el.innerHTML=data.verses.map(v=>`<sup style="font-size:10px;color:rgba(255,255,255,0.5);margin-right:2px;">${v.verse}</sup>${v.text.trim()}`).join(' ');
-        } else if(data.text){
-          el.textContent=data.text.trim();
-        } else {
-          el.innerHTML='<span style="color:rgba(255,255,255,0.3);font-style:italic;">Verse not found</span>';
-        }
+        if(d.verses&&d.verses.length)el.innerHTML=d.verses.map(v=>`<sup style="font-size:10px;color:rgba(255,255,255,0.5);margin-right:2px;">${v.verse}</sup>${v.text.trim()}`).join(' ');
+        else if(d.text)el.textContent=d.text.trim();
+        else el.innerHTML='<span style="color:rgba(255,255,255,0.3);font-style:italic;">Not found</span>';
       }
-    }catch(e){
-      const el=document.getElementById(safeId);
-      if(el)el.innerHTML='<span style="color:rgba(255,255,255,0.3);font-style:italic;">Could not load — check connection</span>';
+    }catch{
+      const el=document.getElementById(id);
+      if(el)el.innerHTML='<span style="color:rgba(255,255,255,0.3);font-style:italic;">Offline</span>';
     }
   }
 }
 
-function proceedToStudy(){
-  applyTheme(settings.theme||'forest');
-  showStudy();
-}
+function proceedToStudy(){applyTheme(settings.theme||'forest');showStudy();}
 
 // ── Study ─────────────────────────────────────────────────────
 function showStudy(){
@@ -928,40 +899,39 @@ function showStudy(){
   renderStudy();
 }
 
-const BIBLE_REF_PATTERN=/\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|(?:1|2)\s*Samuel|(?:1|2)\s*Kings|(?:1|2)\s*Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|(?:1|2)\s*Corinthians|Galatians|Ephesians|Philippians|Colossians|(?:1|2)\s*Thessalonians|(?:1|2)\s*Timothy|Titus|Philemon|Hebrews|James|(?:1|2|3)\s*John|(?:1|2)\s*Peter|Jude|Revelation|Gen|Ex|Lev|Num|Deut|Josh|Judg|Ps|Prov|Isa|Jer|Ezek|Dan|Matt|Rom|Cor|Gal|Eph|Phil|Col|Thess|Tim|Heb|Rev)\.?\s*\d+:\d+(?:-\d+)?/g;
+const BIBLE_PAT=/\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|(?:1|2)\s*Samuel|(?:1|2)\s*Kings|(?:1|2)\s*Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|(?:1|2)\s*Corinthians|Galatians|Ephesians|Philippians|Colossians|(?:1|2)\s*Thessalonians|(?:1|2)\s*Timothy|Titus|Philemon|Hebrews|James|(?:1|2|3)\s*John|(?:1|2)\s*Peter|Jude|Revelation|Gen|Ex|Lev|Num|Deut|Josh|Judg|Ps|Prov|Isa|Jer|Ezek|Dan|Matt|Rom|Cor|Gal|Eph|Phil|Col|Thess|Tim|Heb|Rev)\.?\s*\d+:\d+(?:-\d+)?/g;
 
-function formatChapterText(text,fontSize,font){
-  if(!text)return'<p style="color:#999;font-style:italic;">Chapter text not available.</p>';
+function formatChapterText(rawText,fz,font){
+  if(!rawText)return'<p style="color:#999;font-style:italic;">Chapter text not available.</p>';
   const fzMap={small:'13px',medium:'15px',large:'19px'};
-  const lhMap={small:'1.8',medium:'2.0',large:'2.1'};
-  const fz=fzMap[fontSize]||'15px',lh=lhMap[fontSize]||'2.0';
+  const lhMap={small:'1.8',medium:'1.9',large:'2.1'};
+  const fs=fzMap[fz]||'15px',lh=lhMap[fz]||'1.9';
 
-  // Split into lines
-  const lines=text.split('\n');
+  // Clean up the raw text: collapse excessive blank lines, trim
+  const blocks=rawText.split(/\n{2,}/).map(b=>b.trim()).filter(Boolean);
   let html='';
 
-  lines.forEach(line=>{
-    const trimmed=line.trim();
-    if(!trimmed){return;}
+  blocks.forEach(block=>{
+    const lines=block.split('\n').map(l=>l.trim()).filter(Boolean);
+    lines.forEach(line=>{
+      if(!line)return;
+      // Detect subtitle: short, no sentence-ending punctuation, looks like a heading
+      const isSubtitle=
+        line.length<90&&
+        !/[.!?]$/.test(line)&&
+        (line===line.toUpperCase()||/^[A-Z][A-Za-z\s\-—:]{3,}$/.test(line))&&
+        line.split(' ').length<=12;
 
-    // Detect subtitle lines: ALL CAPS or short title-case lines under 80 chars with no period
-    const isSubtitle=
-      (trimmed===trimmed.toUpperCase()&&trimmed.length>3&&trimmed.length<100&&/[A-Z]/.test(trimmed))||
-      (/^[A-Z][^.!?]*$/.test(trimmed)&&trimmed.length<70&&!trimmed.includes(','));
-
-    if(isSubtitle){
-      html+=`<div class="ch-subtitle">${trimmed}</div>`;
-    } else {
-      // Highlight Bible verse references and their surrounding text
-      let processed=trimmed.replace(BIBLE_REF_PATTERN, match=>{
-        return `<span class="bible-verse-ref">${match}</span>`;
-      });
-      // Mark quoted scripture (text in quotes after a verse ref)
-      processed=processed.replace(/"([^"]{10,200})"/g,(m,inner)=>{
-        return `"<span class="bible-verse-text">${inner}</span>"`;
-      });
-      html+=`<p style="font-size:${fz};line-height:${lh};font-family:'${font}',serif;">${processed}</p>`;
-    }
+      if(isSubtitle){
+        html+=`<div class="ch-subtitle">${line}</div>`;
+      } else {
+        // Mark Bible refs
+        let processed=line.replace(BIBLE_PAT,m=>`<span class="bible-verse-ref">${m}</span>`);
+        // Mark quoted scripture
+        processed=processed.replace(/"([^"]{8,200})"/g,(m,inner)=>`"<span class="bible-verse-text">${inner}</span>"`);
+        html+=`<p style="font-size:${fs};line-height:${lh};font-family:'${font}',serif;">${processed}</p>`;
+      }
+    });
   });
   return html||'<p style="color:#999;font-style:italic;">No content available.</p>';
 }
@@ -970,10 +940,8 @@ function renderStudy(){
   const bk=BOOKS_META.find(b=>b.id===activeBookId)||BOOKS_META[0];
   const chIdx=pinnedChapters[activePinnedIdx];
   const pct=Math.round(((chIdx+1)/bk.chapters)*100);
-
   document.getElementById('studyBookTitle').textContent=bk.title;
-  document.getElementById('studyMeta').textContent=
-    'Ch '+(chIdx+1)+'/'+bk.chapters+' · '+formatDate(new Date())+' · '+pct+'% through book';
+  document.getElementById('studyMeta').textContent='Ch '+(chIdx+1)+'/'+bk.chapters+' · '+formatDate(new Date());
   document.getElementById('studyProgress').style.width=pct+'%';
   document.getElementById('sessionBadge').textContent='📖 Study';
 
@@ -983,56 +951,49 @@ function renderStudy(){
     const btn=document.createElement('button');
     btn.className='pinned-tab'+(ti===activePinnedIdx?' active':'');
     const chData=booksData[activeBookId]&&booksData[activeBookId].chapters&&booksData[activeBookId].chapters[ci];
-    const shortTitle=chData&&chData.title?(' – '+chData.title.substring(0,20)):'';
-    btn.textContent='Ch '+(ci+1)+shortTitle;
+    const short=chData&&chData.title?(' – '+chData.title.substring(0,22)):'';
+    btn.textContent='Ch '+(ci+1)+short;
     btn.onclick=()=>{activePinnedIdx=ti;renderStudy();};
     tabsEl.appendChild(btn);
   });
 
-  // Chapter content
+  // Content
   const bookData=booksData[activeBookId];
   let title='Chapter '+(chIdx+1),text='';
   if(bookData&&bookData.chapters&&bookData.chapters[chIdx]){
-    const ch=bookData.chapters[chIdx];
-    title=ch.title||title;text=ch.text||'';
+    const ch=bookData.chapters[chIdx];title=ch.title||title;text=ch.text||'';
   }
   document.getElementById('chapterTitle').textContent=title;
   document.getElementById('chapterText').innerHTML=formatChapterText(text,fontSize,currentFont);
 
-  // Note for this chapter
   document.getElementById('noteChapterLabel').textContent='Chapter '+(chIdx+1);
   document.getElementById('noteText').value=notes[chIdx]||'';
   renderNotesList();
 
-  // Nav buttons
   document.getElementById('prevBtn').disabled=activePinnedIdx===0;
   const isLast=activePinnedIdx>=pinnedChapters.length-1;
   const nb=document.getElementById('nextBtn');
   nb.textContent=isLast?'Complete ✓':'Next Chapter →';
   nb.className=isLast?'primary':'';
 
-  // Font size buttons
   ['S','M','L'].forEach(k=>document.getElementById('fz'+k).classList.remove('active'));
-  const fzMap2={small:'S',medium:'M',large:'L'};
-  const fb=document.getElementById('fz'+(fzMap2[fontSize]||'M'));
+  const m2={small:'S',medium:'M',large:'L'};
+  const fb=document.getElementById('fz'+(m2[fontSize]||'M'));
   if(fb)fb.classList.add('active');
 
   document.getElementById('studyContentWrap').scrollTop=0;
 }
 
 function prevChapter(){if(activePinnedIdx>0){activePinnedIdx--;renderStudy();}}
-
 function nextChapter(){
   saveNote();
-  if(activePinnedIdx<pinnedChapters.length-1){
-    activePinnedIdx++;renderStudy();
-  } else {
+  if(activePinnedIdx<pinnedChapters.length-1){activePinnedIdx++;renderStudy();}
+  else{
     const prog=getProgress(activeBookId);
     const readArr=prog.read||[];
     pinnedChapters.forEach(ci=>{if(!readArr.includes(ci))readArr.push(ci);});
     const bk=BOOKS_META.find(b=>b.id===activeBookId)||BOOKS_META[0];
-    const nextCh=(pinnedChapters[pinnedChapters.length-1]+1)%bk.chapters;
-    saveProgress(activeBookId,nextCh,readArr);
+    saveProgress(activeBookId,(pinnedChapters[pinnedChapters.length-1]+1)%bk.chapters,readArr);
     showComplete();
   }
 }
@@ -1042,9 +1003,7 @@ function toggleNotes(){
   const p=document.getElementById('notesPanel');
   p.classList.toggle('open');
   document.getElementById('btnNote').classList.toggle('active',p.classList.contains('open'));
-  if(p.classList.contains('open')){
-    document.getElementById('studyContentWrap').scrollTop=0;
-  }
+  if(p.classList.contains('open'))document.getElementById('studyContentWrap').scrollTop=0;
 }
 function saveNote(){
   const txt=document.getElementById('noteText').value.trim();
@@ -1057,7 +1016,7 @@ function saveNote(){
 function renderNotesList(){
   const el=document.getElementById('notesList');el.innerHTML='';
   const keys=Object.keys(notes);
-  if(!keys.length){el.innerHTML='<p style="font-size:12px;color:#999;">No notes yet for this book.</p>';return;}
+  if(!keys.length){el.innerHTML='<p style="font-size:12px;color:#999;">No notes yet.</p>';return;}
   keys.forEach(k=>{
     const d=document.createElement('div');d.className='note-item';
     d.innerHTML=`<b style="font-size:11px;color:#1a4a2e;">Chapter ${parseInt(k)+1}</b><br>${notes[k].substring(0,80)}${notes[k].length>80?'...':''}`;
@@ -1078,35 +1037,28 @@ function toggleHL(){
 
 function showSelToolbar(x,y){
   const tb=document.getElementById('selToolbar');
-  const w=window.innerWidth;
-  let left=Math.min(x,w-260);
+  const w=window.innerWidth,h=window.innerHeight;
+  let left=Math.min(x,w-300);
   let top=Math.max(10,y-10);
-  tb.style.left=left+'px';
-  tb.style.top=top+'px';
+  if(top+420>h)top=Math.max(10,y-430);
+  tb.style.left=left+'px';tb.style.top=top+'px';
   tb.classList.add('show');
 }
 
 document.addEventListener('mouseup',e=>{
   if(e.target.closest('#selToolbar'))return;
   const sel=window.getSelection();
-  if(!sel||sel.isCollapsed){
-    if(!e.target.closest('#selToolbar'))document.getElementById('selToolbar').classList.remove('show');
-    return;
-  }
+  if(!sel||sel.isCollapsed){if(!e.target.closest('#selToolbar'))document.getElementById('selToolbar').classList.remove('show');return;}
   if(!document.getElementById('chapterText').contains(sel.anchorNode))return;
-  showSelToolbar(e.clientX,e.clientY-80);
+  showSelToolbar(e.clientX,e.clientY-90);
 });
-
 document.addEventListener('touchend',e=>{
   if(e.target.closest('#selToolbar'))return;
   const sel=window.getSelection();
-  if(!sel||sel.isCollapsed){
-    if(!e.target.closest('#selToolbar'))document.getElementById('selToolbar').classList.remove('show');
-    return;
-  }
+  if(!sel||sel.isCollapsed){if(!e.target.closest('#selToolbar'))document.getElementById('selToolbar').classList.remove('show');return;}
   if(!document.getElementById('chapterText').contains(sel.anchorNode))return;
   const t=e.changedTouches[0];
-  showSelToolbar(t.clientX,t.clientY-100);
+  showSelToolbar(t.clientX,t.clientY-110);
 });
 
 function applyHL(cls){
@@ -1115,43 +1067,35 @@ function applyHL(cls){
   try{
     const range=sel.getRangeAt(0);
     const span=document.createElement('span');
-    span.className=cls;
-    span.setAttribute('data-hl',cls);
+    span.className=cls;span.setAttribute('data-hl',cls);
     range.surroundContents(span);
-    sel.removeAllRanges();
-  }catch(e){
-    // Selection spans multiple elements — wrap each text node
+  }catch{
     try{
       const range=sel.getRangeAt(0);
       const frag=range.extractContents();
       const span=document.createElement('span');
-      span.className=cls;
-      span.setAttribute('data-hl',cls);
-      span.appendChild(frag);
-      range.insertNode(span);
-      sel.removeAllRanges();
-    }catch(e2){}
+      span.className=cls;span.setAttribute('data-hl',cls);
+      span.appendChild(frag);range.insertNode(span);
+    }catch{}
   }
+  window.getSelection().removeAllRanges();
   document.getElementById('selToolbar').classList.remove('show');
 }
 
 function applyFontStyle(font){
   const sel=window.getSelection();
   if(!sel||sel.isCollapsed){
-    // Apply to whole chapter
-    currentFont=font;
-    localStorage.setItem('dh_font',font);
+    currentFont=font;localStorage.setItem('dh_font',font);
     document.querySelectorAll('#chapterText p').forEach(p=>p.style.fontFamily="'"+font+"',serif");
-    document.getElementById('selToolbar').classList.remove('show');
-    return;
+  } else {
+    try{
+      const range=sel.getRangeAt(0);
+      const span=document.createElement('span');
+      span.style.fontFamily="'"+font+"',serif";
+      range.surroundContents(span);
+      window.getSelection().removeAllRanges();
+    }catch{}
   }
-  try{
-    const range=sel.getRangeAt(0);
-    const span=document.createElement('span');
-    span.style.fontFamily="'"+font+"',serif";
-    range.surroundContents(span);
-    sel.removeAllRanges();
-  }catch(e){}
   document.getElementById('selToolbar').classList.remove('show');
 }
 
@@ -1160,14 +1104,14 @@ function clearHL(){
   if(!sel||sel.isCollapsed)return;
   try{
     const range=sel.getRangeAt(0);
-    const container=range.commonAncestorContainer;
-    const parent=container.nodeType===3?container.parentElement:container;
+    const parent=range.commonAncestorContainer.nodeType===3
+      ?range.commonAncestorContainer.parentElement
+      :range.commonAncestorContainer;
     if(parent.hasAttribute('data-hl')){
-      const text=document.createTextNode(parent.textContent);
-      parent.replaceWith(text);
+      parent.replaceWith(document.createTextNode(parent.textContent));
     }
-    sel.removeAllRanges();
-  }catch(e){}
+    window.getSelection().removeAllRanges();
+  }catch{}
   document.getElementById('selToolbar').classList.remove('show');
 }
 
@@ -1182,18 +1126,13 @@ function noteFromSel(){
   document.getElementById('selToolbar').classList.remove('show');
 }
 
-// ── Font size ─────────────────────────────────────────────────
-function setFontSize(size){
-  fontSize=size;
-  localStorage.setItem('dh_fontsize',size);
+function setFontSize(sz){
+  fontSize=sz;localStorage.setItem('dh_fontsize',sz);
   const fzMap={small:'13px',medium:'15px',large:'19px'};
-  const lhMap={small:'1.8',medium:'2.0',large:'2.1'};
-  document.querySelectorAll('#chapterText p').forEach(p=>{
-    p.style.fontSize=fzMap[size];p.style.lineHeight=lhMap[size];
-  });
+  const lhMap={small:'1.8',medium:'1.9',large:'2.1'};
+  document.querySelectorAll('#chapterText p').forEach(p=>{p.style.fontSize=fzMap[sz];p.style.lineHeight=lhMap[sz];});
   ['S','M','L'].forEach(k=>document.getElementById('fz'+k).classList.remove('active'));
-  const map={small:'S',medium:'M',large:'L'};
-  document.getElementById('fz'+map[size]).classList.add('active');
+  document.getElementById('fz'+{small:'S',medium:'M',large:'L'}[sz]).classList.add('active');
 }
 
 // ── Complete ──────────────────────────────────────────────────
@@ -1202,45 +1141,34 @@ function showComplete(){
   ['homeScreen','versesScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
   document.getElementById('completeScreen').classList.add('active');
   applyTheme(settings.theme||'forest');
-
   const watches=settings.watches||[];
   const cur=getAnySession(watches);
   const isEv=cur&&cur.id==='evening';
-  document.getElementById('sessionBadge').textContent=isEv?'🌙 Evening Watch':'🌅 Morning Watch';
+  document.getElementById('sessionBadge').textContent=isEv?'🌙 Evening':'🌅 Morning';
   document.getElementById('completeTitle').textContent=isEv?'Evening Watch Complete!':'Morning Watch Complete!';
   document.getElementById('completeSub').textContent=isEv
     ?'You have completed your evening devotional. Rest in God\'s peace tonight.'
     :'You have completed your morning devotional. May God\'s Word guide your steps today.';
-
   const v=VERSES_POOL[Math.floor(Math.random()*VERSES_POOL.length)];
   document.getElementById('verseText').textContent=v.text;
   document.getElementById('verseRef').textContent=v.ref;
-
   const today=new Date().toDateString();
   let streak=parseInt(localStorage.getItem('dh_streak')||'0');
   const last=localStorage.getItem('dh_last_watch');
   if(last!==today){
-    const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
-    streak=(last===yesterday.toDateString())?streak+1:1;
-    localStorage.setItem('dh_streak',streak);
-    localStorage.setItem('dh_last_watch',today);
+    const yest=new Date();yest.setDate(yest.getDate()-1);
+    streak=(last===yest.toDateString())?streak+1:1;
+    localStorage.setItem('dh_streak',streak);localStorage.setItem('dh_last_watch',today);
   }
   document.getElementById('statStreak').textContent=streak;
-
-  const n=Object.keys(getNotes(activeBookId||'PP')).length;
-  document.getElementById('statNotes').textContent=n;
-
+  document.getElementById('statNotes').textContent=Object.keys(getNotes(activeBookId||'PP')).length;
   const chKey='dh_ch_'+today;
-  const chCount=(S.get(chKey)||0)+pinnedChapters.length;
-  S.set(chKey,chCount);
-  document.getElementById('statChapters').textContent=chCount;
-
+  S.set(chKey,(S.get(chKey)||0)+pinnedChapters.length);
+  document.getElementById('statChapters').textContent=S.get(chKey)||pinnedChapters.length;
   const bk=BOOKS_META.find(b=>b.id===activeBookId)||BOOKS_META[0];
   const prog=getProgress(activeBookId||'PP');
-  const readCount=(prog.read||[]).length;
-  const pct=Math.round((readCount/bk.chapters)*100);
+  const pct=Math.round(((prog.read||[]).length/bk.chapters)*100);
   document.getElementById('statProgress').textContent=pct+'%';
-
   if(pct>=100)showNextBookModal();
 }
 
@@ -1253,22 +1181,16 @@ function showNextBookModal(){
     const d=document.createElement('div');d.className='next-book-opt';
     d.innerHTML=`<span style="font-size:20px;">📘</span>
       <div><div style="font-size:14px;color:#fff;">${bk2.title}</div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.5);">${bk2.author} · ${bk2.chapters} ch</div></div>`;
-    d.onclick=()=>{
-      grid.querySelectorAll('.next-book-opt').forEach(o=>o.classList.remove('selected'));
-      d.classList.add('selected');selectedNextBook=bk2.id;
-      document.getElementById('btnConfirmNext').disabled=false;
-    };
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);">${bk2.chapters} chapters</div></div>`;
+    d.onclick=()=>{grid.querySelectorAll('.next-book-opt').forEach(o=>o.classList.remove('selected'));d.classList.add('selected');selectedNextBook=bk2.id;document.getElementById('btnConfirmNext').disabled=false;};
     grid.appendChild(d);
   });
   document.getElementById('nextBookOverlay').classList.add('open');
 }
-
 function confirmNextBook(){
   if(!selectedNextBook)return;
   const watches=settings.watches||[];
-  const cur=getAnySession(watches);
-  const w=watches.find(x=>x.id===cur.id);
+  const w=watches.find(x=>x.id===getAnySession(watches).id);
   if(w)w.book=selectedNextBook;
   saveSettingsObj(settings);
   document.getElementById('nextBookOverlay').classList.remove('open');
@@ -1286,17 +1208,15 @@ function openSettings(){
   document.getElementById('setMEnd').value=m.end||'09:00';
   document.getElementById('setEStart').value=e.start||'18:00';
   document.getElementById('setEEnd').value=e.end||'22:29';
-  const rings=settings.ringtones||{morning:'',evening:''};
-  document.getElementById('mRingName').textContent=rings.morning?rings.morning.split('/').pop().split('\\').pop():'None';
-  document.getElementById('eRingName').textContent=rings.evening?rings.evening.split('/').pop().split('\\').pop():'None';
+  const rings=settings.ringtones||{};
+  document.getElementById('mRingName').textContent=rings.morning?rings.morning.split('/').pop():'None';
+  document.getElementById('eRingName').textContent=rings.evening?rings.evening.split('/').pop():'None';
   ['setMBook','setEBook'].forEach((id,idx)=>{
     const sel=document.getElementById(id);sel.innerHTML='';
-    const curBook=idx===0?m.book:e.book;
+    const cur=idx===0?m.book:e.book;
     BOOKS_META.forEach(bk=>{
-      const opt=document.createElement('option');
-      opt.value=bk.id;opt.textContent=bk.title;
-      if(bk.id===curBook)opt.selected=true;
-      sel.appendChild(opt);
+      const opt=document.createElement('option');opt.value=bk.id;opt.textContent=bk.title;
+      if(bk.id===cur)opt.selected=true;sel.appendChild(opt);
     });
   });
   const grid=document.getElementById('themeGrid');grid.innerHTML='';
@@ -1304,19 +1224,14 @@ function openSettings(){
     const d=document.createElement('div');
     d.className='theme-swatch'+(settings.theme===t.id?' active':'');
     d.style.background=t.grad;d.title=t.id;
-    d.onclick=()=>{
-      grid.querySelectorAll('.theme-swatch').forEach(s=>s.classList.remove('active'));
-      d.classList.add('active');applyTheme(t.id);settings.theme=t.id;
-    };
+    d.onclick=()=>{grid.querySelectorAll('.theme-swatch').forEach(s=>s.classList.remove('active'));d.classList.add('active');applyTheme(t.id);settings.theme=t.id;};
     grid.appendChild(d);
   });
   document.getElementById('settingsOverlay').classList.add('open');
 }
 function closeSettings(){document.getElementById('settingsOverlay').classList.remove('open');}
-
 async function pickRingtone(session){
-  const input=document.createElement('input');
-  input.type='file';input.accept='audio/*';
+  const input=document.createElement('input');input.type='file';input.accept='audio/*';
   input.onchange=e=>{
     const file=e.target.files[0];if(!file)return;
     const url=URL.createObjectURL(file);
@@ -1326,79 +1241,50 @@ async function pickRingtone(session){
   };
   input.click();
 }
-function playRingtone(session){
-  const url=settings.ringtones&&settings.ringtones[session]?settings.ringtones[session]:'';
-  if(url)playRingtoneURL(url);
-}
-function playRingtoneURL(url){
-  const a=document.getElementById('ringAudio');a.src=url;a.play().catch(()=>{});
-}
-function stopRingtone(){
-  const a=document.getElementById('ringAudio');a.pause();a.currentTime=0;
-}
+function playRingtone(s){const url=settings.ringtones&&settings.ringtones[s]||'';if(url)playRingtoneURL(url);}
+function playRingtoneURL(url){const a=document.getElementById('ringAudio');a.src=url;a.play().catch(()=>{});}
+function stopRingtone(){const a=document.getElementById('ringAudio');a.pause();a.currentTime=0;}
 function doSaveSettings(){
   if(!settings.ringtones)settings.ringtones={morning:'',evening:''};
   settings.userName=document.getElementById('setName').value||settings.userName;
   const watches=settings.watches||[];
-  let m=watches.find(x=>x.id==='morning');
-  let e=watches.find(x=>x.id==='evening');
+  let m=watches.find(x=>x.id==='morning');let e=watches.find(x=>x.id==='evening');
   if(!m){m={id:'morning',label:'Morning Watch'};watches.push(m);}
   if(!e){e={id:'evening',label:'Evening Watch'};watches.push(e);}
-  m.start=document.getElementById('setMStart').value;
-  m.end=document.getElementById('setMEnd').value;
-  m.book=document.getElementById('setMBook').value;
-  e.start=document.getElementById('setEStart').value;
-  e.end=document.getElementById('setEEnd').value;
-  e.book=document.getElementById('setEBook').value;
-  settings.watches=watches;
-  saveSettingsObj(settings);
-  closeSettings();showHome();
+  m.start=document.getElementById('setMStart').value;m.end=document.getElementById('setMEnd').value;m.book=document.getElementById('setMBook').value;
+  e.start=document.getElementById('setEStart').value;e.end=document.getElementById('setEEnd').value;e.book=document.getElementById('setEBook').value;
+  settings.watches=watches;saveSettingsObj(settings);closeSettings();showHome();
 }
 
 // ── Notifications ─────────────────────────────────────────────
 function scheduleNotifications(){
   if(!('Notification' in window)||Notification.permission!=='granted')return;
-  const watches=settings.watches||[];
-  watches.forEach(w=>{
+  (settings.watches||[]).forEach(w=>{
     const[h,m]=w.start.split(':').map(Number);
-    const now=new Date(),fire=new Date();
-    fire.setHours(h,m,0,0);
+    const now=new Date(),fire=new Date();fire.setHours(h,m,0,0);
     if(fire<=now)fire.setDate(fire.getDate()+1);
     setTimeout(()=>{
-      if(Notification.permission==='granted'){
-        const n=new Notification('Devotional Hub',{
-          body:w.label+' begins now — tap to open 🙏',
-          icon:'icon-192.png',tag:'watch-'+w.id,requireInteraction:true
-        });
-        n.onclick=()=>{window.focus();showHome();};
-      }
+      if(Notification.permission==='granted')
+        new Notification('Solemn Thought',{body:w.label+' begins now — tap to open 🙏',icon:'icon-192.png',tag:'watch-'+w.id,requireInteraction:true});
       setInterval(()=>{
-        if(Notification.permission==='granted'){
-          new Notification('Devotional Hub',{
-            body:w.label+' begins now — tap to open 🙏',
-            icon:'icon-192.png',tag:'watch-'+w.id,requireInteraction:true
-          });
-        }
+        if(Notification.permission==='granted')
+          new Notification('Solemn Thought',{body:w.label+' begins now 🙏',icon:'icon-192.png',tag:'watch-'+w.id,requireInteraction:true});
       },86400000);
     },fire-now);
   });
 }
 
 init();
-
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js').then(reg=>{
-    setInterval(()=>reg.update(),60*60*1000);
+    setInterval(()=>reg.update(),36e5);
     navigator.serviceWorker.addEventListener('message',e=>{
       if(e.data&&e.data.type==='SW_UPDATED'){
-        const banner=document.createElement('div');
-        banner.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);'+
-          'background:rgba(110,232,154,0.95);color:#0a2215;padding:10px 20px;border-radius:20px;'+
-          'font-size:13px;font-weight:bold;z-index:9999;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.3);';
-        banner.textContent='✨ Update available — tap to refresh';
-        banner.onclick=()=>window.location.reload();
-        document.body.appendChild(banner);
-        setTimeout(()=>banner.remove(),8000);
+        const b=document.createElement('div');
+        b.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(110,232,154,0.95);color:#0a2215;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:bold;z-index:9999;cursor:pointer;';
+        b.textContent='✨ Update available — tap to refresh';
+        b.onclick=()=>window.location.reload();
+        document.body.appendChild(b);setTimeout(()=>b.remove(),8000);
       }
     });
   }).catch(()=>{});
