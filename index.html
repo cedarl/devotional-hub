@@ -25,6 +25,11 @@
       padding:10px 16px;background:rgba(0,0,0,0.3);border-bottom:1px solid rgba(255,255,255,0.1);}
     .app-logo{display:flex;align-items:center;gap:9px;}
     .app-logo-icon{width:32px;height:32px;flex-shrink:0;}
+    .smt-logo{display:flex;align-items:center;gap:1px;font-family:'Playfair Display',serif;font-weight:700;font-size:18px;letter-spacing:-1px;}
+    .smt-s{color:#6ee89a;animation:smtpulse 2.4s ease-in-out infinite;}
+    .smt-m{color:#fff;animation:smtpulse 2.4s ease-in-out 0.3s infinite;}
+    .smt-t{color:#3ab56e;animation:smtpulse 2.4s ease-in-out 0.6s infinite;}
+    @keyframes smtpulse{0%,100%{opacity:1;transform:translateY(0);}50%{opacity:0.6;transform:translateY(-3px);}}
     .app-logo-text{display:flex;flex-direction:column;line-height:1.1;}
     .app-logo-name{font-family:'Playfair Display',serif;font-size:15px;color:#fff;font-weight:700;letter-spacing:0.5px;}
     .app-logo-sub{font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:2px;text-transform:uppercase;}
@@ -197,7 +202,14 @@
       border-radius:0 6px 6px 0;
       line-height:1.4;
       text-indent:0 !important;}
-
+   /* Page numbers */
+    .ch-page-num{
+      display:inline-block;font-size:11px;color:#888;
+      background:#f0f0f0;border:1px solid #ddd;
+      border-radius:4px;padding:1px 6px;margin:8px 0 4px;
+      font-family:'Open Sans',sans-serif;letter-spacing:1px;}
+    .ch-pg{font-size:10px;color:#aaa;vertical-align:super;margin:0 2px;
+      font-family:'Open Sans',sans-serif;}
     /* Bible verse references */
     .bible-verse-ref{
       font-size:11px;font-weight:700;color:#1a5276;
@@ -253,7 +265,9 @@
       background:transparent;color:#aaa;cursor:pointer;font-size:12px;}
     .hl-close-btn{padding:5px 11px;border-radius:8px;border:1px solid #555;
       background:transparent;color:#aaa;cursor:pointer;font-size:12px;}
-
+.fmt-btn{padding:5px 11px;border-radius:8px;border:1px solid #555;
+      background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;font-size:13px;min-width:32px;}
+    .fmt-btn:hover{background:#444;}
     /* Complete */
     .sparkle{position:fixed;z-index:2;pointer-events:none;font-size:20px;opacity:0;animation:sparkle 3s ease-in-out infinite;}
     @keyframes sparkle{0%,100%{opacity:0;transform:scale(0.5);}50%{opacity:0.6;transform:scale(1.2);}}
@@ -519,10 +533,14 @@
     <button class="font-style-btn" style="font-family:'Open Sans',sans-serif;" onclick="applyFontStyle('Open Sans')">Open Sans</button>
     <button class="font-style-btn" style="font-family:Georgia,serif;" onclick="applyFontStyle('Georgia')">Georgia</button>
   </div>
+  <div class="sel-toolbar-label">Format</div>
   <div class="sel-toolbar-row">
+    <button class="fmt-btn" onclick="applyFmt('bold')" title="Bold"><b>B</b></button>
+    <button class="fmt-btn" onclick="applyFmt('italic')" title="Italic"><i>I</i></button>
+    <button class="fmt-btn" onclick="applyFmt('underline')" title="Underline"><u>U</u></button>
     <button class="hl-note-btn" onclick="noteFromSel()">+ Notes</button>
     <button class="hl-clear-btn" onclick="clearHL()">✕ Clear</button>
-    <button class="hl-close-btn" onclick="document.getElementById('selToolbar').classList.remove('show');">Close</button>
+    <button class="hl-close-btn" onclick="document.getElementById('selToolbar').classList.remove('show');">✕</button>
   </div>
 </div>
 
@@ -907,31 +925,56 @@ function formatChapterText(rawText,fz,font){
   const lhMap={small:'1.8',medium:'1.9',large:'2.1'};
   const fs=fzMap[fz]||'15px',lh=lhMap[fz]||'1.9';
 
-  // Clean up the raw text: collapse excessive blank lines, trim
-  const blocks=rawText.split(/\n{2,}/).map(b=>b.trim()).filter(Boolean);
+  // Strip any leaked HTML tags from books.json (e.g. bible-verse-ref">Luke 4:18)
+  let clean=rawText
+    .replace(/bible-verse-ref">/g,'')
+    .replace(/<[^>]+>/g,'')
+    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+
+  // Split into lines
+  const rawLines=clean.split('\n');
+  let paragraphs=[];
+  let current=[];
+
+  rawLines.forEach(line=>{
+    const t=line.trim();
+    if(!t){
+      if(current.length){paragraphs.push(current.join(' '));current=[];}
+    } else {
+      current.push(t);
+    }
+  });
+  if(current.length)paragraphs.push(current.join(' '));
+
   let html='';
+  paragraphs.forEach(para=>{
+    if(!para)return;
 
-  blocks.forEach(block=>{
-    const lines=block.split('\n').map(l=>l.trim()).filter(Boolean);
-    lines.forEach(line=>{
-      if(!line)return;
-      // Detect subtitle: short, no sentence-ending punctuation, looks like a heading
-      const isSubtitle=
-        line.length<90&&
-        !/[.!?]$/.test(line)&&
-        (line===line.toUpperCase()||/^[A-Z][A-Za-z\s\-—:]{3,}$/.test(line))&&
-        line.split(' ').length<=12;
+    // Page numbers: lone digits or short digit strings → [N]
+    if(/^\d{1,3}$/.test(para)){
+      html+=`<div class="ch-page-num">[${para}]</div>`;
+      return;
+    }
 
-      if(isSubtitle){
-        html+=`<div class="ch-subtitle">${line}</div>`;
-      } else {
-        // Mark Bible refs
-        let processed=line.replace(BIBLE_PAT,m=>`<span class="bible-verse-ref">${m}</span>`);
-        // Mark quoted scripture
-        processed=processed.replace(/"([^"]{8,200})"/g,(m,inner)=>`"<span class="bible-verse-text">${inner}</span>"`);
-        html+=`<p style="font-size:${fs};line-height:${lh};font-family:'${font}',serif;">${processed}</p>`;
-      }
-    });
+    // Subtitle detection: short, no terminal punctuation, title-case or all-caps
+    const wordCount=para.split(' ').length;
+    const isSubtitle=
+      wordCount<=10&&
+      para.length<80&&
+      !/[.!?,;]$/.test(para)&&
+      (para===para.toUpperCase()||/^[A-Z][A-Za-z0-9 \-—:]{2,}$/.test(para));
+
+    if(isSubtitle){
+      html+=`<div class="ch-subtitle">${para}</div>`;
+    } else {
+      // Inline page numbers within paragraph e.g. "...sentence. 9 Next sentence"
+      let processed=para.replace(/\s+(\d{1,3})\s+(?=[A-Z])/g,(m,n)=>`<span class="ch-pg">[${n}]</span> `);
+      // Bible refs
+      processed=processed.replace(BIBLE_PAT,m=>`<span class="bible-verse-ref">${m}</span>`);
+      // Quoted scripture
+      processed=processed.replace(/"([^"]{8,200})"/g,(m,inner)=>`"<span class="bible-verse-text">${inner}</span>"`);
+      html+=`<p style="font-size:${fs};line-height:${lh};font-family:'${font}',serif;">${processed}</p>`;
+    }
   });
   return html||'<p style="color:#999;font-style:italic;">No content available.</p>';
 }
@@ -1125,7 +1168,10 @@ function noteFromSel(){
   }
   document.getElementById('selToolbar').classList.remove('show');
 }
-
+function applyFmt(cmd){
+  document.execCommand(cmd,false,null);
+  document.getElementById('selToolbar').classList.remove('show');
+}
 function setFontSize(sz){
   fontSize=sz;localStorage.setItem('dh_fontsize',sz);
   const fzMap={small:'13px',medium:'15px',large:'19px'};
