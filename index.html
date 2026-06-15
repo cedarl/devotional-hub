@@ -711,13 +711,14 @@ async function init(){
   applyTheme(settings.theme||'forest');
   fontSize=localStorage.getItem('dh_fontsize')||'medium';
   currentFont=localStorage.getItem('dh_font')||'Lora';
-  try{const r=await fetch('./books.json');booksData=await r.json();}catch{booksData={};}
   if(!settings.setupComplete)showOnboarding();
   else{
     showHome();scheduleNotifications();
     const cur=getSession(settings.watches||[]);
     if(cur)scheduleWatchShutdown(cur);
   }
+  // Load books data in background after UI is shown
+  try{const r=await fetch('./books.json');booksData=await r.json();}catch{booksData={};}
 }
 
 // ── Onboarding ────────────────────────────────────────────────
