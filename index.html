@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Devotional Hub">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;600&family=Georgia&display=swap" rel="stylesheet">
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'Lora',serif;min-height:100vh;display:flex;flex-direction:column;color:#fff;
@@ -84,8 +84,6 @@
     .greeting{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px;}
     .hero-title{font-family:'Playfair Display',serif;font-size:clamp(22px,6vw,32px);color:#fff;margin-bottom:4px;text-align:center;}
     .hero-sub{font-size:13px;color:rgba(255,255,255,0.6);font-style:italic;margin-bottom:24px;text-align:center;}
-
-    /* Book cards — normal */
     .book-card{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);
       border-radius:14px;padding:13px 16px;margin-bottom:9px;cursor:pointer;transition:all 0.2s;
       display:flex;align-items:center;gap:13px;}
@@ -94,26 +92,17 @@
     .book-meta{font-size:11px;color:rgba(255,255,255,0.5);}
     .prog-mini{height:3px;background:rgba(255,255,255,0.1);border-radius:3px;margin-top:5px;}
     .prog-mini-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#3ab56e,#6ee89a);}
-
-    /* Current watch book — strongly highlighted */
     .book-card.current-watch{
       background:linear-gradient(135deg,rgba(110,232,154,0.25) 0%,rgba(58,181,110,0.2) 100%);
       border:2px solid #6ee89a;
-      box-shadow:0 0 20px rgba(110,232,154,0.3), inset 0 0 20px rgba(110,232,154,0.05);
-    }
+      box-shadow:0 0 20px rgba(110,232,154,0.3),inset 0 0 20px rgba(110,232,154,0.05);}
     .book-card.current-watch .book-name{color:#6ee89a;}
     .book-card.current-watch .book-meta{color:rgba(110,232,154,0.8);}
-    .book-card.current-watch-badge{
-      display:inline-block;font-size:10px;letter-spacing:1px;text-transform:uppercase;
-      background:#6ee89a;color:#0a2215;border-radius:10px;padding:2px 8px;
-      margin-bottom:3px;font-weight:bold;}
-
-    /* Selected book (user tapped) */
-    .book-card.selected-book{
-      background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.4);}
+    .now-badge{display:inline-block;font-size:10px;letter-spacing:1px;text-transform:uppercase;
+      background:#6ee89a;color:#0a2215;border-radius:10px;padding:2px 8px;margin-bottom:3px;font-weight:bold;}
+    .book-card.selected-book{background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.4);}
 
     /* Verses screen */
-    .verse-screen-bg{background:linear-gradient(160deg,#0a1a2e 0%,#1a3a6e 40%,#2d5a9e 70%,#3a7abf 100%)!important;}
     .verse-card-item{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
       border-radius:12px;padding:14px 18px;margin-bottom:10px;}
     .verse-ref-lbl{font-size:12px;color:#7ab8f5;font-weight:600;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;}
@@ -122,54 +111,125 @@
       font-family:'Playfair Display',serif;font-size:15px;
       background:linear-gradient(90deg,#3a7abf,#7ab8f5);color:#fff;font-weight:bold;margin-top:8px;}
 
-    /* Study */
-    .study-header{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-    .study-book-title{font-family:'Playfair Display',serif;font-size:17px;color:#fff;}
-    .study-meta{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:3px;}
-    .progress-bar-wrap{width:100%;background:rgba(255,255,255,0.1);border-radius:6px;height:4px;margin-bottom:14px;}
-    .progress-bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#3ab56e,#6ee89a);transition:width 0.4s;}
-    .pinned-tabs{display:flex;gap:8px;width:100%;margin-bottom:10px;}
-    .pinned-tab{flex:1;padding:7px;border-radius:10px;border:1px solid rgba(255,255,255,0.2);
-      background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.6);font-size:11px;
-      cursor:pointer;text-align:center;transition:all 0.2s;}
-    .pinned-tab.active{background:rgba(110,232,154,0.15);border-color:#6ee89a;color:#6ee89a;}
-    .study-toolbar{display:flex;gap:6px;width:100%;margin-bottom:10px;flex-wrap:wrap;}
-    .tool-btn{padding:6px 12px;border-radius:18px;border:1px solid rgba(255,255,255,0.2);
-      background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.8);font-size:12px;cursor:pointer;transition:all 0.2s;}
-    .tool-btn.active{background:rgba(110,232,154,0.2);border-color:#6ee89a;color:#6ee89a;}
-    .chapter-card{width:100%;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);
-      border-radius:14px;padding:18px;margin-bottom:12px;}
-    .chapter-title{font-family:'Playfair Display',serif;font-size:17px;color:#fff;margin-bottom:12px;line-height:1.4;}
-    .chapter-text{color:rgba(255,255,255,0.88);line-height:1.9;font-size:15px;}
-    .chapter-text p{margin-bottom:14px;}
-    .highlight-yellow{background:rgba(255,220,50,0.3);border-radius:3px;padding:0 2px;}
-    .highlight-green{background:rgba(110,232,154,0.3);border-radius:3px;padding:0 2px;}
-    .highlight-pink{background:rgba(255,120,180,0.3);border-radius:3px;padding:0 2px;}
-    .sel-toolbar{position:fixed;background:rgba(20,40,30,0.97);border:1px solid rgba(255,255,255,0.2);
-      border-radius:10px;padding:7px 10px;display:none;gap:8px;z-index:500;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
-    .sel-toolbar.show{display:flex;align-items:center;}
-    .hl-btn{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);cursor:pointer;}
-    .hl-btn.yellow{background:#ffd832;}
-    .hl-btn.green{background:#6ee89a;}
-    .hl-btn.pink{background:#ff78b4;}
-    .hl-note-btn{padding:3px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.3);
-      background:transparent;color:#fff;cursor:pointer;font-size:12px;}
-    .notes-panel{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
-      border-radius:14px;padding:14px;margin-bottom:10px;display:none;}
+    /* ═══ STUDY LAYOUT ═══ */
+    #studyScreen{
+      display:none;flex-direction:column;width:100%;max-width:100%;padding:0;
+      position:fixed;top:0;left:0;right:0;bottom:0;z-index:50;
+      background:#fff;overflow:hidden;}
+    #studyScreen.active{display:flex;}
+
+    /* Sticky study top bar */
+    .study-topbar{
+      position:sticky;top:0;z-index:100;
+      background:#1a4a2e;
+      border-bottom:2px solid #3ab56e;
+      padding:0;}
+
+    .study-topbar-row1{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:10px 14px 6px;}
+    .study-book-title{font-family:'Playfair Display',serif;font-size:15px;color:#fff;font-weight:700;}
+    .study-meta{font-size:11px;color:rgba(255,255,255,0.6);}
+
+    .progress-bar-wrap{height:3px;background:rgba(255,255,255,0.15);}
+    .progress-bar-fill{height:100%;background:linear-gradient(90deg,#3ab56e,#6ee89a);transition:width 0.4s;}
+
+    /* Pinned tabs */
+    .pinned-tabs{display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,0.15);}
+    .pinned-tab{flex:1;padding:8px 6px;border:none;background:transparent;
+      color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;text-align:center;
+      border-bottom:2px solid transparent;transition:all 0.2s;font-family:'Lora',serif;}
+    .pinned-tab.active{color:#6ee89a;border-bottom-color:#6ee89a;background:rgba(110,232,154,0.08);}
+
+    /* Toolbar */
+    .study-toolbar{
+      display:flex;gap:6px;padding:7px 10px;overflow-x:auto;
+      background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.1);}
+    .study-toolbar::-webkit-scrollbar{display:none;}
+    .tool-btn{padding:5px 11px;border-radius:16px;border:1px solid rgba(255,255,255,0.25);
+      background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-size:12px;
+      cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0;}
+    .tool-btn.active{background:rgba(110,232,154,0.25);border-color:#6ee89a;color:#6ee89a;}
+
+    /* Study content area — scrollable */
+    .study-content-wrap{flex:1;overflow-y:auto;background:#fff;}
+
+    /* Notes panel — inside scroll area */
+    .notes-panel{background:#f8f9fa;border-bottom:2px solid #3ab56e;padding:14px;display:none;}
     .notes-panel.open{display:block;}
-    .notes-panel h4{font-family:'Playfair Display',serif;font-size:14px;color:#fff;margin-bottom:8px;}
-    .note-textarea{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);
-      border-radius:10px;padding:10px;color:#fff;font-family:'Lora',serif;font-size:13px;
+    .notes-panel h4{font-family:'Playfair Display',serif;font-size:14px;color:#1a4a2e;margin-bottom:8px;}
+    .note-textarea{width:100%;background:#fff;border:1px solid #ccc;
+      border-radius:8px;padding:10px;color:#222;font-family:'Lora',serif;font-size:13px;
       resize:none;line-height:1.7;min-height:90px;}
     .note-save{margin-top:6px;padding:7px 18px;border-radius:20px;border:none;cursor:pointer;
       background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;font-weight:bold;font-size:12px;}
-    .note-item{padding:9px 12px;border-radius:10px;margin-bottom:6px;
-      background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
-      font-size:12px;color:rgba(255,255,255,0.7);cursor:pointer;}
-    .chapter-nav{display:flex;gap:8px;width:100%;margin-top:4px;}
-    .chapter-nav button{flex:1;padding:12px;border-radius:24px;border:1px solid rgba(255,255,255,0.2);
-      background:rgba(255,255,255,0.07);color:#fff;font-size:13px;cursor:pointer;}
-    .chapter-nav button.primary{background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;font-weight:bold;border:none;}
+    .note-item{padding:9px 12px;border-radius:8px;margin-bottom:6px;
+      background:#fff;border:1px solid #e0e0e0;font-size:12px;color:#444;cursor:pointer;}
+
+    /* Chapter content */
+    .chapter-card{padding:20px 18px 30px;background:#fff;}
+    .chapter-title-main{
+      font-family:'Playfair Display',serif;font-size:20px;color:#1a1a1a;
+      margin-bottom:18px;line-height:1.4;border-bottom:2px solid #3ab56e;padding-bottom:10px;}
+    .chapter-text{color:#111;line-height:2.0;}
+    .chapter-text p{margin-bottom:16px;}
+
+    /* Subtitle formatting inside chapter */
+    .ch-subtitle{
+      font-family:'Playfair Display',serif;font-size:16px;font-weight:700;
+      color:#1a4a2e;margin:22px 0 10px;padding-left:10px;
+      border-left:4px solid #3ab56e;line-height:1.4;}
+
+    /* Bible verse styling inside chapter */
+    .bible-verse-ref{
+      font-size:11px;font-weight:700;color:#1a5276;
+      text-transform:uppercase;letter-spacing:0.5px;vertical-align:super;margin-right:2px;}
+    .bible-verse-text{color:#1a5276;font-style:italic;font-weight:600;}
+
+    /* Nav bar at bottom of content */
+    .chapter-nav-bar{
+      display:flex;gap:8px;padding:14px;background:#f4f4f4;
+      border-top:1px solid #ddd;position:sticky;bottom:0;}
+    .chapter-nav-bar button{flex:1;padding:12px;border-radius:24px;
+      border:1px solid #ccc;background:#fff;color:#333;font-size:13px;cursor:pointer;}
+    .chapter-nav-bar button.primary{
+      background:linear-gradient(90deg,#3ab56e,#6ee89a);color:#0a2215;
+      font-weight:bold;border:none;}
+    .back-home-btn{width:calc(100% - 28px);margin:0 14px 14px;padding:11px;border-radius:24px;
+      border:1px solid #ccc;background:#fff;color:#555;font-size:13px;cursor:pointer;}
+
+    /* Highlight colors */
+    .hl-yellow{background:#fff176;border-radius:2px;padding:0 1px;}
+    .hl-green{background:#b9f6ca;border-radius:2px;padding:0 1px;}
+    .hl-blue{background:#bbdefb;border-radius:2px;padding:0 1px;}
+    .hl-pink{background:#f8bbd0;border-radius:2px;padding:0 1px;}
+    .hl-orange{background:#ffe0b2;border-radius:2px;padding:0 1px;}
+    .hl-purple{background:#e1bee7;border-radius:2px;padding:0 1px;}
+    .hl-red{background:#ffcdd2;border-radius:2px;padding:0 1px;}
+    .hl-teal{background:#b2dfdb;border-radius:2px;padding:0 1px;}
+    .hl-lime{background:#f0f4c3;border-radius:2px;padding:0 1px;}
+    .hl-cyan{background:#b2ebf2;border-radius:2px;padding:0 1px;}
+    /* 5 shades */
+    .hl-gold{background:#ffd54f;border-radius:2px;padding:0 1px;}
+    .hl-sage{background:#a5d6a7;border-radius:2px;padding:0 1px;}
+    .hl-lavender{background:#ce93d8;border-radius:2px;padding:0 1px;}
+    .hl-peach{background:#ffab91;border-radius:2px;padding:0 1px;}
+    .hl-sky{background:#81d4fa;border-radius:2px;padding:0 1px;}
+
+    /* Highlight / font toolbar popup */
+    .sel-toolbar{position:fixed;background:#1a1a1a;border:1px solid #444;
+      border-radius:12px;padding:10px 12px;display:none;flex-direction:column;
+      gap:8px;z-index:9999;box-shadow:0 6px 24px rgba(0,0,0,0.5);min-width:240px;}
+    .sel-toolbar.show{display:flex;}
+    .sel-toolbar-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+    .sel-toolbar-label{font-size:10px;color:#aaa;letter-spacing:1px;text-transform:uppercase;width:100%;}
+    .hl-dot{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid rgba(255,255,255,0.2);flex-shrink:0;}
+    .hl-dot:hover{transform:scale(1.2);border-color:#fff;}
+    .font-style-btn{padding:4px 10px;border-radius:8px;border:1px solid #555;
+      background:transparent;color:#ddd;cursor:pointer;font-size:12px;}
+    .font-style-btn:hover{background:#333;}
+    .hl-note-btn{padding:4px 12px;border-radius:8px;border:1px solid #6ee89a;
+      background:transparent;color:#6ee89a;cursor:pointer;font-size:12px;}
 
     /* Complete */
     .sparkle{position:fixed;z-index:2;pointer-events:none;font-size:20px;opacity:0;animation:sparkle 3s ease-in-out infinite;}
@@ -219,11 +279,13 @@
     .ringtone-name{font-size:12px;color:#6ee89a;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
     .ringtone-btn{padding:5px 12px;border-radius:14px;border:1px solid rgba(255,255,255,0.3);
       background:transparent;color:#fff;font-size:12px;cursor:pointer;white-space:nowrap;}
-
-    /* Watch ended banner */
-    .watch-ended-banner{position:fixed;top:0;left:0;width:100%;z-index:999;
-      background:rgba(255,80,80,0.95);color:#fff;text-align:center;padding:12px;
+    .watch-ended-banner{position:fixed;top:0;left:0;width:100%;z-index:9999;
+      background:rgba(200,50,50,0.97);color:#fff;text-align:center;padding:13px;
       font-size:13px;font-weight:bold;display:none;}
+
+    /* Daily scheduler badge */
+    .day-badge{display:inline-block;font-size:10px;letter-spacing:1px;padding:3px 10px;
+      border-radius:10px;background:rgba(255,255,255,0.15);color:#fff;margin-bottom:6px;}
 
     @media(max-width:400px){.main{padding:14px 10px 90px;}.hero-title{font-size:20px;}}
   </style>
@@ -311,6 +373,7 @@
   <div id="homeScreen" class="screen">
     <div class="greeting" id="greetingEl">Good Morning</div>
     <div class="hero-title" id="heroTitle">Morning Watch</div>
+    <div class="day-badge" id="todayBadge"></div>
     <div class="hero-sub" id="heroSub">03:00 – 09:00 · Today's reading</div>
     <div id="bookCards" style="width:100%;max-width:520px;"></div>
     <button class="btn-primary" onclick="beginStudy()">Begin Study →</button>
@@ -324,48 +387,8 @@
       <div style="font-size:12px;color:rgba(122,184,245,0.8);" id="versesSubtitle"></div>
     </div>
     <div id="versesList" style="width:100%;margin-top:12px;"></div>
-    <button class="proceed-btn" onclick="proceedToStudy()" style="margin-top:8px;">Read Chapter →</button>
+    <button class="proceed-btn" onclick="proceedToStudy()">Read Chapter →</button>
     <button class="btn-secondary" onclick="proceedToStudy()">Skip verses →</button>
-  </div>
-
-  <!-- ═══ STUDY ═══ -->
-  <div id="studyScreen" class="screen">
-    <div class="study-header">
-      <div>
-        <div class="study-book-title" id="studyBookTitle"></div>
-        <div class="study-meta" id="studyMeta"></div>
-      </div>
-      <button class="tb-btn" onclick="showHome()" style="font-size:13px;">← Home</button>
-    </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="studyProgress" style="width:0%"></div>
-    </div>
-    <div class="pinned-tabs" id="pinnedTabs"></div>
-    <div class="study-toolbar">
-      <button class="tool-btn" id="btnNote" onclick="toggleNotes()">📝 Notes</button>
-      <button class="tool-btn" id="btnHL" onclick="toggleHL()">🖊 Highlight</button>
-      <button class="tool-btn" id="fzS" onclick="setFontSize('small')">A</button>
-      <button class="tool-btn" id="fzM" onclick="setFontSize('medium')" style="font-size:14px;">A</button>
-      <button class="tool-btn" id="fzL" onclick="setFontSize('large')" style="font-size:18px;">A</button>
-    </div>
-    <div class="notes-panel" id="notesPanel">
-      <h4>📝 My Notes</h4>
-      <textarea class="note-textarea" id="noteText" placeholder="Write your reflections or prayers here..."></textarea>
-      <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
-        <button class="note-save" onclick="saveNote()">Save Note</button>
-        <span id="noteSaved" style="font-size:12px;color:#6ee89a;display:none;">✓ Saved</span>
-      </div>
-      <div id="notesList" style="margin-top:10px;"></div>
-    </div>
-    <div class="chapter-card">
-      <div class="chapter-title" id="chapterTitle"></div>
-      <div class="chapter-text" id="chapterText">Loading...</div>
-    </div>
-    <div class="chapter-nav">
-      <button id="prevBtn" onclick="prevChapter()">← Prev</button>
-      <button class="primary" id="nextBtn" onclick="nextChapter()">Next →</button>
-    </div>
-    <button class="btn-secondary" style="margin-top:10px;" onclick="showHome()">← Back to Books</button>
   </div>
 
   <!-- ═══ COMPLETE ═══ -->
@@ -389,12 +412,97 @@
 
 </div>
 
-<!-- Highlight toolbar -->
+<!-- ═══ STUDY SCREEN (full screen overlay) ═══ -->
+<div id="studyScreen">
+
+  <!-- Sticky top bar -->
+  <div class="study-topbar">
+    <div class="study-topbar-row1">
+      <div>
+        <div class="study-book-title" id="studyBookTitle"></div>
+        <div class="study-meta" id="studyMeta"></div>
+      </div>
+      <button onclick="showHome()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;border-radius:16px;padding:5px 12px;cursor:pointer;font-size:12px;">← Home</button>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="studyProgress" style="width:0%"></div>
+    </div>
+    <div class="pinned-tabs" id="pinnedTabs"></div>
+    <div class="study-toolbar" id="studyToolbar">
+      <button class="tool-btn" id="btnNote" onclick="toggleNotes()">📝 Notes</button>
+      <button class="tool-btn" id="btnHL" onclick="toggleHL()">🖊 Highlight</button>
+      <button class="tool-btn" id="fzS" onclick="setFontSize('small')">A–</button>
+      <button class="tool-btn" id="fzM" onclick="setFontSize('medium')">A</button>
+      <button class="tool-btn" id="fzL" onclick="setFontSize('large')">A+</button>
+    </div>
+  </div>
+
+  <!-- Scrollable content -->
+  <div class="study-content-wrap" id="studyContentWrap">
+
+    <!-- Notes panel -->
+    <div class="notes-panel" id="notesPanel">
+      <h4>📝 My Notes — <span id="noteChapterLabel"></span></h4>
+      <textarea class="note-textarea" id="noteText" placeholder="Write your reflections or prayers here..."></textarea>
+      <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
+        <button class="note-save" onclick="saveNote()">Save Note</button>
+        <span id="noteSaved" style="font-size:12px;color:#1a4a2e;display:none;">✓ Saved</span>
+      </div>
+      <div id="notesList" style="margin-top:10px;"></div>
+    </div>
+
+    <!-- Chapter content -->
+    <div class="chapter-card">
+      <div class="chapter-title-main" id="chapterTitle"></div>
+      <div class="chapter-text" id="chapterText">Loading...</div>
+    </div>
+
+    <!-- Nav -->
+    <div class="chapter-nav-bar">
+      <button id="prevBtn" onclick="prevChapter()">← Prev</button>
+      <button class="primary" id="nextBtn" onclick="nextChapter()">Next →</button>
+    </div>
+    <button class="back-home-btn" onclick="showHome()">← Back to Books</button>
+
+  </div>
+</div>
+
+<!-- Highlight / font popup -->
 <div class="sel-toolbar" id="selToolbar">
-  <button class="hl-btn yellow" onclick="applyHL('yellow')"></button>
-  <button class="hl-btn green"  onclick="applyHL('green')"></button>
-  <button class="hl-btn pink"   onclick="applyHL('pink')"></button>
-  <button class="hl-note-btn"   onclick="noteFromSel()">+ Note</button>
+  <div class="sel-toolbar-label">Highlight color</div>
+  <div class="sel-toolbar-row">
+    <div class="hl-dot" style="background:#fff176;" title="Yellow" onclick="applyHL('hl-yellow')"></div>
+    <div class="hl-dot" style="background:#b9f6ca;" title="Green" onclick="applyHL('hl-green')"></div>
+    <div class="hl-dot" style="background:#bbdefb;" title="Blue" onclick="applyHL('hl-blue')"></div>
+    <div class="hl-dot" style="background:#f8bbd0;" title="Pink" onclick="applyHL('hl-pink')"></div>
+    <div class="hl-dot" style="background:#ffe0b2;" title="Orange" onclick="applyHL('hl-orange')"></div>
+    <div class="hl-dot" style="background:#e1bee7;" title="Purple" onclick="applyHL('hl-purple')"></div>
+    <div class="hl-dot" style="background:#ffcdd2;" title="Red" onclick="applyHL('hl-red')"></div>
+    <div class="hl-dot" style="background:#b2dfdb;" title="Teal" onclick="applyHL('hl-teal')"></div>
+    <div class="hl-dot" style="background:#f0f4c3;" title="Lime" onclick="applyHL('hl-lime')"></div>
+    <div class="hl-dot" style="background:#b2ebf2;" title="Cyan" onclick="applyHL('hl-cyan')"></div>
+  </div>
+  <div class="sel-toolbar-label" style="margin-top:4px;">Shades</div>
+  <div class="sel-toolbar-row">
+    <div class="hl-dot" style="background:#ffd54f;" title="Gold" onclick="applyHL('hl-gold')"></div>
+    <div class="hl-dot" style="background:#a5d6a7;" title="Sage" onclick="applyHL('hl-sage')"></div>
+    <div class="hl-dot" style="background:#ce93d8;" title="Lavender" onclick="applyHL('hl-lavender')"></div>
+    <div class="hl-dot" style="background:#ffab91;" title="Peach" onclick="applyHL('hl-peach')"></div>
+    <div class="hl-dot" style="background:#81d4fa;" title="Sky" onclick="applyHL('hl-sky')"></div>
+  </div>
+  <div class="sel-toolbar-label" style="margin-top:4px;">Font style</div>
+  <div class="sel-toolbar-row">
+    <button class="font-style-btn" style="font-family:'Lora',serif;" onclick="applyFontStyle('Lora')">Lora</button>
+    <button class="font-style-btn" style="font-family:'Playfair Display',serif;" onclick="applyFontStyle('Playfair Display')">Playfair</button>
+    <button class="font-style-btn" style="font-family:'Merriweather',serif;" onclick="applyFontStyle('Merriweather')">Merriweather</button>
+    <button class="font-style-btn" style="font-family:'Open Sans',sans-serif;" onclick="applyFontStyle('Open Sans')">Open Sans</button>
+    <button class="font-style-btn" style="font-family:Georgia,serif;" onclick="applyFontStyle('Georgia')">Georgia</button>
+  </div>
+  <div class="sel-toolbar-row" style="margin-top:4px;">
+    <button class="hl-note-btn" onclick="noteFromSel()">+ Add to Notes</button>
+    <button class="font-style-btn" onclick="clearHL()">✕ Clear</button>
+    <button class="font-style-btn" onclick="document.getElementById('selToolbar').classList.remove('show');">Close</button>
+  </div>
 </div>
 
 <!-- Next book overlay -->
@@ -462,48 +570,45 @@
 <audio id="ringAudio" loop></audio>
 
 <script>
-const BOOKS_META = [
-  {id:'PP',  title:'Patriarchs & Prophets',  author:'E.G. White', chapters:80},
-  {id:'STC', title:'Steps to Christ',         author:'E.G. White', chapters:13},
-  {id:'COL', title:"Christ's Object Lessons", author:'E.G. White', chapters:31},
-  {id:'DA',  title:'The Desire of Ages',      author:'E.G. White', chapters:87},
-  {id:'GC',  title:'The Great Controversy',   author:'E.G. White', chapters:42},
-  {id:'PK',  title:'Prophets and Kings',      author:'E.G. White', chapters:57},
-  {id:'PDF_EN_CHS', title:'en_ChS', author:'Custom', chapters:13},
+const BOOKS_META=[
+  {id:'PP',  title:'Patriarchs & Prophets',  author:'E.G. White',chapters:80},
+  {id:'STC', title:'Steps to Christ',         author:'E.G. White',chapters:13},
+  {id:'COL', title:"Christ's Object Lessons", author:'E.G. White',chapters:31},
+  {id:'DA',  title:'The Desire of Ages',      author:'E.G. White',chapters:87},
+  {id:'GC',  title:'The Great Controversy',   author:'E.G. White',chapters:42},
+  {id:'PK',  title:'Prophets and Kings',      author:'E.G. White',chapters:57},
+  {id:'PDF_EN_CHS',title:'en_ChS',author:'Custom',chapters:13},
 ];
 
-const THEMES = [
-  {id:'forest', grad:'linear-gradient(160deg,#0a2215 0%,#1a4a2e 40%,#2d6e4a 70%,#3a8a5c 100%)'},
+const THEMES=[
+  {id:'forest',grad:'linear-gradient(160deg,#0a2215 0%,#1a4a2e 40%,#2d6e4a 70%,#3a8a5c 100%)'},
   {id:'mountain',grad:'linear-gradient(180deg,#0d1d3a 0%,#1e3a6e 35%,#3d6090 60%,#7a9cc0 85%,#b8ccd8 100%)'},
-  {id:'ocean',  grad:'linear-gradient(180deg,#020d1a 0%,#0a3060 40%,#1a6090 65%,#2a90b0 100%)'},
-  {id:'sunset', grad:'linear-gradient(160deg,#1a0505 0%,#6a1010 30%,#c04020 55%,#e08010 80%,#f0c040 100%)'},
-  {id:'starry', grad:'linear-gradient(180deg,#020208 0%,#0a0a20 40%,#101040 70%,#1a1a60 100%)'},
-  {id:'autumn', grad:'linear-gradient(160deg,#1a0800 0%,#6a2000 35%,#c05000 60%,#e09020 85%,#f0c060 100%)'},
+  {id:'ocean',grad:'linear-gradient(180deg,#020d1a 0%,#0a3060 40%,#1a6090 65%,#2a90b0 100%)'},
+  {id:'sunset',grad:'linear-gradient(160deg,#1a0505 0%,#6a1010 30%,#c04020 55%,#e08010 80%,#f0c040 100%)'},
+  {id:'starry',grad:'linear-gradient(180deg,#020208 0%,#0a0a20 40%,#101040 70%,#1a1a60 100%)'},
+  {id:'autumn',grad:'linear-gradient(160deg,#1a0800 0%,#6a2000 35%,#c05000 60%,#e09020 85%,#f0c060 100%)'},
 ];
 
-const VERSES_POOL = [
-  {text:'"Your word is a lamp to my feet and a light to my path."', ref:'Psalm 119:105'},
-  {text:'"Be still, and know that I am God."', ref:'Psalm 46:10'},
-  {text:'"I can do all things through Christ who strengthens me."', ref:'Philippians 4:13'},
-  {text:'"The LORD is my shepherd; I shall not want."', ref:'Psalm 23:1'},
-  {text:'"Trust in the LORD with all your heart."', ref:'Proverbs 3:5'},
-  {text:'"Come to me, all who labor and are heavy laden, and I will give you rest."', ref:'Matthew 11:28'},
-  {text:'"For I know the plans I have for you, declares the LORD."', ref:'Jeremiah 29:11'},
-  {text:'"The steadfast love of the LORD never ceases."', ref:'Lamentations 3:22'},
-  {text:'"In the morning, LORD, you hear my voice; in the morning I lay my requests before you."', ref:'Psalm 5:3'},
-  {text:'"Evening, morning and noon I cry out in distress, and he hears my voice."', ref:'Psalm 55:17'},
-  {text:'"This is the day that the LORD has made; let us rejoice and be glad in it."', ref:'Psalm 118:24'},
-  {text:'"The LORD watches over you — the LORD is your shade at your right hand."', ref:'Psalm 121:5'},
+const VERSES_POOL=[
+  {text:'"Your word is a lamp to my feet and a light to my path."',ref:'Psalm 119:105'},
+  {text:'"Be still, and know that I am God."',ref:'Psalm 46:10'},
+  {text:'"I can do all things through Christ who strengthens me."',ref:'Philippians 4:13'},
+  {text:'"The LORD is my shepherd; I shall not want."',ref:'Psalm 23:1'},
+  {text:'"Trust in the LORD with all your heart."',ref:'Proverbs 3:5'},
+  {text:'"Come to me, all who labor and are heavy laden, and I will give you rest."',ref:'Matthew 11:28'},
+  {text:'"For I know the plans I have for you, declares the LORD."',ref:'Jeremiah 29:11'},
+  {text:'"The steadfast love of the LORD never ceases."',ref:'Lamentations 3:22'},
+  {text:'"In the morning, LORD, you hear my voice."',ref:'Psalm 5:3'},
+  {text:'"Evening, morning and noon I cry out in distress, and he hears my voice."',ref:'Psalm 55:17'},
+  {text:'"This is the day that the LORD has made; let us rejoice and be glad in it."',ref:'Psalm 118:24'},
+  {text:'"The LORD watches over you."',ref:'Psalm 121:5'},
 ];
 
-let settings={}, booksData={};
-let obMorningBook=null, obEveningBook=null, obStep=0;
-let activeBookId=null, pinnedChapters=[], activePinnedIdx=0;
-let hlMode=false, notes={}, fontSize='medium';
-let ringFiles={morning:'',evening:''};
-let selectedNextBook=null;
-let watchShutdownTimer=null;
-let currentWatchSession=null;
+let settings={},booksData={};
+let obMorningBook=null,obEveningBook=null,obStep=0;
+let activeBookId=null,pinnedChapters=[],activePinnedIdx=0;
+let hlMode=false,notes={},fontSize='medium',currentFont='Lora';
+let selectedNextBook=null,watchShutdownTimer=null,currentWatchSession=null;
 
 // ── Storage ───────────────────────────────────────────────────
 const S={
@@ -515,12 +620,38 @@ function saveSettingsObj(s){S.set('dh_settings',s);}
 function getProgress(bid){return S.get('dh_prog_'+bid)||{chapter:0,read:[]};}
 function saveProgress(bid,ch,readArr){
   const p=getProgress(bid);
-  if(ch!==undefined) p.chapter=ch;
-  if(readArr!==undefined) p.read=readArr;
+  if(ch!==undefined)p.chapter=ch;
+  if(readArr!==undefined)p.read=readArr;
   S.set('dh_prog_'+bid,p);
 }
 function getNotes(bid){return S.get('dh_notes_'+bid)||{};}
 function saveNoteStore(bid,n){S.set('dh_notes_'+bid,n);}
+
+// ── Daily chapter scheduler ───────────────────────────────────
+// Each day gets the next 2 sequential chapters, tracked from day 0 of reading
+function getDayIndex(){
+  const startKey='dh_start_'+activeBookId;
+  let start=localStorage.getItem(startKey);
+  if(!start){
+    start=new Date().toDateString();
+    localStorage.setItem(startKey,start);
+  }
+  const startDate=new Date(start);
+  const today=new Date();
+  startDate.setHours(0,0,0,0);today.setHours(0,0,0,0);
+  return Math.floor((today-startDate)/(1000*60*60*24));
+}
+
+function getDailyChapters(bookId,totalChapters){
+  const dayIdx=getDayIndex();
+  const ch0=(dayIdx*2)%totalChapters;
+  const ch1=(ch0+1)%totalChapters;
+  return [ch0,ch1];
+}
+
+function formatDate(d){
+  return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+}
 
 // ── Themes ────────────────────────────────────────────────────
 function applyTheme(id){
@@ -528,49 +659,33 @@ function applyTheme(id){
   document.body.style.background=t.grad;
 }
 
-// ── Session detection ─────────────────────────────────────────
+// ── Session ───────────────────────────────────────────────────
 function getSession(watches){
-  const now=new Date(), cur=now.getHours()*60+now.getMinutes();
+  const now=new Date(),cur=now.getHours()*60+now.getMinutes();
   const toMin=t=>{const[h,m]=t.split(':').map(Number);return h*60+m;};
-  for(const w of watches) if(cur>=toMin(w.start)&&cur<toMin(w.end)) return w;
-  return null; // outside all watch windows
+  for(const w of watches)if(cur>=toMin(w.start)&&cur<toMin(w.end))return w;
+  return null;
 }
-function getAnySession(watches){ return getSession(watches)||watches[0]; }
+function getAnySession(watches){return getSession(watches)||watches[0];}
 
-// ── Auto-shutdown at watch end ────────────────────────────────
+// ── Shutdown timer ────────────────────────────────────────────
 function scheduleWatchShutdown(watch){
-  if(watchShutdownTimer) clearTimeout(watchShutdownTimer);
+  if(watchShutdownTimer)clearTimeout(watchShutdownTimer);
   const now=new Date();
-  const [eh,em]=watch.end.split(':').map(Number);
-  const endTime=new Date(); endTime.setHours(eh,em,0,0);
-  if(endTime<=now) return; // already ended
+  const[eh,em]=watch.end.split(':').map(Number);
+  const endTime=new Date();endTime.setHours(eh,em,0,0);
+  if(endTime<=now)return;
   const ms=endTime-now;
   watchShutdownTimer=setTimeout(()=>{
-    // Show banner instead of closing (PWA can't force close)
     const banner=document.getElementById('watchEndedBanner');
     banner.style.display='block';
     stopRingtone();
-    // Auto-navigate to complete screen after 3 seconds
     setTimeout(()=>{
       banner.style.display='none';
-      if(activeBookId) showComplete();
+      if(activeBookId)showComplete();
       else showHome();
     },3000);
-  }, ms);
-}
-
-// ── Pinned chapters (2 per watch, rotating daily) ─────────────
-function getPinnedChapters(bookId,totalChapters){
-  const key='dh_pinned_'+bookId;
-  const today=new Date().toDateString();
-  let stored=S.get(key);
-  if(stored&&stored.date===today) return stored.pins;
-  const last=(stored&&stored.pins)?stored.pins:[totalChapters-2,totalChapters-1];
-  const next0=(last[last.length-1]+1)%totalChapters;
-  const next1=(next0+1)%totalChapters;
-  const pins=[next0,next1];
-  S.set(key,{date:today,pins});
-  return pins;
+  },ms);
 }
 
 // ── Init ──────────────────────────────────────────────────────
@@ -578,16 +693,15 @@ async function init(){
   settings=loadSettings();
   applyTheme(settings.theme||'forest');
   fontSize=localStorage.getItem('dh_fontsize')||'medium';
-  ringFiles=settings.ringtones||{morning:'',evening:''};
+  currentFont=localStorage.getItem('dh_font')||'Lora';
   try{const r=await fetch('./books.json');booksData=await r.json();}catch{booksData={};}
-  if(!settings.setupComplete) showOnboarding();
+  if(!settings.setupComplete)showOnboarding();
   else{
     showHome();
     scheduleNotifications();
-    // Schedule shutdown if currently in a watch window
     const watches=settings.watches||[];
     const cur=getSession(watches);
-    if(cur) scheduleWatchShutdown(cur);
+    if(cur)scheduleWatchShutdown(cur);
   }
 }
 
@@ -595,7 +709,10 @@ async function init(){
 function showOnboarding(){
   document.getElementById('sessionBadge').textContent='First-time Setup';
   document.getElementById('onboarding').style.display='flex';
-  ['homeScreen','versesScreen','studyScreen','completeScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  ['homeScreen','versesScreen','studyScreen','completeScreen'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.classList.remove('active');
+  });
   buildObBooks();
 }
 function obGo(n){
@@ -606,22 +723,22 @@ function obGo(n){
   document.getElementById('obStep'+n).classList.add('active');
   for(let i=0;i<4;i++){
     document.getElementById('dot'+i).classList.toggle('active',i===n);
-    if(i<n) document.getElementById('dot'+i).classList.add('done');
+    if(i<n)document.getElementById('dot'+i).classList.add('done');
   }
-  if(n===3) buildObSummary();
+  if(n===3)buildObSummary();
 }
 function buildObBooks(){
   ['obMorningBooks','obEveningBooks'].forEach((gId,idx)=>{
-    const g=document.getElementById(gId); g.innerHTML='';
+    const g=document.getElementById(gId);g.innerHTML='';
     BOOKS_META.forEach(bk=>{
-      const d=document.createElement('div'); d.className='book-opt';
+      const d=document.createElement('div');d.className='book-opt';
       d.innerHTML=`<span style="font-size:20px;">📖</span>
         <div><div style="font-size:14px;color:#fff;">${bk.title}</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);">${bk.author} · ${bk.chapters} ch</div></div>`;
       d.onclick=()=>{
         g.querySelectorAll('.book-opt').forEach(o=>o.classList.remove('selected'));
         d.classList.add('selected');
-        if(idx===0) obMorningBook=bk.id; else obEveningBook=bk.id;
+        if(idx===0)obMorningBook=bk.id;else obEveningBook=bk.id;
         document.getElementById('obBtnNext2').disabled=!(obMorningBook&&obEveningBook);
       };
       g.appendChild(d);
@@ -656,14 +773,15 @@ function finishOnboarding(){
     ]
   };
   saveSettingsObj(settings);
-  scheduleNotifications(); showHome();
+  scheduleNotifications();showHome();
 }
 
 // ── Home ──────────────────────────────────────────────────────
 let selectedBook=null;
 function showHome(){
   document.getElementById('onboarding').style.display='none';
-  ['versesScreen','studyScreen','completeScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById('studyScreen').classList.remove('active');
+  ['versesScreen','completeScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
   document.getElementById('homeScreen').classList.add('active');
   stopRingtone();
   settings=loadSettings();
@@ -673,56 +791,51 @@ function showHome(){
   const cur=currentWatchSession||watches[0];
   const isEv=cur&&cur.id==='evening';
   const inWindow=currentWatchSession!==null;
+  const today=new Date();
 
   document.getElementById('greetingEl').textContent=isEv?'Good Evening':'Good Morning';
   document.getElementById('heroTitle').textContent=cur?cur.label:(isEv?'Evening Watch':'Morning Watch');
+  document.getElementById('todayBadge').textContent=formatDate(today);
   document.getElementById('heroSub').textContent=inWindow
     ?(cur.start+' – '+cur.end+' · Watch is active now')
     :(cur?(cur.start+' – '+cur.end+' · Next watch'):'');
   document.getElementById('sessionBadge').textContent=isEv?'🌙 Evening Watch':'🌅 Morning Watch';
 
-  buildBookCards(watches, cur, inWindow);
-
-  // Play ringtone if in watch window
+  buildBookCards(watches,cur,inWindow);
   if(inWindow&&settings.ringtones&&settings.ringtones[cur.id]){
     playRingtoneURL(settings.ringtones[cur.id]);
   }
-  // Schedule shutdown
-  if(inWindow) scheduleWatchShutdown(cur);
+  if(inWindow)scheduleWatchShutdown(cur);
 }
 
-function buildBookCards(watches, curWatch, inWindow){
-  const container=document.getElementById('bookCards'); container.innerHTML='';
+function buildBookCards(watches,curWatch,inWindow){
+  const container=document.getElementById('bookCards');container.innerHTML='';
   const currentBookId=curWatch?curWatch.book:'PP';
-
   BOOKS_META.forEach((bk,i)=>{
     const prog=getProgress(bk.id);
     const pct=Math.round((prog.chapter/bk.chapters)*100);
     const isCurrentWatch=bk.id===currentBookId&&inWindow;
+
+    // Get today's chapters for preview
+    activeBookId=bk.id;
+    const todayChaps=getDailyChapters(bk.id,bk.chapters);
+    activeBookId=currentBookId; // restore
+
     const div=document.createElement('div');
-
-    // Strong highlight for current watch book
-    if(isCurrentWatch){
-      div.className='book-card current-watch';
-    } else {
-      div.className='book-card';
-    }
-
+    div.className='book-card'+(isCurrentWatch?' current-watch':'');
     div.innerHTML=`<div style="font-size:24px;">${isCurrentWatch?'📖':'📘'}</div>
       <div style="flex:1;">
-        ${isCurrentWatch?'<div class="book-card-current-watch-badge">▶ Now Reading</div>':''}
+        ${isCurrentWatch?'<div class="now-badge">▶ Now Reading</div>':''}
         <div class="book-name">${bk.title}</div>
-        <div class="book-meta">${bk.author} · Ch ${prog.chapter+1}/${bk.chapters} · ${pct}% read</div>
+        <div class="book-meta">${bk.author} · Today: Ch ${todayChaps[0]+1} & ${todayChaps[1]+1} · ${pct}% done</div>
         <div class="prog-mini"><div class="prog-mini-fill" style="width:${pct}%"></div></div>
       </div>`;
-
     div.onclick=()=>{
       document.querySelectorAll('.book-card').forEach(c=>c.classList.remove('selected-book'));
-      div.classList.add('selected-book');
-      selectedBook=bk.id;
+      div.classList.add('selected-book');selectedBook=bk.id;
     };
     container.appendChild(div);
-    if(bk.id===currentBookId) selectedBook=bk.id;
+    if(bk.id===currentBookId)selectedBook=bk.id;
   });
 }
 
@@ -730,19 +843,18 @@ function beginStudy(){
   const bookId=selectedBook||'PP';
   activeBookId=bookId;
   const bk=BOOKS_META.find(b=>b.id===bookId)||BOOKS_META[0];
-  pinnedChapters=getPinnedChapters(bookId,bk.chapters);
+  pinnedChapters=getDailyChapters(bookId,bk.chapters);
   activePinnedIdx=0;
   notes=getNotes(bookId);
   showVerses();
 }
 
-// ── Verses screen ─────────────────────────────────────────────
-
+// ── Verses ────────────────────────────────────────────────────
 function showVerses(){
   ['homeScreen','studyScreen','completeScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById('studyScreen').classList.remove('active');
   document.getElementById('versesScreen').classList.add('active');
   document.getElementById('onboarding').style.display='none';
-
   document.body.style.background='linear-gradient(160deg,#0a1a2e 0%,#1a3a6e 40%,#2d5a9e 70%,#3a7abf 100%)';
 
   const bk=BOOKS_META.find(b=>b.id===activeBookId)||BOOKS_META[0];
@@ -752,43 +864,44 @@ function showVerses(){
   const chTitle=chData?chData.title:'Chapter '+(chIdx+1);
 
   document.getElementById('versesChapterTitle').textContent=chTitle;
-  document.getElementById('versesSubtitle').textContent=bk.title+' · Chapter '+(chIdx+1)+' of '+bk.chapters;
+  document.getElementById('versesSubtitle').textContent=bk.title+' · Chapter '+(chIdx+1)+' & '+(pinnedChapters[1]+1)+' · '+formatDate(new Date());
   document.getElementById('sessionBadge').textContent='📖 Verses';
 
   const versesList=document.getElementById('versesList');
-  versesList.innerHTML='<p style="font-size:13px;color:rgba(255,255,255,0.5);text-align:center;padding:20px;">Loading verses...</p>';
+  versesList.innerHTML='<p style="font-size:13px;color:rgba(255,255,255,0.5);text-align:center;padding:20px;">Loading KJV verses...</p>';
 
   const text=chData?chData.text:'';
   const refs=extractBibleRefs(text);
-
   if(refs.length>0){
-    fetchKJVVerses(refs.slice(0,8), versesList);
+    fetchKJVVerses(refs.slice(0,8),versesList);
   } else {
-    fetchKJVVerses(VERSES_POOL.slice(0,3).map(v=>v.ref), versesList);
+    fetchKJVVerses(VERSES_POOL.slice(0,3).map(v=>v.ref),versesList);
   }
 }
 
-async function fetchKJVVerses(refs, container){
+function extractBibleRefs(text){
+  if(!text)return[];
+  const pattern=/\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|Samuel|Kings|Chronicles|Ezra|Nehemiah|Esther|Job|Psalm|Psalms|Proverbs|Ecclesiastes|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|Corinthians|Galatians|Ephesians|Philippians|Colossians|Thessalonians|Timothy|Titus|Philemon|Hebrews|James|Peter|Jude|Revelation|Gen|Ex|Lev|Num|Deut|Josh|Judg|Ps|Prov|Isa|Jer|Ezek|Dan|Matt|Rom|Cor|Gal|Eph|Phil|Col|Thess|Tim|Heb|Rev)\.?\s*\d+:\d+/g;
+  const matches=text.match(pattern)||[];
+  return[...new Set(matches)];
+}
+
+async function fetchKJVVerses(refs,container){
   container.innerHTML='';
   for(const ref of refs){
+    const safeId='vt_'+ref.replace(/[^a-z0-9]/gi,'_');
     const card=document.createElement('div');
     card.className='verse-card-item';
     card.innerHTML=`<div class="verse-ref-lbl">${ref}</div>
-      <div class="verse-text-body" id="vt_${ref.replace(/[^a-z0-9]/gi,'_')}">
-        <span style="color:rgba(255,255,255,0.4);font-style:italic;">Loading...</span>
-      </div>`;
+      <div class="verse-text-body" id="${safeId}"><span style="color:rgba(255,255,255,0.4);font-style:italic;">Loading...</span></div>`;
     container.appendChild(card);
-
     try{
-      const encoded=encodeURIComponent(ref);
-      const res=await fetch(`https://bible-api.com/${encoded}?translation=kjv`);
+      const res=await fetch(`https://bible-api.com/${encodeURIComponent(ref)}?translation=kjv`);
       const data=await res.json();
-      const el=document.getElementById('vt_'+ref.replace(/[^a-z0-9]/gi,'_'));
+      const el=document.getElementById(safeId);
       if(el){
         if(data.verses&&data.verses.length>0){
-          el.innerHTML=data.verses.map(v=>
-            `<span style="font-size:10px;color:rgba(255,255,255,0.4);vertical-align:super;margin-right:2px;">${v.verse}</span>${v.text.trim()}`
-          ).join(' ');
+          el.innerHTML=data.verses.map(v=>`<sup style="font-size:10px;color:rgba(255,255,255,0.5);margin-right:2px;">${v.verse}</sup>${v.text.trim()}`).join(' ');
         } else if(data.text){
           el.textContent=data.text.trim();
         } else {
@@ -796,16 +909,10 @@ async function fetchKJVVerses(refs, container){
         }
       }
     }catch(e){
-      const el=document.getElementById('vt_'+ref.replace(/[^a-z0-9]/gi,'_'));
-      if(el) el.innerHTML='<span style="color:rgba(255,255,255,0.3);font-style:italic;">Could not load — check connection</span>';
+      const el=document.getElementById(safeId);
+      if(el)el.innerHTML='<span style="color:rgba(255,255,255,0.3);font-style:italic;">Could not load — check connection</span>';
     }
   }
-}
-function extractBibleRefs(text){
-  if(!text) return [];
-  const pattern=/\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|Samuel|Kings|Chronicles|Ezra|Nehemiah|Esther|Job|Psalm|Psalms|Proverbs|Ecclesiastes|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|Corinthians|Galatians|Ephesians|Philippians|Colossians|Thessalonians|Timothy|Titus|Philemon|Hebrews|James|Peter|Jude|Revelation|Gen|Ex|Lev|Num|Deut|Josh|Judg|Ps|Prov|Isa|Jer|Ezek|Dan|Matt|Rom|Cor|Gal|Eph|Phil|Col|Thess|Tim|Heb|Rev)\.?\s*\d+:\d+/g;
-  const matches=text.match(pattern)||[];
-  return [...new Set(matches)];
 }
 
 function proceedToStudy(){
@@ -815,10 +922,48 @@ function proceedToStudy(){
 
 // ── Study ─────────────────────────────────────────────────────
 function showStudy(){
+  document.getElementById('onboarding').style.display='none';
   ['homeScreen','versesScreen','completeScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
   document.getElementById('studyScreen').classList.add('active');
-  document.getElementById('onboarding').style.display='none';
   renderStudy();
+}
+
+const BIBLE_REF_PATTERN=/\b(Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|(?:1|2)\s*Samuel|(?:1|2)\s*Kings|(?:1|2)\s*Chronicles|Ezra|Nehemiah|Esther|Job|Psalms?|Proverbs|Ecclesiastes|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Acts|Romans|(?:1|2)\s*Corinthians|Galatians|Ephesians|Philippians|Colossians|(?:1|2)\s*Thessalonians|(?:1|2)\s*Timothy|Titus|Philemon|Hebrews|James|(?:1|2|3)\s*John|(?:1|2)\s*Peter|Jude|Revelation|Gen|Ex|Lev|Num|Deut|Josh|Judg|Ps|Prov|Isa|Jer|Ezek|Dan|Matt|Rom|Cor|Gal|Eph|Phil|Col|Thess|Tim|Heb|Rev)\.?\s*\d+:\d+(?:-\d+)?/g;
+
+function formatChapterText(text,fontSize,font){
+  if(!text)return'<p style="color:#999;font-style:italic;">Chapter text not available.</p>';
+  const fzMap={small:'13px',medium:'15px',large:'19px'};
+  const lhMap={small:'1.8',medium:'2.0',large:'2.1'};
+  const fz=fzMap[fontSize]||'15px',lh=lhMap[fontSize]||'2.0';
+
+  // Split into lines
+  const lines=text.split('\n');
+  let html='';
+
+  lines.forEach(line=>{
+    const trimmed=line.trim();
+    if(!trimmed){return;}
+
+    // Detect subtitle lines: ALL CAPS or short title-case lines under 80 chars with no period
+    const isSubtitle=
+      (trimmed===trimmed.toUpperCase()&&trimmed.length>3&&trimmed.length<100&&/[A-Z]/.test(trimmed))||
+      (/^[A-Z][^.!?]*$/.test(trimmed)&&trimmed.length<70&&!trimmed.includes(','));
+
+    if(isSubtitle){
+      html+=`<div class="ch-subtitle">${trimmed}</div>`;
+    } else {
+      // Highlight Bible verse references and their surrounding text
+      let processed=trimmed.replace(BIBLE_REF_PATTERN, match=>{
+        return `<span class="bible-verse-ref">${match}</span>`;
+      });
+      // Mark quoted scripture (text in quotes after a verse ref)
+      processed=processed.replace(/"([^"]{10,200})"/g,(m,inner)=>{
+        return `"<span class="bible-verse-text">${inner}</span>"`;
+      });
+      html+=`<p style="font-size:${fz};line-height:${lh};font-family:'${font}',serif;">${processed}</p>`;
+    }
+  });
+  return html||'<p style="color:#999;font-style:italic;">No content available.</p>';
 }
 
 function renderStudy(){
@@ -827,60 +972,52 @@ function renderStudy(){
   const pct=Math.round(((chIdx+1)/bk.chapters)*100);
 
   document.getElementById('studyBookTitle').textContent=bk.title;
-  document.getElementById('studyMeta').textContent='Chapter '+(chIdx+1)+' of '+bk.chapters;
+  document.getElementById('studyMeta').textContent=
+    'Ch '+(chIdx+1)+'/'+bk.chapters+' · '+formatDate(new Date())+' · '+pct+'% through book';
   document.getElementById('studyProgress').style.width=pct+'%';
   document.getElementById('sessionBadge').textContent='📖 Study';
 
-  // Pinned tabs
-  const tabsEl=document.getElementById('pinnedTabs'); tabsEl.innerHTML='';
+  // Tabs
+  const tabsEl=document.getElementById('pinnedTabs');tabsEl.innerHTML='';
   pinnedChapters.forEach((ci,ti)=>{
     const btn=document.createElement('button');
     btn.className='pinned-tab'+(ti===activePinnedIdx?' active':'');
     const chData=booksData[activeBookId]&&booksData[activeBookId].chapters&&booksData[activeBookId].chapters[ci];
-    const shortTitle=chData&&chData.title?(' – '+chData.title.substring(0,18)):'';
+    const shortTitle=chData&&chData.title?(' – '+chData.title.substring(0,20)):'';
     btn.textContent='Ch '+(ci+1)+shortTitle;
-    btn.style.fontSize='11px';
     btn.onclick=()=>{activePinnedIdx=ti;renderStudy();};
     tabsEl.appendChild(btn);
   });
 
-  // Chapter text
+  // Chapter content
   const bookData=booksData[activeBookId];
-  let title='Chapter '+(chIdx+1), text='';
+  let title='Chapter '+(chIdx+1),text='';
   if(bookData&&bookData.chapters&&bookData.chapters[chIdx]){
     const ch=bookData.chapters[chIdx];
-    title=ch.title||title; text=ch.text||'';
+    title=ch.title||title;text=ch.text||'';
   }
   document.getElementById('chapterTitle').textContent=title;
+  document.getElementById('chapterText').innerHTML=formatChapterText(text,fontSize,currentFont);
 
-  const fzMap={small:'13px',medium:'15px',large:'19px'};
-  const lhMap={small:'1.8',medium:'1.9',large:'2.0'};
-  const fz=fzMap[fontSize]||'15px', lh=lhMap[fontSize]||'1.9';
-
-  if(text){
-    const paras=text.split(/\n\n+/).filter(p=>p.trim());
-    document.getElementById('chapterText').innerHTML=
-      paras.map(p=>`<p style="font-size:${fz};line-height:${lh};">${p.trim().replace(/\n/g,' ')}</p>`).join('');
-  } else {
-    document.getElementById('chapterText').innerHTML=
-      `<p style="color:rgba(255,255,255,0.5);font-style:italic;">Chapter text not available.</p>`;
-  }
-
+  // Note for this chapter
+  document.getElementById('noteChapterLabel').textContent='Chapter '+(chIdx+1);
   document.getElementById('noteText').value=notes[chIdx]||'';
   renderNotesList();
 
+  // Nav buttons
   document.getElementById('prevBtn').disabled=activePinnedIdx===0;
   const isLast=activePinnedIdx>=pinnedChapters.length-1;
   const nb=document.getElementById('nextBtn');
-  nb.textContent=isLast?'Complete ✓':'Next →';
+  nb.textContent=isLast?'Complete ✓':'Next Chapter →';
   nb.className=isLast?'primary':'';
 
+  // Font size buttons
   ['S','M','L'].forEach(k=>document.getElementById('fz'+k).classList.remove('active'));
   const fzMap2={small:'S',medium:'M',large:'L'};
   const fb=document.getElementById('fz'+(fzMap2[fontSize]||'M'));
-  if(fb) fb.classList.add('active');
+  if(fb)fb.classList.add('active');
 
-  document.querySelector('.main').scrollTop=0;
+  document.getElementById('studyContentWrap').scrollTop=0;
 }
 
 function prevChapter(){if(activePinnedIdx>0){activePinnedIdx--;renderStudy();}}
@@ -888,11 +1025,11 @@ function prevChapter(){if(activePinnedIdx>0){activePinnedIdx--;renderStudy();}}
 function nextChapter(){
   saveNote();
   if(activePinnedIdx<pinnedChapters.length-1){
-    activePinnedIdx++; renderStudy();
+    activePinnedIdx++;renderStudy();
   } else {
     const prog=getProgress(activeBookId);
     const readArr=prog.read||[];
-    pinnedChapters.forEach(ci=>{if(!readArr.includes(ci)) readArr.push(ci);});
+    pinnedChapters.forEach(ci=>{if(!readArr.includes(ci))readArr.push(ci);});
     const bk=BOOKS_META.find(b=>b.id===activeBookId)||BOOKS_META[0];
     const nextCh=(pinnedChapters[pinnedChapters.length-1]+1)%bk.chapters;
     saveProgress(activeBookId,nextCh,readArr);
@@ -905,22 +1042,25 @@ function toggleNotes(){
   const p=document.getElementById('notesPanel');
   p.classList.toggle('open');
   document.getElementById('btnNote').classList.toggle('active',p.classList.contains('open'));
+  if(p.classList.contains('open')){
+    document.getElementById('studyContentWrap').scrollTop=0;
+  }
 }
 function saveNote(){
   const txt=document.getElementById('noteText').value.trim();
   const chIdx=pinnedChapters[activePinnedIdx];
   if(txt){notes[chIdx]=txt;saveNoteStore(activeBookId,notes);}
   const s=document.getElementById('noteSaved');
-  s.style.display='inline'; setTimeout(()=>s.style.display='none',1500);
+  s.style.display='inline';setTimeout(()=>s.style.display='none',1500);
   renderNotesList();
 }
 function renderNotesList(){
-  const el=document.getElementById('notesList'); el.innerHTML='';
+  const el=document.getElementById('notesList');el.innerHTML='';
   const keys=Object.keys(notes);
-  if(!keys.length){el.innerHTML='<p style="font-size:12px;color:rgba(255,255,255,0.4);">No notes yet.</p>';return;}
+  if(!keys.length){el.innerHTML='<p style="font-size:12px;color:#999;">No notes yet for this book.</p>';return;}
   keys.forEach(k=>{
-    const d=document.createElement('div'); d.className='note-item';
-    d.innerHTML=`<b style="font-size:11px;color:#6ee89a;">Chapter ${parseInt(k)+1}</b><br>${notes[k].substring(0,80)}${notes[k].length>80?'...':''}`;
+    const d=document.createElement('div');d.className='note-item';
+    d.innerHTML=`<b style="font-size:11px;color:#1a4a2e;">Chapter ${parseInt(k)+1}</b><br>${notes[k].substring(0,80)}${notes[k].length>80?'...':''}`;
     d.onclick=()=>{
       const ti=pinnedChapters.indexOf(parseInt(k));
       if(ti>=0){activePinnedIdx=ti;renderStudy();}
@@ -931,39 +1071,113 @@ function renderNotesList(){
 }
 
 // ── Highlights ────────────────────────────────────────────────
-function toggleHL(){hlMode=!hlMode;document.getElementById('btnHL').classList.toggle('active',hlMode);}
+function toggleHL(){
+  hlMode=!hlMode;
+  document.getElementById('btnHL').classList.toggle('active',hlMode);
+}
+
+function showSelToolbar(x,y){
+  const tb=document.getElementById('selToolbar');
+  const w=window.innerWidth;
+  let left=Math.min(x,w-260);
+  let top=Math.max(10,y-10);
+  tb.style.left=left+'px';
+  tb.style.top=top+'px';
+  tb.classList.add('show');
+}
+
 document.addEventListener('mouseup',e=>{
+  if(e.target.closest('#selToolbar'))return;
   const sel=window.getSelection();
-  if(!sel||sel.isCollapsed){document.getElementById('selToolbar').classList.remove('show');return;}
-  if(!document.getElementById('chapterText').contains(sel.anchorNode)) return;
-  const tb=document.getElementById('selToolbar');
-  tb.style.top=(e.clientY-50)+'px';
-  tb.style.left=Math.min(e.clientX,window.innerWidth-160)+'px';
-  tb.classList.add('show');
+  if(!sel||sel.isCollapsed){
+    if(!e.target.closest('#selToolbar'))document.getElementById('selToolbar').classList.remove('show');
+    return;
+  }
+  if(!document.getElementById('chapterText').contains(sel.anchorNode))return;
+  showSelToolbar(e.clientX,e.clientY-80);
 });
+
 document.addEventListener('touchend',e=>{
+  if(e.target.closest('#selToolbar'))return;
   const sel=window.getSelection();
-  if(!sel||sel.isCollapsed){document.getElementById('selToolbar').classList.remove('show');return;}
-  if(!document.getElementById('chapterText').contains(sel.anchorNode)) return;
+  if(!sel||sel.isCollapsed){
+    if(!e.target.closest('#selToolbar'))document.getElementById('selToolbar').classList.remove('show');
+    return;
+  }
+  if(!document.getElementById('chapterText').contains(sel.anchorNode))return;
   const t=e.changedTouches[0];
-  const tb=document.getElementById('selToolbar');
-  tb.style.top=Math.max(50,(t.clientY-60))+'px';
-  tb.style.left=Math.min(t.clientX,window.innerWidth-160)+'px';
-  tb.classList.add('show');
+  showSelToolbar(t.clientX,t.clientY-100);
 });
-function applyHL(color){
+
+function applyHL(cls){
   const sel=window.getSelection();
-  if(!sel||sel.isCollapsed) return;
-  try{const range=sel.getRangeAt(0);const span=document.createElement('span');span.className='highlight-'+color;range.surroundContents(span);sel.removeAllRanges();}catch(e){}
+  if(!sel||sel.isCollapsed)return;
+  try{
+    const range=sel.getRangeAt(0);
+    const span=document.createElement('span');
+    span.className=cls;
+    span.setAttribute('data-hl',cls);
+    range.surroundContents(span);
+    sel.removeAllRanges();
+  }catch(e){
+    // Selection spans multiple elements — wrap each text node
+    try{
+      const range=sel.getRangeAt(0);
+      const frag=range.extractContents();
+      const span=document.createElement('span');
+      span.className=cls;
+      span.setAttribute('data-hl',cls);
+      span.appendChild(frag);
+      range.insertNode(span);
+      sel.removeAllRanges();
+    }catch(e2){}
+  }
   document.getElementById('selToolbar').classList.remove('show');
 }
+
+function applyFontStyle(font){
+  const sel=window.getSelection();
+  if(!sel||sel.isCollapsed){
+    // Apply to whole chapter
+    currentFont=font;
+    localStorage.setItem('dh_font',font);
+    document.querySelectorAll('#chapterText p').forEach(p=>p.style.fontFamily="'"+font+"',serif");
+    document.getElementById('selToolbar').classList.remove('show');
+    return;
+  }
+  try{
+    const range=sel.getRangeAt(0);
+    const span=document.createElement('span');
+    span.style.fontFamily="'"+font+"',serif";
+    range.surroundContents(span);
+    sel.removeAllRanges();
+  }catch(e){}
+  document.getElementById('selToolbar').classList.remove('show');
+}
+
+function clearHL(){
+  const sel=window.getSelection();
+  if(!sel||sel.isCollapsed)return;
+  try{
+    const range=sel.getRangeAt(0);
+    const container=range.commonAncestorContainer;
+    const parent=container.nodeType===3?container.parentElement:container;
+    if(parent.hasAttribute('data-hl')){
+      const text=document.createTextNode(parent.textContent);
+      parent.replaceWith(text);
+    }
+    sel.removeAllRanges();
+  }catch(e){}
+  document.getElementById('selToolbar').classList.remove('show');
+}
+
 function noteFromSel(){
-  const sel=window.getSelection(); if(!sel) return;
+  const sel=window.getSelection();if(!sel)return;
   const txt=sel.toString().trim();
   if(txt){
     const cur=document.getElementById('noteText').value;
     document.getElementById('noteText').value=cur+(cur?'\n\n':'')+'"'+txt+'"\n';
-    if(!document.getElementById('notesPanel').classList.contains('open')) toggleNotes();
+    if(!document.getElementById('notesPanel').classList.contains('open'))toggleNotes();
   }
   document.getElementById('selToolbar').classList.remove('show');
 }
@@ -971,18 +1185,21 @@ function noteFromSel(){
 // ── Font size ─────────────────────────────────────────────────
 function setFontSize(size){
   fontSize=size;
+  localStorage.setItem('dh_fontsize',size);
   const fzMap={small:'13px',medium:'15px',large:'19px'};
-  const lhMap={small:'1.8',medium:'1.9',large:'2.0'};
-  document.querySelectorAll('#chapterText p').forEach(p=>{p.style.fontSize=fzMap[size];p.style.lineHeight=lhMap[size];});
+  const lhMap={small:'1.8',medium:'2.0',large:'2.1'};
+  document.querySelectorAll('#chapterText p').forEach(p=>{
+    p.style.fontSize=fzMap[size];p.style.lineHeight=lhMap[size];
+  });
   ['S','M','L'].forEach(k=>document.getElementById('fz'+k).classList.remove('active'));
   const map={small:'S',medium:'M',large:'L'};
   document.getElementById('fz'+map[size]).classList.add('active');
-  localStorage.setItem('dh_fontsize',size);
 }
 
 // ── Complete ──────────────────────────────────────────────────
 function showComplete(){
-  ['homeScreen','versesScreen','studyScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById('studyScreen').classList.remove('active');
+  ['homeScreen','versesScreen'].forEach(id=>document.getElementById(id).classList.remove('active'));
   document.getElementById('completeScreen').classList.add('active');
   applyTheme(settings.theme||'forest');
 
@@ -999,7 +1216,6 @@ function showComplete(){
   document.getElementById('verseText').textContent=v.text;
   document.getElementById('verseRef').textContent=v.ref;
 
-  // Streak
   const today=new Date().toDateString();
   let streak=parseInt(localStorage.getItem('dh_streak')||'0');
   const last=localStorage.getItem('dh_last_watch');
@@ -1025,7 +1241,7 @@ function showComplete(){
   const pct=Math.round((readCount/bk.chapters)*100);
   document.getElementById('statProgress').textContent=pct+'%';
 
-  if(pct>=100) showNextBookModal();
+  if(pct>=100)showNextBookModal();
 }
 
 function showNextBookModal(){
@@ -1049,11 +1265,11 @@ function showNextBookModal(){
 }
 
 function confirmNextBook(){
-  if(!selectedNextBook) return;
+  if(!selectedNextBook)return;
   const watches=settings.watches||[];
   const cur=getAnySession(watches);
   const w=watches.find(x=>x.id===cur.id);
-  if(w) w.book=selectedNextBook;
+  if(w)w.book=selectedNextBook;
   saveSettingsObj(settings);
   document.getElementById('nextBookOverlay').classList.remove('open');
   document.getElementById('completeSub').textContent='Next book set! See you at your next watch.';
@@ -1079,7 +1295,7 @@ function openSettings(){
     BOOKS_META.forEach(bk=>{
       const opt=document.createElement('option');
       opt.value=bk.id;opt.textContent=bk.title;
-      if(bk.id===curBook) opt.selected=true;
+      if(bk.id===curBook)opt.selected=true;
       sel.appendChild(opt);
     });
   });
@@ -1102,9 +1318,9 @@ async function pickRingtone(session){
   const input=document.createElement('input');
   input.type='file';input.accept='audio/*';
   input.onchange=e=>{
-    const file=e.target.files[0];if(!file) return;
+    const file=e.target.files[0];if(!file)return;
     const url=URL.createObjectURL(file);
-    if(!settings.ringtones) settings.ringtones={morning:'',evening:''};
+    if(!settings.ringtones)settings.ringtones={morning:'',evening:''};
     settings.ringtones[session]=url;
     document.getElementById(session==='morning'?'mRingName':'eRingName').textContent=file.name;
   };
@@ -1112,18 +1328,16 @@ async function pickRingtone(session){
 }
 function playRingtone(session){
   const url=settings.ringtones&&settings.ringtones[session]?settings.ringtones[session]:'';
-  if(url) playRingtoneURL(url);
+  if(url)playRingtoneURL(url);
 }
 function playRingtoneURL(url){
-  const a=document.getElementById('ringAudio');
-  a.src=url;a.play().catch(()=>{});
+  const a=document.getElementById('ringAudio');a.src=url;a.play().catch(()=>{});
 }
 function stopRingtone(){
-  const a=document.getElementById('ringAudio');
-  a.pause();a.currentTime=0;
+  const a=document.getElementById('ringAudio');a.pause();a.currentTime=0;
 }
 function doSaveSettings(){
-  if(!settings.ringtones) settings.ringtones={morning:'',evening:''};
+  if(!settings.ringtones)settings.ringtones={morning:'',evening:''};
   settings.userName=document.getElementById('setName').value||settings.userName;
   const watches=settings.watches||[];
   let m=watches.find(x=>x.id==='morning');
@@ -1141,28 +1355,23 @@ function doSaveSettings(){
   closeSettings();showHome();
 }
 
-// ── Notifications (auto-launch via tap) ───────────────────────
+// ── Notifications ─────────────────────────────────────────────
 function scheduleNotifications(){
-  if(!('Notification' in window)||Notification.permission!=='granted') return;
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
   const watches=settings.watches||[];
   watches.forEach(w=>{
     const[h,m]=w.start.split(':').map(Number);
     const now=new Date(),fire=new Date();
     fire.setHours(h,m,0,0);
-    if(fire<=now) fire.setDate(fire.getDate()+1);
-    const ms=fire-now;
+    if(fire<=now)fire.setDate(fire.getDate()+1);
     setTimeout(()=>{
-      // Show notification — tapping it opens the app
       if(Notification.permission==='granted'){
         const n=new Notification('Devotional Hub',{
           body:w.label+' begins now — tap to open 🙏',
-          icon:'icon-192.png',
-          tag:'watch-'+w.id,
-          requireInteraction:true
+          icon:'icon-192.png',tag:'watch-'+w.id,requireInteraction:true
         });
-        n.onclick=()=>{ window.focus(); showHome(); };
+        n.onclick=()=>{window.focus();showHome();};
       }
-      // Repeat daily
       setInterval(()=>{
         if(Notification.permission==='granted'){
           new Notification('Devotional Hub',{
@@ -1171,7 +1380,7 @@ function scheduleNotifications(){
           });
         }
       },86400000);
-    },ms);
+    },fire-now);
   });
 }
 
@@ -1185,7 +1394,7 @@ if('serviceWorker' in navigator){
         const banner=document.createElement('div');
         banner.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);'+
           'background:rgba(110,232,154,0.95);color:#0a2215;padding:10px 20px;border-radius:20px;'+
-          'font-size:13px;font-weight:bold;z-index:999;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.3);';
+          'font-size:13px;font-weight:bold;z-index:9999;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.3);';
         banner.textContent='✨ Update available — tap to refresh';
         banner.onclick=()=>window.location.reload();
         document.body.appendChild(banner);
